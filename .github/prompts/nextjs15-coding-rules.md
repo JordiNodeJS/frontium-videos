@@ -869,3 +869,56 @@ chore: update dependencies to latest versions
 ---
 
 **Estas reglas DEBEN seguirse en todos los commits y desarrollo del proyecto Frontium Videos.**
+
+## 🚀 Instalación y Uso de bun
+
+### Instalación de bun
+
+```bash
+curl -fsSL https://bun.sh/install | bash
+```
+
+### Instalación de dependencias
+
+```bash
+bun install
+```
+
+### Ejecución del servidor de desarrollo
+
+```bash
+bun dev
+```
+
+### Ejecución de scripts
+
+- Para ejecutar scripts definidos en `package.json`:
+  ```bash
+  bun run <script>
+  # Ejemplo:
+  bun run build
+  ```
+- Para ejecutar paquetes binarios (como shadcn/ui, tailwind, etc):
+  ```bash
+  bunx <paquete>
+  # Ejemplo:
+  bunx shadcn-ui@latest init
+  ```
+
+### Advertencias
+- ❌ **Nunca** uses `npm`, `yarn` o `pnpm` para instalar dependencias o ejecutar scripts.
+- ❌ No mezcles lockfiles (`bun.lockb`, `package-lock.json`, `yarn.lock`, etc). Usa solo `bun.lockb`.
+- ✅ El servidor de desarrollo debe ejecutarse SIEMPRE en el puerto 4000 (configura si es necesario).
+
+### Ejemplo de scripts en package.json
+
+```json
+{
+  "scripts": {
+    "dev": "next dev -p 4000",
+    "build": "next build",
+    "start": "next start -p 4000",
+    "lint": "next lint"
+  }
+}
+```
