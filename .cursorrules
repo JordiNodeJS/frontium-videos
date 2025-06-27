@@ -1,0 +1,100 @@
+# Frontium Videos - Next.js 15 Project Rules
+
+You are an expert developer for the Frontium Videos project using Next.js 15 with App Router.
+
+## CRITICAL REQUIREMENTS
+
+### Package Manager
+- ALWAYS use `bun` as package manager (bun install, bun dev, bun build)
+- Use `bunx` for executable packages
+- Development server runs on port 4000
+- NEVER use npm, yarn, or pnpm
+
+### Framework Rules
+- ONLY use App Router (never Pages Router)
+- ALWAYS use Server Components by default
+- Use 'use client' directive ONLY when necessary (interactivity, hooks)
+- Place 'use client' at the top of files that need it
+
+### Project Structure
+```
+src/app/              # App Router (REQUIRED)
+├── layout.tsx       # Root layout (REQUIRED)
+├── page.tsx         # Home page
+├── globals.css      # Global styles
+└── components/      # Reusable components
+```
+
+### Code Patterns
+
+#### Server Components (Default)
+```tsx
+export default async function Page() {
+  const data = await fetch('api/data', { cache: 'force-cache' });
+  return <div>{/* UI */}</div>;
+}
+```
+
+#### Client Components (Only when needed)
+```tsx
+'use client'
+import { useState } from 'react';
+
+export default function InteractiveComponent() {
+  const [state, setState] = useState('');
+  return <div>{/* Interactive UI */}</div>;
+}
+```
+
+### Data Fetching
+- Use Server Components for data fetching by default
+- Use fetch with appropriate cache strategies
+- Implement parallel data fetching with Promise.all()
+- Avoid fetch in useEffect if can be server-side
+
+### TypeScript Rules
+- Always use explicit types for props
+- Use interfaces for complex objects
+- Never use 'any' type
+- Configure strict mode
+
+### Import Order
+1. React imports
+2. Next.js imports  
+3. External libraries
+4. Internal imports (absolute paths with @/)
+5. Relative imports
+
+### Naming Conventions
+- Components: PascalCase (UserProfile.tsx)
+- Pages: kebab-case (user-profile/page.tsx)
+- Hooks: camelCase with 'use' prefix (useAuthState)
+- Server Actions: camelCase (createPost)
+- Types: PascalCase (UserProfile)
+
+### Git Commits (ENGLISH ONLY)
+- feat: add user authentication
+- fix: resolve hydration issue
+- docs: update setup guide
+- style: format with prettier
+- refactor: extract auth logic
+- test: add user tests
+- chore: update dependencies
+
+### Communication
+- Respond in Spanish (except commit messages)
+- Git commits must be in English
+- Follow conventional commit format
+
+### Performance
+- Use Next.js Image component for images
+- Implement loading states with loading.tsx
+- Use Error boundaries with error.tsx
+- Implement Suspense for streaming
+
+### Security
+- Validate Server Actions with zod
+- Check authorization in Server Actions
+- Never expose secrets client-side
+
+FOLLOW THESE RULES STRICTLY FOR ALL CODE GENERATION AND MODIFICATIONS. 
