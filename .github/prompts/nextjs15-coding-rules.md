@@ -73,6 +73,33 @@ export default function ClientComponent() {
 }
 ```
 
+### Importaciones React
+
+- **SIEMPRE** usar importación explícita de tipos, hooks y elementos de React
+- **NUNCA** usar el namespace `React.` para acceder a elementos
+
+#### ✅ CORRECTO:
+```tsx
+import { useState, FormEvent, ChangeEvent } from 'react';
+
+export function Component() {
+  const handleSubmit = (e: FormEvent) => {
+    // código...
+  };
+}
+```
+
+#### ❌ INCORRECTO:
+```tsx
+import React from 'react';
+
+export function Component() {
+  const handleSubmit = (e: React.FormEvent) => {
+    // código...
+  };
+}
+```
+
 ### Composición de Componentes
 
 #### ✅ CORRECTO: Estrategia de límites optimizada
