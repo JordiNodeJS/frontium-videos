@@ -1,11 +1,11 @@
 # 03 - Desarrollo del Frontend
 
 ## 📊 Resumen
-- **Estado General**: 📋 Pendiente
+- **Estado General**: 🟡 En progreso
 - **Prioridad**: 🔴 Alta
 - **Completadas**: 0/12
-- **En progreso**: 0/12
-- **Pendientes**: 12/12
+- **En progreso**: 1/12
+- **Pendientes**: 11/12
 - **Última actualización**: 27 de Junio, 2024
 
 ## 📋 Tareas Pendientes
@@ -26,16 +26,17 @@
 - [ ] Establecer componentes de forms
 - [ ] Definir componentes de feedback (loading, error)
 
-### 2. 📋 Implementación del Sistema de Design
-- **Estado**: 📋 Pendiente
+### 2. 🟡 Implementación del Sistema de Design
+- **Estado**: 🟡 En progreso
 - **Prioridad**: 🟡 Media
 - **Estimación**: 6 horas
 - **Descripción**: Crear sistema de design consistente
 - **Archivos a crear**: Design tokens, CSS variables, componentes base
 
 #### Subtareas:
-- [ ] Configurar Tailwind CSS personalizado
-- [ ] Crear design tokens (colores, tipografía, espaciado)
+- [x] Configurar Tailwind CSS personalizado (realizado por `shadcn/ui init`)
+- [x] Instalar y configurar tema de TweakCN para shadcn/ui
+- [x] Crear design tokens (realizado por el tema de TweakCN)
 - [ ] Implementar dark/light mode
 - [ ] Crear componentes base (Button, Input, Card)
 - [ ] Establecer sistema de iconos
