@@ -1,13 +1,31 @@
 import Link from "next/link";
-import { Course } from "@/mocks/data/courses";
+import { useCourse } from "../context/CourseContext";
 
 /**
- * Componente Server Component que muestra la información principal del curso.
+ * 🎓 COMPONENTE CON CONTEXT
  *
- * @param course - Objeto con los datos completos del curso
+ * Este componente ha sido refactorizado para usar Context en lugar de props.
+ *
+ * ANTES (con props):
+ * - Recibía course como prop
+ * - Dependía de que el padre le pasara los datos
+ *
+ * DESPUÉS (con Context):
+ * - Obtiene course directamente del contexto
+ * - Independiente de las props del padre
+ * - Más limpio para casos complejos con muchos niveles
+ *
  * @returns Componente React con la información general del curso
  */
-export default function CourseInfo({ course }: { course: Course }) {
+export default function CourseInfo() {
+  // 🎯 Hook personalizado: acceso directo y seguro al contexto
+  const { course } = useCourse();
+
+  // 📝 VENTAJAS del patrón Context aquí:
+  // 1. ✅ No necesitamos props - datos vienen del contexto
+  // 2. ✅ Componente más independiente
+  // 3. ✅ Si agregamos más datos al contexto, este componente
+  //       puede acceder a ellos sin cambios en el padre
   return (
     <div className="bg-white rounded-lg shadow-md p-6 mb-8">
       <div className="flex justify-between items-start mb-6">
