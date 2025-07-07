@@ -6,6 +6,12 @@
  * información proveniente de una API o base de datos.
  */
 
+// Definición del tipo para un topic individual
+export interface Topic {
+  id: string;
+  name: string;
+}
+
 // Definición del tipo para un curso individual
 export interface Course {
   id: string;
@@ -18,7 +24,7 @@ export interface Course {
   students: number;
   price: number;
   updatedAt: string;
-  topics: string[];
+  topics: Topic[];
   modules: {
     id: number;
     title: string;
@@ -44,12 +50,12 @@ export const courses: CoursesData = {
     price: 69.99,
     updatedAt: '2025-06-15',
     topics: [
-      'Fundamentos de Next.js 15',
-      'App Router y arquitectura de proyecto',
-      'Server Components y Client Components',
-      'Server Actions para mutaciones',
-      'Patrones de caché y rendering',
-      'Despliegue y optimización'
+      { id: 'nextjs-fundamentals', name: 'Fundamentos de Next.js 15' },
+      { id: 'app-router-architecture', name: 'App Router y arquitectura de proyecto' },
+      { id: 'server-client-components', name: 'Server Components y Client Components' },
+      { id: 'server-actions', name: 'Server Actions para mutaciones' },
+      { id: 'cache-rendering-patterns', name: 'Patrones de caché y rendering' },
+      { id: 'deployment-optimization', name: 'Despliegue y optimización' }
     ],
     modules: [
       { id: 1, title: 'Introducción a Next.js 15', lessons: 5, duration: '1h 45m' },
@@ -71,12 +77,12 @@ export const courses: CoursesData = {
     price: 54.99,
     updatedAt: '2025-06-02',
     topics: [
-      'Arquitectura de Server Components',
-      'Modelo mental client vs server',
-      'Patrones de composición',
-      'Streaming y Suspense',
-      'Interoperabilidad con Client Components',
-      'Optimización de performance'
+      { id: 'rsc-architecture', name: 'Arquitectura de Server Components' },
+      { id: 'client-server-mental-model', name: 'Modelo mental client vs server' },
+      { id: 'composition-patterns', name: 'Patrones de composición' },
+      { id: 'streaming-suspense', name: 'Streaming y Suspense' },
+      { id: 'client-components-interop', name: 'Interoperabilidad con Client Components' },
+      { id: 'performance-optimization', name: 'Optimización de performance' }
     ],
     modules: [
       { id: 1, title: 'Fundamentos de RSC', lessons: 4, duration: '1h 30m' },
@@ -98,12 +104,12 @@ export const courses: CoursesData = {
     price: 59.99,
     updatedAt: '2025-05-20',
     topics: [
-      'Tipos avanzados en TypeScript',
-      'Type Guards y Type Narrowing',
-      'Mapped Types y Conditional Types',
-      'Inferencia de tipos',
-      'Generics avanzados',
-      'Patrones de diseño en TypeScript'
+      { id: 'advanced-types', name: 'Tipos avanzados en TypeScript' },
+      { id: 'type-guards-narrowing', name: 'Type Guards y Type Narrowing' },
+      { id: 'mapped-conditional-types', name: 'Mapped Types y Conditional Types' },
+      { id: 'type-inference', name: 'Inferencia de tipos' },
+      { id: 'advanced-generics', name: 'Generics avanzados' },
+      { id: 'design-patterns-ts', name: 'Patrones de diseño en TypeScript' }
     ],
     modules: [
       { id: 1, title: 'Fundamentos avanzados', lessons: 5, duration: '1h 45m' },
@@ -125,12 +131,12 @@ export const courses: CoursesData = {
     price: 59.99,
     updatedAt: '2025-05-15',
     topics: [
-      'Fundamentos de HTML5 y CSS3',
-      'JavaScript moderno (ES6+)',
-      'Desarrollo responsivo con Bootstrap 5',
-      'APIs REST y consumo de servicios',
-      'Bases de datos MySQL y manejo con PHP',
-      'Despliegue de aplicaciones web'
+      { id: 'html5-css3-fundamentals', name: 'Fundamentos de HTML5 y CSS3' },
+      { id: 'modern-javascript', name: 'JavaScript moderno (ES6+)' },
+      { id: 'responsive-bootstrap', name: 'Desarrollo responsivo con Bootstrap 5' },
+      { id: 'rest-apis', name: 'APIs REST y consumo de servicios' },
+      { id: 'mysql-php', name: 'Bases de datos MySQL y manejo con PHP' },
+      { id: 'web-deployment', name: 'Despliegue de aplicaciones web' }
     ],
     modules: [
       { id: 1, title: 'Introducción al desarrollo web', lessons: 5, duration: '2h 30m' },
@@ -153,12 +159,12 @@ export const courses: CoursesData = {
     price: 79.99,
     updatedAt: '2025-06-10',
     topics: [
-      'React 19 y sus nuevas características',
-      'Server Components y Client Components',
-      'Next.js 15 App Router',
-      'React Server Actions',
-      'Suspense para carga de datos',
-      'Optimización y despliegue'
+      { id: 'react19-features', name: 'React 19 y sus nuevas características' },
+      { id: 'server-client-components-react', name: 'Server Components y Client Components' },
+      { id: 'nextjs15-app-router', name: 'Next.js 15 App Router' },
+      { id: 'react-server-actions', name: 'React Server Actions' },
+      { id: 'suspense-data-loading', name: 'Suspense para carga de datos' },
+      { id: 'optimization-deployment-react', name: 'Optimización y despliegue' }
     ],
     modules: [
       { id: 1, title: 'Fundamentos de React 19', lessons: 6, duration: '3h 20m' },
@@ -181,12 +187,12 @@ export const courses: CoursesData = {
     price: 69.99,
     updatedAt: '2025-04-22',
     topics: [
-      'Programación funcional en JavaScript',
-      'TypeScript avanzado',
-      'Testing con Jest y Testing Library',
-      'Patrones de diseño',
-      'Optimización y rendimiento',
-      'Node.js y runtime avanzado'
+      { id: 'functional-programming-js', name: 'Programación funcional en JavaScript' },
+      { id: 'typescript-advanced-js', name: 'TypeScript avanzado' },
+      { id: 'testing-jest-library', name: 'Testing con Jest y Testing Library' },
+      { id: 'design-patterns-js', name: 'Patrones de diseño' },
+      { id: 'optimization-performance-js', name: 'Optimización y rendimiento' },
+      { id: 'nodejs-runtime-advanced', name: 'Node.js y runtime avanzado' }
     ],
     modules: [
       { id: 1, title: 'Fundamentos avanzados de JS', lessons: 7, duration: '3h 45m' },
@@ -209,12 +215,12 @@ export const courses: CoursesData = {
     price: 74.99,
     updatedAt: '2025-03-18',
     topics: [
-      'Fundamentos de Node.js',
-      'Express.js y middlewares',
-      'MongoDB y Mongoose',
-      'JWT y autenticación',
-      'Validación y manejo de errores',
-      'Despliegue en la nube'
+      { id: 'nodejs-fundamentals', name: 'Fundamentos de Node.js' },
+      { id: 'express-middlewares', name: 'Express.js y middlewares' },
+      { id: 'mongodb-mongoose', name: 'MongoDB y Mongoose' },
+      { id: 'jwt-authentication', name: 'JWT y autenticación' },
+      { id: 'validation-error-handling', name: 'Validación y manejo de errores' },
+      { id: 'cloud-deployment', name: 'Despliegue en la nube' }
     ],
     modules: [
       { id: 1, title: 'Introducción a Node.js', lessons: 5, duration: '2h 45m' },
@@ -237,12 +243,12 @@ export const courses: CoursesData = {
     price: 84.99,
     updatedAt: '2025-06-05',
     topics: [
-      'Docker y contenerización',
-      'Kubernetes básico y avanzado',
-      'CI/CD con GitHub Actions',
-      'Infraestructura como código',
-      'Monitoreo y logging',
-      'Seguridad DevOps'
+      { id: 'docker-containerization', name: 'Docker y contenerización' },
+      { id: 'kubernetes-basic-advanced', name: 'Kubernetes básico y avanzado' },
+      { id: 'cicd-github-actions', name: 'CI/CD con GitHub Actions' },
+      { id: 'infrastructure-as-code', name: 'Infraestructura como código' },
+      { id: 'monitoring-logging', name: 'Monitoreo y logging' },
+      { id: 'devops-security', name: 'Seguridad DevOps' }
     ],
     modules: [
       { id: 1, title: 'Fundamentos DevOps', lessons: 4, duration: '2h 30m' },
@@ -265,12 +271,12 @@ export const courses: CoursesData = {
     price: 64.99,
     updatedAt: '2025-05-28',
     topics: [
-      'Sistema de tipos en TypeScript',
-      'Interfaces y tipos avanzados',
-      'Genéricos y utility types',
-      'Decoradores y metaprogramación',
-      'Integración con React y Next.js',
-      'Testing con TypeScript'
+      { id: 'typescript-type-system', name: 'Sistema de tipos en TypeScript' },
+      { id: 'interfaces-advanced-types', name: 'Interfaces y tipos avanzados' },
+      { id: 'generics-utility-types', name: 'Genéricos y utility types' },
+      { id: 'decorators-metaprogramming', name: 'Decoradores y metaprogramación' },
+      { id: 'react-nextjs-integration', name: 'Integración con React y Next.js' },
+      { id: 'testing-typescript', name: 'Testing con TypeScript' }
     ],
     modules: [
       { id: 1, title: 'Fundamentos de TypeScript', lessons: 7, duration: '3h 20m' },
@@ -293,12 +299,12 @@ export const courses: CoursesData = {
     price: 74.99,
     updatedAt: '2025-04-10',
     topics: [
-      'Arquitectura de Angular 17',
-      'Componentes y directivas',
-      'Servicios e inyección de dependencias',
-      'Formularios reactivos',
-      'RxJS y programación reactiva',
-      'Testing con Jasmine y Karma'
+      { id: 'angular17-architecture', name: 'Arquitectura de Angular 17' },
+      { id: 'components-directives', name: 'Componentes y directivas' },
+      { id: 'services-dependency-injection', name: 'Servicios e inyección de dependencias' },
+      { id: 'reactive-forms', name: 'Formularios reactivos' },
+      { id: 'rxjs-reactive-programming', name: 'RxJS y programación reactiva' },
+      { id: 'testing-jasmine-karma', name: 'Testing con Jasmine y Karma' }
     ],
     modules: [
       { id: 1, title: 'Introducción a Angular', lessons: 6, duration: '3h 10m' },

@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { useCourse } from "../context/CourseContext";
 
@@ -83,8 +85,8 @@ export default function CourseInfo() {
       <div className="mb-6">
         <h2 className="text-xl font-bold mb-3">Lo que aprenderás</h2>
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
-          {course.topics.map((topic, index) => (
-            <li key={index} className="flex items-start">
+          {course.topics.map((topic) => (
+            <li key={topic.id} className="flex items-start">
               <svg
                 className="w-5 h-5 text-green-500 mr-2 flex-shrink-0"
                 fill="none"
@@ -98,7 +100,7 @@ export default function CourseInfo() {
                   d="M5 13l4 4L19 7"
                 />
               </svg>
-              <span>{topic}</span>
+              <span>{topic.name}</span>
             </li>
           ))}
         </ul>
