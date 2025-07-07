@@ -1,13 +1,33 @@
 import Link from "next/link";
-import { Course } from "@/mocks/data/courses";
+import { useCourse } from "../context/CourseContext";
 
 /**
- * Componente Server Component que muestra el contenido y estructura del curso.
+ * 🎓 COMPONENTE CON CONTEXT - Ejemplo 2
  *
- * @param course - Objeto con los datos completos del curso
+ * Este es el segundo componente que se beneficia del Context.
+ *
+ * TRANSFORMACIÓN:
+ * - ANTES: function CourseContent({ course }: { course: Course })
+ * - DESPUÉS: function CourseContent() + const { course } = useCourse()
+ *
  * @returns Componente React con los módulos y lecciones del curso
  */
-export default function CourseContent({ course }: { course: Course }) {
+export default function CourseContent() {
+  // 🎯 Mismo patrón: usar el hook personalizado
+  const { course } = useCourse();
+
+  // 📊 COMPARACIÓN: Props vs Context
+  //
+  // CON PROPS (antes):
+  // ✅ Simple para pocos componentes
+  // ❌ Props repetitivas
+  // ❌ Prop drilling en estructuras profundas
+  //
+  // CON CONTEXT (ahora):
+  // ✅ Sin repetición de props
+  // ✅ Acceso directo desde cualquier nivel
+  // ❌ Más complejidad para casos simples
+  // ❌ Re-renders de todo el árbol del Provider
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <div className="flex justify-between items-center mb-4">
