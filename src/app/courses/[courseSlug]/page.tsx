@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { getCourseDetails } from "./lib/getCourseDetails";
+import { CourseProvider } from "./context/CourseContext";
 import { CourseInfoSkeleton } from "./components/course-info-skeleton";
 import { CourseContentSkeleton } from "./components/course-content-skeleton";
 import { RelatedCoursesSkeleton } from "./components/related-courses-skeleton";
@@ -49,14 +50,31 @@ export default async function CourseDetailPage({
         </Link>
       </div>
 
-      <Suspense fallback={<CourseInfoSkeleton />}>
-        <CourseInfo course={course} />
-      </Suspense>
+      {/* 
+        🎓 PATRÓN: Context Provider Wrapping
+        
+        El CourseProvider envuelve solo los componentes que necesitan
+        acceso a los datos del curso. Esto es una best practice porque:
+        
+        1. ✅ Scope limitado: Solo los componentes que realmente necesitan 
+           los datos tienen acceso a ellos
+        2. ✅ Performance: Re-renders se limitan al árbol del Provider
+        3. ✅ Claridad: Es evidente qué componentes dependen del contexto
+      */}
+      <CourseProvider course={course}>
+        <Suspense fallback={<CourseInfoSkeleton />}>
+          <CourseInfo />
+        </Suspense>
 
-      <Suspense fallback={<CourseContentSkeleton />}>
-        <CourseContent course={course} />
-      </Suspense>
+        <Suspense fallback={<CourseContentSkeleton />}>
+          <CourseContent />
+        </Suspense>
+      </CourseProvider>
 
+      {/* 
+        📝 NOTA: RelatedCourses queda fuera del Provider porque
+        no necesita los datos del curso actual (solo el slug)
+      */}
       <Suspense fallback={<RelatedCoursesSkeleton />}>
         <RelatedCourses currentSlug={courseSlug} />
       </Suspense>
