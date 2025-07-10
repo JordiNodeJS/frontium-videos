@@ -25,16 +25,6 @@ export default function ProfileActivity() {
     return `${remainingMinutes}m`;
   };
 
-  const getCategoryIcon = (category: string) => {
-    const icons = {
-      learning: '📚',
-      social: '👥',
-      milestone: '🏆',
-      special: '⭐'
-    };
-    return icons[category as keyof typeof icons] || '🎯';
-  };
-
   const getCategoryColor = (category: string) => {
     const colors = {
       learning: 'bg-blue-100 text-blue-800',
