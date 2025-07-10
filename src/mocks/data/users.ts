@@ -480,6 +480,11 @@ export const mockUsers: User[] = [
   }
 ];
 
+// Función helper para obtener todos los usuarios
+export const getAllUsers = (): User[] => {
+  return mockUsers;
+};
+
 // Función helper para obtener un usuario por ID
 export const getUserById = (userId: string): User | null => {
   return mockUsers.find(user => user.id === userId) || null;
@@ -495,16 +500,16 @@ export const getUserTotalProgress = (userId: string): number => {
   const user = getUserById(userId);
   if (!user || user.courseProgress.length === 0) return 0;
   
-  const totalProgress = user.courseProgress.reduce((sum, course) => sum + course.progress, 0);
+  const totalProgress = user.courseProgress.reduce((sum: number, course) => sum + course.progress, 0);
   return Math.round(totalProgress / user.courseProgress.length);
 };
 
 // Función helper para obtener las estadísticas globales
 export const getGlobalStats = () => {
   const totalUsers = mockUsers.length;
-  const totalCompletedCourses = mockUsers.reduce((sum, user) => sum + user.stats.coursesCompleted, 0);
-  const totalWatchTime = mockUsers.reduce((sum, user) => sum + user.stats.totalWatchTime, 0);
-  const averageStreak = Math.round(mockUsers.reduce((sum, user) => sum + user.stats.streak, 0) / totalUsers);
+  const totalCompletedCourses = mockUsers.reduce((sum: number, user: User) => sum + user.stats.coursesCompleted, 0);
+  const totalWatchTime = mockUsers.reduce((sum: number, user: User) => sum + user.stats.totalWatchTime, 0);
+  const averageStreak = Math.round(mockUsers.reduce((sum: number, user: User) => sum + user.stats.streak, 0) / totalUsers);
   
   return {
     totalUsers,
