@@ -341,10 +341,34 @@ export default function Page() {
 
 ## 🛣️ Routing Avanzado
 
-### Dynamic Routes
+### Dynamic Routes (Next.js 15+)
+
+En Next.js 15, la prop `params` en las páginas de rutas dinámicas es una **Promise**. Por lo tanto, el componente de página **debe** ser `async` y se debe usar `await` para acceder a los valores de los parámetros.
+
+#### ✅ CORRECTO (Next.js 15):
 ```tsx
 // app/posts/[id]/page.tsx
+export default async function PostPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params; // ✅ 'await' es necesario
+  
+  // Lógica para obtener los datos del post...
+  // const post = await getPost(id);
+  
+  return <div>Post ID: {id}</div>;
+}
+```
+
+#### ❌ INCORRECTO (Legacy / Obsoleto en Next.js 15):
+```tsx
+// app/posts/[id]/page.tsx
+// Este es el comportamiento de Next.js 14 y anteriores.
+// Aunque puede funcionar por retrocompatibilidad, será eliminado.
 export default function Post({ params }: { params: { id: string } }) {
+  // ❌ No se usa await, asume que params es síncrono.
   return <div>Post ID: {params.id}</div>;
 }
 ```
