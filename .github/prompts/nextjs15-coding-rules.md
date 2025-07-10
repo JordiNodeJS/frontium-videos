@@ -373,6 +373,45 @@ export default function Post({ params }: { params: { id: string } }) {
 }
 ```
 
+### 🧠 Manejando la Promesa `params`: `await` vs `use()`
+
+La forma de resolver la promesa `params` depende del tipo de componente. No son intercambiables.
+
+#### 🔓 En Server Components (usando `await`)
+
+Es la forma estándar para los componentes de servidor (por defecto, sin `'use client'`). El componente **debe** ser `async`.
+
+```tsx
+// app/posts/[slug]/page.tsx (Server Component)
+export default async function ServerPostPage({ 
+  params 
+}: { 
+  params: Promise<{ slug: string }> 
+}) {
+  const { slug } = await params; // ✅ Correcto en Server Components
+  return <div>Post: {slug}</div>
+}
+```
+
+#### 🧪 En Client Components (usando `use()`)
+
+Para componentes marcados con `'use client'`, no se puede usar `async` en la firma del componente. Se debe usar el hook `use()` de React para resolver la promesa de forma reactiva y segura.
+
+```tsx
+// app/posts/[slug]/interactive-page.tsx (Client Component)
+'use client'
+import { use } from 'react'
+
+export default function ClientPostPage({ 
+  params 
+}: { 
+  params: Promise<{ slug: string }> 
+}) {
+  const { slug } = use(params); // ✅ Correcto en Client Components
+  return <p>Post Interactivo: {slug}</p>
+}
+```
+
 ### Catch-all Routes
 ```tsx
 // app/blog/[...slug]/page.tsx
