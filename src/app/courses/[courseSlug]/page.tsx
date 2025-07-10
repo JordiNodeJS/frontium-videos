@@ -16,10 +16,12 @@ export const metadata = {
 };
 
 export default async function CourseDetailPage({
-  params: { courseSlug },
+  params,
 }: {
   params: { courseSlug: string };
 }) {
+  const { courseSlug } = await params;
+  
   // Validación única a nivel de página
   const course = await getCourseDetails(courseSlug);
 
