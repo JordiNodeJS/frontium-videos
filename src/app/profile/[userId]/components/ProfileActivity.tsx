@@ -1,201 +1,199 @@
 'use client'
 
-import { useProfile } from "../context/ProfileContext";
-import Link from "next/link";
+import { useProfile } from '../context/ProfileContext';
+import { courses, Course } from '@/mocks/data/courses';
+import { useState } from 'react';
 
 export default function ProfileActivity() {
-  const { user } = useProfile();
+  const { user, toggleFavoriteCourse, isLoading } = useProfile();
+  
+  // Estado local para rastrear qué botón específico está cargando
+  const [loadingCourseId, setLoadingCourseId] = useState<string | null>(null);
 
-  if (!user) return null;
+  if (!user) {
+    return <div>No hay datos del usuario</div>;
+  }
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('es-ES', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric'
-    });
+  // Obtener cursos favoritos completos
+  const favoriteCourses = user.favoriteCourses 
+    ? user.favoriteCourses.map(courseId => courses[courseId]).filter(Boolean) as Course[]
+    : [];
+
+  // Función para verificar si un curso es favorito
+  const isFavorite = (courseId: string) => {
+    return user.favoriteCourses?.includes(courseId) || false;
   };
 
-  const formatDuration = (minutes: number) => {
-    const hours = Math.floor(minutes / 60);
-    const remainingMinutes = minutes % 60;
-    if (hours > 0) {
-      return `${hours}h ${remainingMinutes}m`;
+  // Función mejorada para manejar el toggle con loading específico
+  const handleToggleFavorite = async (courseId: string) => {
+    setLoadingCourseId(courseId);
+    try {
+      await toggleFavoriteCourse(courseId);
+    } finally {
+      setLoadingCourseId(null);
     }
-    return `${remainingMinutes}m`;
   };
 
-  const getCategoryColor = (category: string) => {
-    const colors = {
-      learning: 'bg-blue-100 text-blue-800',
-      social: 'bg-green-100 text-green-800',
-      milestone: 'bg-purple-100 text-purple-800',
-      special: 'bg-yellow-100 text-yellow-800'
-    };
-    return colors[category as keyof typeof colors] || 'bg-gray-100 text-gray-800';
-  };
+  // Obtener algunos cursos disponibles para demostrar la funcionalidad
+  const availableCourses = Object.values(courses).slice(0, 6);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-      {/* Course Progress */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-gray-900">Progreso de Cursos</h2>
-          <Link 
-            href="/courses" 
-            className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-          >
-            Ver todos →
-          </Link>
-        </div>
-
-        {user.courseProgress.length > 0 ? (
-          <div className="space-y-4">
-            {user.courseProgress.slice(0, 3).map((course) => (
-              <div key={course.courseId} className="flex items-center gap-4">
-                {/* Course thumbnail placeholder */}
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded flex items-center justify-center flex-shrink-0">
-                  <span className="text-white font-bold text-lg">
-                    {course.courseId.charAt(0).toUpperCase()}
-                  </span>
+    <div className="space-y-8">
+      
+      {/* Progreso de Cursos */}
+      <section>
+        <h3 className="text-xl font-semibold mb-4">Progreso de Cursos</h3>
+        <div className="space-y-4">
+          {user.courseProgress?.map((progress) => {
+            const course = courses[progress.courseId];
+            if (!course) return null;
+            
+            return (
+              <div key={progress.courseId} className="bg-white rounded-lg border p-4">
+                <div className="flex justify-between items-center mb-2">
+                  <h4 className="font-medium">{course.title}</h4>
+                  <span className="text-sm text-gray-600">{progress.progress}%</span>
                 </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div 
+                    className="bg-blue-600 h-2 rounded-full transition-all duration-300" 
+                    style={{ width: `${progress.progress}%` }}
+                  ></div>
+                </div>
+                <p className="text-sm text-gray-600 mt-2">
+                  Última actividad: {new Date(progress.lastWatchedAt).toLocaleDateString()}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+      </section>
 
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-medium text-gray-900 truncate">
-                    {course.courseId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                  </h3>
-                  
-                  {/* Progress bar */}
-                  <div className="mt-1">
-                    <div className="flex items-center justify-between text-sm text-gray-600 mb-1">
-                      <span>{course.progress}% completado</span>
-                      <span>{formatDuration(course.timeSpent)}</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div 
-                        className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${course.progress}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                  
-                  <p className="text-xs text-gray-500 mt-1">
-                    Última vez: {formatDate(course.lastWatchedAt)}
-                  </p>
+      {/* Cursos Favoritos */}
+      <section>
+        <h3 className="text-xl font-semibold mb-4">
+          Cursos Favoritos ({favoriteCourses.length})
+        </h3>
+        
+        {favoriteCourses.length > 0 ? (
+          <div className="grid gap-4 md:grid-cols-2">
+            {favoriteCourses.map((course) => (
+              <div key={course.id} className="bg-white rounded-lg border p-4">
+                <div className="flex justify-between items-start mb-2">
+                  <h4 className="font-medium text-sm">{course.title}</h4>
+                  <button
+                    onClick={() => handleToggleFavorite(course.id)}
+                    disabled={loadingCourseId === course.id}
+                    className="text-red-500 hover:text-red-700 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform active:scale-95 cursor-pointer"
+                    title="Quitar de favoritos"
+                  >
+                    {loadingCourseId === course.id ? '⏳' : '❤️'}
+                  </button>
+                </div>
+                <p className="text-xs text-gray-600 mb-2">{course.description}</p>
+                <div className="flex justify-between items-center text-xs text-gray-500">
+                  <span>Nivel: {course.level}</span>
+                  <span>{course.duration}</span>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="text-center py-8">
-            <div className="text-gray-400 mb-2">📚</div>
-            <p className="text-gray-600">Aún no has empezado ningún curso</p>
-            <Link 
-              href="/courses"
-              className="text-blue-600 hover:text-blue-800 text-sm mt-2 inline-block"
-            >
-              Explorar cursos
-            </Link>
-          </div>
+          <p className="text-gray-600 text-center py-8 bg-gray-50 rounded-lg">
+            No tienes cursos favoritos aún. ¡Agrega algunos desde la lista de abajo!
+          </p>
         )}
-      </div>
+      </section>
 
-      {/* Achievements */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-gray-900">Logros</h2>
-          <span className="text-sm text-gray-600">
-            {user.achievements.length} desbloqueados
-          </span>
-        </div>
-
-        {user.achievements.length > 0 ? (
-          <div className="space-y-4">
-            {user.achievements.slice(0, 4).map((achievement) => (
-              <div key={achievement.id} className="flex items-start gap-3">
-                <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-lg">{achievement.icon}</span>
-                </div>
-                
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h3 className="font-medium text-gray-900 text-sm">
-                      {achievement.title}
-                    </h3>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getCategoryColor(achievement.category)}`}>
-                      {achievement.category}
-                    </span>
-                  </div>
-                  <p className="text-xs text-gray-600 mb-1">
-                    {achievement.description}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {formatDate(achievement.unlockedAt)}
-                  </p>
-                </div>
-              </div>
-            ))}
-
-            {user.achievements.length > 4 && (
-              <div className="text-center pt-2">
-                <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                  Ver todos los logros (+{user.achievements.length - 4})
+      {/* Explorar Cursos - Para agregar a favoritos */}
+      <section>
+        <h3 className="text-xl font-semibold mb-4">Explorar Cursos</h3>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {availableCourses.map((course) => (
+            <div key={course.id} className="bg-white rounded-lg border p-4 hover:shadow-md transition-shadow">
+              <div className="flex justify-between items-start mb-2">
+                <h4 className="font-medium text-sm">{course.title}</h4>
+                <button
+                  onClick={() => handleToggleFavorite(course.id)}
+                  disabled={loadingCourseId === course.id}
+                  className={`transition-all duration-200 transform hover:scale-110 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer ${
+                    isFavorite(course.id)
+                      ? 'text-red-500 hover:text-red-700 hover:drop-shadow-lg'
+                      : 'text-gray-400 hover:text-red-500 hover:drop-shadow-md'
+                  }`}
+                  title={isFavorite(course.id) ? 'Quitar de favoritos' : 'Agregar a favoritos'}
+                >
+                  {loadingCourseId === course.id ? '⏳' : (isFavorite(course.id) ? '❤️' : '🤍')}
                 </button>
               </div>
-            )}
-          </div>
-        ) : (
-          <div className="text-center py-8">
-            <div className="text-gray-400 mb-2">🏆</div>
-            <p className="text-gray-600">Aún no has desbloqueado logros</p>
-            <p className="text-gray-500 text-sm mt-1">
-              ¡Completa cursos para obtener tus primeros logros!
-            </p>
-          </div>
-        )}
-      </div>
-
-      {/* Favorite Courses */}
-      <div className="bg-white rounded-lg shadow-md p-6 lg:col-span-2">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-gray-900">Cursos Favoritos</h2>
-          <span className="text-sm text-gray-600">
-            {user.favoriteCourses.length} favoritos
-          </span>
+              <p className="text-xs text-gray-600 mb-3">{course.description}</p>
+              <div className="flex justify-between items-center text-xs text-gray-500 mb-3">
+                <span>Nivel: {course.level}</span>
+                <span>{course.duration}</span>
+              </div>
+              <div className="flex justify-between items-center text-xs">
+                <span className="font-medium text-green-600">${course.price}</span>
+                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                  {course.instructor}
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
+      </section>
 
-        {user.favoriteCourses.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {user.favoriteCourses.slice(0, 3).map((courseId) => (
-              <Link 
-                key={courseId}
-                href={`/courses/${courseId}`}
-                className="group"
-              >
-                <div className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                  <div className="w-full h-32 bg-gradient-to-br from-blue-500 to-purple-600 rounded mb-3 flex items-center justify-center">
-                    <span className="text-white font-bold text-2xl">
-                      {courseId.charAt(0).toUpperCase()}
-                    </span>
-                  </div>
-                  <h3 className="font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
-                    {courseId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                  </h3>
-                  <p className="text-sm text-gray-600 mt-1">Curso favorito</p>
-                </div>
-              </Link>
-            ))}
+      {/* Logros */}
+      <section>
+        <h3 className="text-xl font-semibold mb-4">Logros</h3>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {user.achievements?.map((achievement, index) => (
+            <div key={index} className="bg-white rounded-lg border p-4 text-center">
+              <div className="text-3xl mb-2">{achievement.icon}</div>
+              <h4 className="font-medium text-sm mb-1">{achievement.title}</h4>
+              <p className="text-xs text-gray-600 mb-2">{achievement.description}</p>
+              <p className="text-xs text-gray-500">
+                Obtenido: {new Date(achievement.unlockedAt).toLocaleDateString()}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Estadísticas */}
+      <section>
+        <h3 className="text-xl font-semibold mb-4">Estadísticas</h3>
+        <div className="grid gap-4 md:grid-cols-4">
+          <div className="bg-white rounded-lg border p-4 text-center">
+            <div className="text-2xl font-bold text-blue-600">{user.stats?.coursesCompleted || 0}</div>
+            <p className="text-sm text-gray-600">Cursos Completados</p>
           </div>
-        ) : (
-          <div className="text-center py-8">
-            <div className="text-gray-400 mb-2">❤️</div>
-            <p className="text-gray-600">Aún no tienes cursos favoritos</p>
-            <p className="text-gray-500 text-sm mt-1">
-              Marca cursos como favoritos para acceder rápidamente
-            </p>
+          <div className="bg-white rounded-lg border p-4 text-center">
+            <div className="text-2xl font-bold text-green-600">{Math.round((user.stats?.totalWatchTime || 0) / 60)}</div>
+            <p className="text-sm text-gray-600">Horas de Aprendizaje</p>
           </div>
-        )}
-      </div>
+          <div className="bg-white rounded-lg border p-4 text-center">
+            <div className="text-2xl font-bold text-purple-600">{user.stats?.certificates || 0}</div>
+            <p className="text-sm text-gray-600">Certificados</p>
+          </div>
+          <div className="bg-white rounded-lg border p-4 text-center">
+            <div className="text-2xl font-bold text-orange-600">{user.stats?.streak || 0}</div>
+            <p className="text-sm text-gray-600">Racha Actual</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Debug: Estado del contexto */}
+      {process.env.NODE_ENV === 'development' && (
+        <section className="bg-gray-100 p-4 rounded-lg">
+          <h4 className="font-medium mb-2">Debug - Estado del Contexto:</h4>
+          <div className="text-xs space-y-1">
+            <p><strong>Loading Global:</strong> {isLoading ? 'Sí' : 'No'}</p>
+            <p><strong>Loading Específico:</strong> {loadingCourseId || 'Ninguno'}</p>
+            <p><strong>Favoritos:</strong> {user.favoriteCourses?.length || 0} cursos</p>
+            <p><strong>IDs Favoritos:</strong> {user.favoriteCourses?.join(', ') || 'Ninguno'}</p>
+          </div>
+        </section>
+      )}
     </div>
   );
 } 
