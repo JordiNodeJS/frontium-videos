@@ -159,7 +159,7 @@ export const mockUsers: User[] = [
     firstName: "Ana",
     lastName: "Martínez",
     fullName: "Ana Martínez",
-    avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face",
     bio: "Frontend Developer especializada en UX/UI. Me encanta crear interfaces hermosas y funcionales.",
     location: "Barcelona, España",
     socialLinks: {
