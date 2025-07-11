@@ -14,6 +14,7 @@ Este directorio contiene el seguimiento completo de todas las tareas, subtareas 
 - `04-backend-development.md` - Desarrollo del backend
 - `05-deployment.md` - Despliegue y producción
 - `06-testing.md` - Testing y calidad
+- `07-redux-favorites.md` - Implementación Redux + FavoriteButton
 - `99-completed-tasks.md` - Archivo de tareas completadas
 
 ### Nomenclatura
@@ -45,23 +46,24 @@ Este directorio contiene el seguimiento completo de todas las tareas, subtareas 
 ### 🚧 Tareas En Progreso (0/57)
 - Ninguna en progreso actualmente
 
-### 📋 Tareas Pendientes (43/57)
+### 📋 Tareas Pendientes (51/65)
 - **Frontend Development**: 12 tareas principales (126 horas estimadas)
 - **Backend Development**: 10 tareas principales (112 horas estimadas)
 - **Deployment**: 8 tareas principales (41 horas estimadas)
 - **Testing**: 7 tareas principales (57 horas estimadas)
+- **Redux + Favorites**: 8 tareas principales (24 horas estimadas)
 
 ## 📈 Progreso General
-- **Total de tareas**: 57 tareas principales
-- **Completadas**: 14 (24.5%)
+- **Total de tareas**: 65 tareas principales
+- **Completadas**: 14 (21.5%)
 - **En progreso**: 0 (0%)
-- **Pendientes**: 43 (75.5%)
-- **Tiempo estimado restante**: ~336 horas
+- **Pendientes**: 51 (78.5%)
+- **Tiempo estimado restante**: ~360 horas
 
 ## 🔄 Última Actualización
-- **Fecha**: 27 de Junio, 2024
+- **Fecha**: Enero, 2025
 - **Por**: AI Assistant
-- **Cambios**: Creación inicial del sistema de seguimiento
+- **Cambios**: Agregada tarea 07-redux-favorites.md para implementación Redux con FavoriteButton
 
 ---
 
