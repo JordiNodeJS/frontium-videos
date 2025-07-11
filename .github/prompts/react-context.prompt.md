@@ -1,3 +1,8 @@
+---
+description: "Reglas para usar React Context vs Props en componentes de Next.js 15"
+mode: agent
+---
+
 # 🎯 Reglas de React Context para AI
 
 ## 📋 Cuándo Usar Context vs Props
@@ -198,33 +203,118 @@ const [error, setError] = useState(null);
 - **Datos del curso** (CourseContext) - Múltiples componentes necesitan info del curso
 - **Estado de autenticación** (AuthContext) - Usado en header, páginas protegidas, etc.
 - **Configuración de tema** (ThemeContext) - UI components necesitan tema
-- **Carrito de compras** (CartContext) - Múltiples componentes manejan el carrito
-- **Notificaciones** (NotificationContext) - Sistema global de notificaciones
 
-### ❌ Casos Inapropiados para Context:
+### ❌ Casos donde NO usar Context:
 
-- **Props simples padre-hijo** - Usar props directas
-- **Estado local de formulario** - Usar useState local
-- **Datos que solo un componente usa** - Fetch directo o props
-- **Configuración estática** - Usar constantes o archivos de config
+- **Props simples** - Solo 1-2 componentes necesitan los datos
+- **Datos de formulario** - Usar react-hook-form o state local
+- **UI state local** - Modal open/close, accordion state, etc.
 
-## 🔄 Workflow de Decisión
+## 🛠️ Ejemplos Prácticos
 
+### Context para Datos de Curso
+
+```typescript
+// context/CourseContext.tsx
+'use client'
+
+import { createContext, useContext, ReactNode } from 'react';
+
+interface Course {
+  id: string;
+  title: string;
+  description: string;
+  modules: Module[];
+}
+
+interface CourseContextType {
+  course: Course;
+  currentModule?: Module;
+}
+
+const CourseContext = createContext<CourseContextType | undefined>(undefined);
+
+interface CourseProviderProps {
+  course: Course;
+  children: ReactNode;
+}
+
+export function CourseProvider({ course, children }: CourseProviderProps) {
+  const value = { course };
+  return <CourseContext.Provider value={value}>{children}</CourseContext.Provider>;
+}
+
+export function useCourse(): CourseContextType {
+  const context = useContext(CourseContext);
+  if (context === undefined) {
+    throw new Error('useCourse must be used within CourseProvider');
+  }
+  return context;
+}
 ```
-¿Necesitas compartir datos entre componentes?
-├── NO → Usa useState local
-└── SÍ → ¿Cuántos componentes?
-    ├── 1-2 → Usa props
-    └── 3+ → ¿Cuántos niveles de profundidad?
-        ├── 1-2 → Usa props
-        └── 3+ → Usa Context
+
+### Uso en Página de Curso
+
+```typescript
+// app/courses/[slug]/page.tsx
+import { CourseProvider } from './context/CourseContext';
+import { CourseContent } from './components/CourseContent';
+import { CourseSidebar } from './components/CourseSidebar';
+
+export default async function CoursePage({ params }: { params: { slug: string } }) {
+  const course = await getCourse(params.slug);
+  
+  return (
+    <CourseProvider course={course}>
+      <div className="flex">
+        <CourseSidebar />
+        <CourseContent />
+      </div>
+    </CourseProvider>
+  );
+}
 ```
 
-## 🎯 Ejemplo de Referencia
+### Componentes que Consumen el Context
 
-Ver implementación completa en:
+```typescript
+// components/CourseContent.tsx
+'use client'
 
-- `src/app/courses/[courseSlug]/context/CourseContext.tsx`
-- `src/app/courses/[courseSlug]/context/README.md`
+import { useCourse } from '../context/CourseContext';
 
-Esta implementación sigue todas las reglas y es el estándar a seguir en el proyecto.
+export function CourseContent() {
+  const { course } = useCourse();
+  
+  return (
+    <div>
+      <h1>{course.title}</h1>
+      <p>{course.description}</p>
+    </div>
+  );
+}
+
+// components/CourseSidebar.tsx
+'use client'
+
+import { useCourse } from '../context/CourseContext';
+
+export function CourseSidebar() {
+  const { course } = useCourse();
+  
+  return (
+    <aside>
+      <h2>Módulos del Curso</h2>
+      <ul>
+        {course.modules.map(module => (
+          <li key={module.id}>{module.title}</li>
+        ))}
+      </ul>
+    </aside>
+  );
+}
+```
+
+---
+
+**Importante**: Estas reglas aseguran un uso eficiente y mantenible de React Context en Frontium Videos, evitando problemas de rendimiento y complejidad innecesaria. 
