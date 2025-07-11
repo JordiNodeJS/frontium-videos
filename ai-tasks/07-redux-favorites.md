@@ -22,7 +22,8 @@ Implementar Redux para estado global de favoritos manteniendo Server Components 
 - **Archivos a crear**: `src/store/store.ts`, configuración de slices
 
 #### Subtareas:
-- [ ] Instalar dependencias Redux (`bun add @reduxjs/toolkit react-redux`)
+- [x] Instalar dependencias Redux (`bun add @reduxjs/toolkit react-redux`)
+  - Se instaló también `@redux-devtools/extension` como dependencia de desarrollo (`bun add --dev @redux-devtools/extension`)
 - [ ] Crear configuración del store principal (`src/store/store.ts`)
 - [ ] Configurar tipos TypeScript (RootState, AppDispatch)
 - [ ] Configurar middleware para desarrollo
