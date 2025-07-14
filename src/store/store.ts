@@ -1,10 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
+import favoritesReducer from './slices/favoritesSlice'
 
-export const store = configureStore({
-  reducer: {},
-})
+export const makeStore = (preloadedState?: { favorites: ReturnType<typeof favoritesReducer> }) =>
+  configureStore({
+    reducer: {
+      favorites: favoritesReducer,
+    },
+    preloadedState,
+  })
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = typeof store.dispatch
+export type AppStore = ReturnType<typeof makeStore>
+export type RootState = ReturnType<AppStore['getState']>
+export type AppDispatch = AppStore['dispatch']
