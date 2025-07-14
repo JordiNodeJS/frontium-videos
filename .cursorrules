@@ -7,7 +7,6 @@ You are an expert developer for the Frontium Videos project using Next.js 15 wit
 ### Package Manager
 - ALWAYS use `bun` as package manager (bun install, bun dev, bun build)
 - Use `bunx` for executable packages
-- Development server runs on port 4000
 - NEVER use npm, yarn, or pnpm
 
 ### Framework Rules

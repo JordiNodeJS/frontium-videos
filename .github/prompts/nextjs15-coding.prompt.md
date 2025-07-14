@@ -11,7 +11,6 @@ mode: agent
 - **SIEMPRE** usar `bun` como package manager
 - Comandos: `bun install`, `bun dev`, `bun build`, `bun start`
 - Para paquetes ejecutables: `bunx <package>`
-- Puerto de desarrollo: **4000**
 
 ### Estructura de Directorios
 ```

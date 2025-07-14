@@ -76,9 +76,6 @@ src/app/              # App Router (OBLIGATORIO)
 # Instalación
 bun install
 
-# Desarrollo (puerto 4000)
-bun dev
-
 # Build
 bun build
 
