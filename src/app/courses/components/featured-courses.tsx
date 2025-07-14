@@ -1,46 +1,28 @@
 import Link from 'next/link';
+import { courses, type Course } from '@/mocks/data/courses';
 
-interface Course {
-  id: number;
-  title: string;
-  level: string;
-  duration: string;
-  instructor: string;
-}
-
+/**
+ * Función que simula la obtención de cursos destacados.
+ * En un caso real, esto vendría de una API o base de datos.
+ */
 async function getFeaturedCourses(): Promise<Course[]> {
-  // Simulando una llamada a la API para obtener cursos destacados
-  return [
-    {
-      id: 1,
-      title: 'Next.js 15: De cero a experto',
-      level: 'Intermedio',
-      duration: '12 horas',
-      instructor: 'María González'
-    },
-    {
-      id: 2,
-      title: 'React Server Components',
-      level: 'Avanzado',
-      duration: '8 horas',
-      instructor: 'Carlos Jiménez'
-    },
-    {
-      id: 3,
-      title: 'TypeScript Profesional',
-      level: 'Intermedio',
-      duration: '10 horas',
-      instructor: 'Laura Martínez'
-    }
-  ];
+  // Simulando latencia de red
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  
+  // Devolvemos los cursos destacados usando sus slugs reales
+  const featuredSlugs = ['nextjs', 'server-components', 'typescript-pro'];
+  
+  return featuredSlugs
+    .map(slug => courses[slug])
+    .filter(course => course !== undefined);
 }
 
 export default async function FeaturedCourses() {
-  const courses = await getFeaturedCourses();
+  const coursesData = await getFeaturedCourses();
   
   return (
     <div className="space-y-4">
-      {courses.map((course) => (
+      {coursesData.map((course) => (
         <div key={course.id} className="p-6 border border-gray-200 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow">
           <h3 className="text-xl font-bold mb-2">{course.title}</h3>
           <div className="flex flex-wrap gap-2 mb-3">

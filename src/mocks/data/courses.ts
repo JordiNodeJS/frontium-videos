@@ -315,5 +315,147 @@ export const courses: CoursesData = {
       { id: 6, title: 'Despliegue y optimización', lessons: 4, duration: '2h 20m' },
       { id: 7, title: 'Proyecto final', lessons: 5, duration: '3h 00m' },
     ]
+  },
+  'vue': {
+    id: 'vue',
+    title: 'Vue.js 3: Desarrollo Moderno',
+    description: 'Domina Vue.js 3 con Composition API, TypeScript y el ecosistema completo. Aprende a crear aplicaciones SPA escalables y reactivas.',
+    level: 'Intermedio',
+    duration: '18 horas',
+    instructor: 'Carmen López',
+    rating: 4.6,
+    students: 743,
+    price: 64.99,
+    updatedAt: '2025-05-20',
+    topics: [
+      { id: 'vue3-composition-api', name: 'Composition API y reactividad' },
+      { id: 'vue-router-vuex', name: 'Vue Router y Pinia' },
+      { id: 'vue-typescript', name: 'Vue 3 con TypeScript' },
+      { id: 'vue-testing', name: 'Testing en Vue' },
+      { id: 'vue-performance', name: 'Optimización y performance' },
+      { id: 'vue-deployment', name: 'Despliegue y build' }
+    ],
+    modules: [
+      { id: 1, title: 'Fundamentos de Vue 3', lessons: 6, duration: '2h 30m' },
+      { id: 2, title: 'Composition API', lessons: 7, duration: '3h 15m' },
+      { id: 3, title: 'Estado y routing', lessons: 6, duration: '3h 00m' },
+      { id: 4, title: 'Vue con TypeScript', lessons: 5, duration: '2h 45m' },
+      { id: 5, title: 'Testing y debugging', lessons: 4, duration: '2h 10m' },
+      { id: 6, title: 'Proyecto completo', lessons: 8, duration: '4h 20m' },
+    ]
+  },
+  'python-fullstack': {
+    id: 'python-fullstack',
+    title: 'Python Full Stack Developer',
+    description: 'Conviértete en desarrollador Full Stack con Python. Django, Flask, APIs REST, bases de datos y despliegue en la nube.',
+    level: 'Intermedio a Avanzado',
+    duration: '35 horas',
+    instructor: 'Diego Morales',
+    rating: 4.8,
+    students: 1234,
+    price: 89.99,
+    updatedAt: '2025-03-25',
+    topics: [
+      { id: 'python-fundamentals', name: 'Python avanzado y buenas prácticas' },
+      { id: 'django-framework', name: 'Django y Django REST Framework' },
+      { id: 'flask-microservices', name: 'Flask y microservicios' },
+      { id: 'database-orm', name: 'Bases de datos y ORM' },
+      { id: 'api-development', name: 'Desarrollo de APIs REST' },
+      { id: 'deployment-docker', name: 'Despliegue con Docker y AWS' }
+    ],
+    modules: [
+      { id: 1, title: 'Python para web', lessons: 8, duration: '4h 30m' },
+      { id: 2, title: 'Django completo', lessons: 12, duration: '8h 15m' },
+      { id: 3, title: 'APIs con Django REST', lessons: 10, duration: '6h 20m' },
+      { id: 4, title: 'Flask y microservicios', lessons: 8, duration: '5h 10m' },
+      { id: 5, title: 'Bases de datos avanzadas', lessons: 6, duration: '4h 25m' },
+      { id: 6, title: 'Despliegue y DevOps', lessons: 7, duration: '4h 20m' },
+      { id: 7, title: 'Proyecto integrador', lessons: 5, duration: '2h 00m' },
+    ]
+  },
+  'css-advanced': {
+    id: 'css-advanced',
+    title: 'CSS Avanzado y Animaciones',
+    description: 'Domina CSS moderno con Grid, Flexbox, Custom Properties, animaciones y técnicas avanzadas de diseño responsive.',
+    level: 'Intermedio',
+    duration: '14 horas',
+    instructor: 'Isabella Fernández',
+    rating: 4.7,
+    students: 892,
+    price: 49.99,
+    updatedAt: '2025-06-01',
+    topics: [
+      { id: 'css-grid-flexbox', name: 'CSS Grid y Flexbox avanzado' },
+      { id: 'css-custom-properties', name: 'Custom Properties y variables' },
+      { id: 'css-animations', name: 'Animaciones y transiciones' },
+      { id: 'responsive-design', name: 'Diseño responsive avanzado' },
+      { id: 'css-architecture', name: 'Arquitectura CSS escalable' },
+      { id: 'performance-optimization', name: 'Optimización y performance' }
+    ],
+    modules: [
+      { id: 1, title: 'Layout moderno', lessons: 6, duration: '2h 45m' },
+      { id: 2, title: 'Variables y propiedades', lessons: 4, duration: '1h 50m' },
+      { id: 3, title: 'Animaciones CSS', lessons: 8, duration: '4h 10m' },
+      { id: 4, title: 'Responsive avanzado', lessons: 5, duration: '2h 30m' },
+      { id: 5, title: 'Arquitectura CSS', lessons: 4, duration: '1h 45m' },
+      { id: 6, title: 'Proyecto práctico', lessons: 3, duration: '1h 00m' },
+    ]
+  },
+  'mobile-react-native': {
+    id: 'mobile-react-native',
+    title: 'React Native: Apps Multiplataforma',
+    description: 'Desarrolla aplicaciones móviles nativas para iOS y Android usando React Native. Desde lo básico hasta publicación en stores.',
+    level: 'Intermedio',
+    duration: '22 horas',
+    instructor: 'Andrés Castillo',
+    rating: 4.5,
+    students: 567,
+    price: 79.99,
+    updatedAt: '2025-04-18',
+    topics: [
+      { id: 'react-native-setup', name: 'Configuración y entorno de desarrollo' },
+      { id: 'native-components', name: 'Componentes nativos y navegación' },
+      { id: 'state-management-mobile', name: 'Gestión de estado en móvil' },
+      { id: 'native-features', name: 'Características nativas del dispositivo' },
+      { id: 'performance-mobile', name: 'Optimización y performance' },
+      { id: 'app-store-deployment', name: 'Publicación en App Store y Play Store' }
+    ],
+    modules: [
+      { id: 1, title: 'Introducción a React Native', lessons: 5, duration: '2h 20m' },
+      { id: 2, title: 'Componentes y navegación', lessons: 8, duration: '4h 15m' },
+      { id: 3, title: 'Estado y almacenamiento', lessons: 6, duration: '3h 30m' },
+      { id: 4, title: 'APIs nativas', lessons: 7, duration: '4h 00m' },
+      { id: 5, title: 'Testing y debugging', lessons: 4, duration: '2h 15m' },
+      { id: 6, title: 'Publicación y distribución', lessons: 5, duration: '2h 40m' },
+      { id: 7, title: 'Proyecto completo', lessons: 6, duration: '3h 00m' },
+    ]
+  },
+  'graphql-api': {
+    id: 'graphql-api',
+    title: 'GraphQL: APIs Modernas y Eficientes',
+    description: 'Aprende a crear APIs GraphQL escalables con Apollo Server, integrar con bases de datos y implementar subscripciones en tiempo real.',
+    level: 'Avanzado',
+    duration: '16 horas',
+    instructor: 'Valeria Ruiz',
+    rating: 4.6,
+    students: 445,
+    price: 72.99,
+    updatedAt: '2025-05-08',
+    topics: [
+      { id: 'graphql-schema-design', name: 'Diseño de esquemas GraphQL' },
+      { id: 'apollo-server', name: 'Apollo Server y resolvers' },
+      { id: 'database-integration', name: 'Integración con bases de datos' },
+      { id: 'authentication-authorization', name: 'Autenticación y autorización' },
+      { id: 'subscriptions-realtime', name: 'Subscripciones en tiempo real' },
+      { id: 'performance-optimization', name: 'Optimización y caching' }
+    ],
+    modules: [
+      { id: 1, title: 'Fundamentos de GraphQL', lessons: 5, duration: '2h 10m' },
+      { id: 2, title: 'Apollo Server', lessons: 6, duration: '3h 00m' },
+      { id: 3, title: 'Resolvers y datos', lessons: 7, duration: '3h 45m' },
+      { id: 4, title: 'Autenticación avanzada', lessons: 5, duration: '2h 30m' },
+      { id: 5, title: 'Subscripciones', lessons: 4, duration: '2h 15m' },
+      { id: 6, title: 'Performance y testing', lessons: 6, duration: '2h 20m' },
+    ]
   }
 };
