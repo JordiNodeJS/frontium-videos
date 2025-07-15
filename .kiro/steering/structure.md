@@ -8,6 +8,11 @@
 ├── tests/                  # Test files
 ├── ai-tasks/              # AI assistant task documentation
 ├── .kiro/                 # Kiro configuration and steering
+│   ├── steering/          # AI guidance files (auto-updated)
+│   └── hooks/             # Automated workflow triggers
+├── .github/               # GitHub workflows and prompts
+│   ├── prompts/           # AI assistant prompts
+│   └── scripts/           # Automation scripts
 └── node_modules/          # Dependencies
 ```
 
@@ -64,3 +69,5 @@
 - Use path aliases (`@/components`, `@/lib`, etc.)
 - Group imports: external libraries first, then internal modules
 - Prefer named exports over default exports for utilities
+
+<!-- Última actualización: 15/7/2025 - Añadida estructura de .kiro/ y .github/ -->

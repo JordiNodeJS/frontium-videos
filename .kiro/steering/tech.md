@@ -40,6 +40,7 @@ bun dev              # Start development server with Turbopack
 bun build            # Build for production
 bun start            # Start production server
 bun lint             # Run ESLint
+bun run check-steering  # Check if steering files need updates
 ```
 
 ### Database
@@ -55,3 +56,5 @@ bun install          # Install dependencies
 bun add <package>    # Add new dependency
 bun remove <package> # Remove dependency
 ```
+
+<!-- Última actualización: 15/7/2025 - Añadido comando check-steering -->

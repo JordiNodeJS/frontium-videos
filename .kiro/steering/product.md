@@ -23,3 +23,5 @@
 ## Business Model
 - Course sales through integrated payment system
 - User subscription or one-time purchase model
+
+<!-- Última actualización: 15/7/2025 - Verificación de consistencia -->
