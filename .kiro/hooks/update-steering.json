@@ -1,0 +1,27 @@
+{
+  "name": "Update Steering Rules",
+  "description": "Actualiza automáticamente los archivos de steering cuando cambian archivos de configuración",
+  "trigger": {
+    "type": "file_change",
+    "patterns": [
+      "package.json",
+      "README.md",
+      "tsconfig.json",
+      "next.config.*",
+      "tailwind.config.*",
+      "eslint.config.*",
+      "components.json",
+      "src/app/layout.tsx"
+    ]
+  },
+  "action": {
+    "type": "run_prompt",
+    "prompt": "kiro-agent-steering",
+    "auto_approve": false,
+    "notification": "Archivos de configuración modificados. ¿Actualizar steering rules?"
+  },
+  "conditions": {
+    "max_frequency": "daily",
+    "ignore_if_recent": "2h"
+  }
+}
