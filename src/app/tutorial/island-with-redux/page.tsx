@@ -40,11 +40,11 @@ export default function IslandWithReduxTutorial() {
         
         {/* Introducción del Tutorial */}
         <section className="mb-8">
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-            <h2 className="text-2xl font-semibold mb-3 text-blue-800">
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 transition-colors">
+            <h2 className="text-2xl font-semibold mb-3 text-blue-800 dark:text-blue-200">
               📚 ¿Qué vas a aprender?
             </h2>
-            <ul className="space-y-2 text-blue-700">
+            <ul className="space-y-2 text-blue-700 dark:text-blue-300">
               <li>✅ <strong>Compartir estado</strong> entre componentes separados</li>
               <li>✅ <strong>Preservar SSR</strong> completamente</li>
               <li>✅ <strong>Aislar estado</strong> por sesión/usuario</li>
@@ -56,7 +56,7 @@ export default function IslandWithReduxTutorial() {
         
         {/* Sección 1: Isla Redux #1 - Completamente separada */}
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-gray-800">
+          <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
             Paso 1: Gestión de Favoritos (Islas Redux)
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -76,8 +76,8 @@ export default function IslandWithReduxTutorial() {
               />
             </ServerReduxWrapper>
           </div>
-          <div className="mt-4 p-4 bg-purple-50 border border-purple-200 rounded">
-            <p className="text-purple-700 text-sm">
+          <div className="mt-4 p-4 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded transition-colors">
+            <p className="text-purple-700 dark:text-purple-300 text-sm">
               💡 <strong>Nota:</strong> Estos dos botones son islas Redux separadas. 
               Cada una tiene su propio Provider pero comparten el mismo store global.
             </p>
@@ -86,7 +86,7 @@ export default function IslandWithReduxTutorial() {
 
         {/* Server Component - Sin Redux, se renderiza en el servidor */}
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-gray-800">
+          <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
             Paso 2: Server Components (Sin Hidratación)
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -103,8 +103,8 @@ export default function IslandWithReduxTutorial() {
               level="Intermedio"
             />
           </div>
-          <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded">
-            <p className="text-green-700 text-sm">
+          <div className="mt-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded transition-colors">
+            <p className="text-green-700 dark:text-green-300 text-sm">
               🖥️ <strong>Server Components:</strong> Estos componentes se renderizán completamente en el servidor. 
               No necesitan JavaScript ni hidratación en el cliente.
             </p>
@@ -113,7 +113,7 @@ export default function IslandWithReduxTutorial() {
 
         {/* Más contenido del servidor */}
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-gray-800">
+          <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
             Paso 3: Análisis de Rendimiento (Server Component)
           </h2>
           <StaticSection />
@@ -152,8 +152,8 @@ export default function IslandWithReduxTutorial() {
           <ServerReduxWrapper>
             <FavoriteCounter />
           </ServerReduxWrapper>
-          <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded">
-            <p className="text-blue-700 text-sm">
+          <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded transition-colors">
+            <p className="text-blue-700 dark:text-blue-300 text-sm">
               🏝️ <strong>Isla Separada:</strong> Este componente está estructuralmente separado de los botones anteriores, 
               pero comparte el mismo estado global. Los cambios se sincronizan automáticamente.
             </p>
@@ -202,12 +202,12 @@ export default function IslandWithReduxTutorial() {
                 </ServerReduxWrapper>
               </div>
             </div>
-            <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded">
-              <h4 className="font-semibold text-yellow-800 mb-2">
+            <div className="mt-6 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded transition-colors">
+              <h4 className="font-semibold text-yellow-800 dark:text-yellow-200 mb-2">
                 🎯 Concepto Clave Demostrado
               </h4>
-              <p className="text-yellow-700 text-sm">
-                Las tres islas de Redux están completamente separadas en el árbol DOM, 
+              <p className="text-yellow-700 dark:text-yellow-300 text-sm">
+                Las islas de Redux están completamente separadas en el árbol DOM, 
                 no tienen ancestros comunes, pero comparten el mismo estado global. 
                 Los cambios en una isla se reflejan inmediatamente en todas las demás.
               </p>
@@ -242,8 +242,8 @@ export default function IslandWithReduxTutorial() {
               />
             </ServerReduxWrapper>
           </div>
-          <div className="mt-4 p-4 bg-indigo-50 border border-indigo-200 rounded">
-            <p className="text-indigo-700 text-sm">
+          <div className="mt-4 p-4 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded transition-colors">
+            <p className="text-indigo-700 dark:text-indigo-300 text-sm">
               🚀 <strong>Escalabilidad:</strong> Puedes crear tantas islas como necesites. 
               Cada una se hidrata independientemente pero todas comparten el estado global.
             </p>
@@ -295,15 +295,15 @@ export default function IslandWithReduxTutorial() {
         </section>
 
         {/* Footer - Server Component */}
-        <footer className="mt-12 pt-8 border-t border-gray-200">
-          <div className="text-center text-gray-600">
+        <footer className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700 transition-colors">
+          <div className="text-center text-gray-600 dark:text-gray-400">
             <p className="text-sm">
               🏝️ <strong>Redux Islands Tutorial</strong> - 
               Arquitectura avanzada para Next.js 15 con App Router
             </p>
-            <p className="text-xs mt-2 text-gray-500">
+            <p className="text-xs mt-2 text-gray-500 dark:text-gray-500">
               Sesión actual: Datos fake precargados para demostración • 
-              Estado aislado por sesión • Hidratación granular
+              Estado aislado por sesión • Hidratación granular • Tema sincronizado
             </p>
           </div>
         </footer>

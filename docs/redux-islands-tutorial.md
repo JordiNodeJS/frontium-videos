@@ -9,6 +9,8 @@ Este tutorial te enseñará a implementar **Redux Islands**, una estrategia avan
 - ✅ **Aislar estado** por sesión/usuario
 - ✅ **Hidratación perfecta** servidor-cliente
 - ✅ **Gestión automática** de memoria
+- ✅ **Sincronización en tiempo real** entre islas separadas
+- ✅ **Persistencia de estado** con localStorage
 
 ## 🎯 ¿Qué lograremos?
 
@@ -25,6 +27,10 @@ Al final de este tutorial tendrás:
   
   <ServerReduxWrapper>
     <FavoriteCounter />  {/* Isla 2 - mismo estado que Isla 1 */}
+  </ServerReduxWrapper>
+  
+  <ServerReduxWrapper>
+    <ThemeToggle />  {/* Isla 3 - Control de tema sincronizado */}
   </ServerReduxWrapper>
 </div>
 ```
@@ -43,15 +49,21 @@ Asegúrate de tener tu store configurado correctamente:
 // src/store/store.ts
 import { configureStore } from '@reduxjs/toolkit'
 import favoritesReducer from './slices/favoritesSlice'
+import themeReducer from './slices/themeSlice'
 
-export const makeStore = (preloadedState?: Partial<RootState>) =>
-  configureStore({
+// Tipo para el estado inicial/precargado
+type PreloadedState = Parameters<typeof configureStore>[0]['preloadedState']
+
+export function makeStore(preloadedState?: PreloadedState) {
+  return configureStore({
     reducer: {
       favorites: favoritesReducer,
+      theme: themeReducer,
       // Agrega más slices aquí
     },
     preloadedState,
   })
+}
 
 export type AppStore = ReturnType<typeof makeStore>
 export type RootState = ReturnType<AppStore['getState']>
@@ -122,6 +134,7 @@ export function getSerializedState(): string | null {
     // Filtrar estado que debe serializarse
     const serializableState = {
       favorites: state.favorites,
+      theme: state.theme,
       // Agregar otros slices que necesiten persistir
     }
     
@@ -259,7 +272,212 @@ export default function ServerReduxWrapper({
 }
 ```
 
-## 🎨 Paso 6: Crear Componentes de Ejemplo
+## 🎨 Paso 6: Crear Slice para el Tema
+
+Primero, crea un slice para manejar el tema:
+
+```tsx
+// src/store/slices/themeSlice.ts
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+
+type ThemeMode = 'light' | 'dark'
+
+interface ThemeState {
+  mode: ThemeMode
+  isSystemPreference: boolean
+}
+
+const initialState: ThemeState = {
+  mode: 'light',
+  isSystemPreference: true,
+}
+
+const themeSlice = createSlice({
+  name: 'theme',
+  initialState,
+  reducers: {
+    setTheme(state, action: PayloadAction<ThemeMode>) {
+      state.mode = action.payload
+      state.isSystemPreference = false
+    },
+    toggleTheme(state) {
+      state.mode = state.mode === 'light' ? 'dark' : 'light'
+      state.isSystemPreference = false
+    },
+    setSystemPreference(state, action: PayloadAction<boolean>) {
+      state.isSystemPreference = action.payload
+      if (action.payload) {
+        // Detectar preferencia del sistema
+        if (typeof window !== 'undefined') {
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+          state.mode = prefersDark ? 'dark' : 'light'
+        }
+      }
+    },
+    initializeTheme(state) {
+      // Inicializar tema basado en localStorage o sistema
+      if (typeof window !== 'undefined') {
+        const savedTheme = localStorage.getItem('theme-mode') as ThemeMode | null
+        const savedSystemPref = localStorage.getItem('theme-system-preference')
+        
+        if (savedTheme && savedSystemPref === 'false') {
+          state.mode = savedTheme
+          state.isSystemPreference = false
+        } else {
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+          state.mode = prefersDark ? 'dark' : 'light'
+          state.isSystemPreference = true
+        }
+      }
+    },
+  },
+})
+
+export const { setTheme, toggleTheme, setSystemPreference, initializeTheme } = themeSlice.actions
+export default themeSlice.reducer
+```
+
+## 🌙 Paso 7: Crear Componente de Toggle de Tema
+
+Crea un componente que actúe como isla Redux para el tema:
+
+```tsx
+// src/components/ThemeToggle.tsx
+'use client'
+import { useSelector, useDispatch } from 'react-redux'
+import { useEffect } from 'react'
+import { RootState } from '@/store/store'
+import { toggleTheme, setSystemPreference, initializeTheme } from '@/store/slices/themeSlice'
+
+interface ThemeToggleProps {
+  variant?: 'button' | 'switch' | 'compact'
+  showLabel?: boolean
+  className?: string
+}
+
+export default function ThemeToggle({ 
+  variant = 'button', 
+  showLabel = true,
+  className = '' 
+}: ThemeToggleProps) {
+  const theme = useSelector((state: RootState) => state.theme)
+  const dispatch = useDispatch()
+
+  // Inicializar tema al montar el componente
+  useEffect(() => {
+    dispatch(initializeTheme())
+  }, [dispatch])
+
+  // Sincronizar con localStorage cuando cambie el tema
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('theme-mode', theme.mode)
+      localStorage.setItem('theme-system-preference', theme.isSystemPreference.toString())
+    }
+  }, [theme.mode, theme.isSystemPreference])
+
+  const handleToggle = () => {
+    dispatch(toggleTheme())
+  }
+
+  const handleSystemToggle = () => {
+    dispatch(setSystemPreference(!theme.isSystemPreference))
+  }
+
+  if (variant === 'compact') {
+    return (
+      <div className={`flex items-center space-x-2 ${className}`}>
+        <button
+          onClick={handleToggle}
+          className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+        >
+          {theme.mode === 'light' ? '🌙' : '☀️'}
+        </button>
+        {showLabel && (
+          <span className="text-sm text-gray-600 dark:text-gray-400">
+            {theme.mode === 'light' ? 'Claro' : 'Oscuro'}
+          </span>
+        )}
+      </div>
+    )
+  }
+
+  // Variant 'button' por defecto
+  return (
+    <div className={`space-y-2 ${className}`}>
+      <div className="flex items-center space-x-3">
+        <button
+          onClick={handleToggle}
+          className={`px-4 py-2 rounded-lg font-medium transition-all ${
+            theme.mode === 'light'
+              ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200 border border-yellow-300'
+              : 'bg-blue-900 text-blue-100 hover:bg-blue-800 border border-blue-700'
+          }`}
+        >
+          {theme.mode === 'light' ? '☀️ Modo Claro' : '🌙 Modo Oscuro'}
+        </button>
+      </div>
+      
+      <div className="flex items-center space-x-2">
+        <input
+          type="checkbox"
+          id="system-preference"
+          checked={theme.isSystemPreference}
+          onChange={handleSystemToggle}
+          className="rounded text-blue-600"
+        />
+        <label htmlFor="system-preference" className="text-sm text-gray-600 dark:text-gray-400">
+          Usar preferencia del sistema
+        </label>
+      </div>
+      
+      <p className="text-xs text-gray-500 dark:text-gray-400">
+        🏝️ Este es un <strong>Client Component</strong> - Isla Redux de Tema
+      </p>
+    </div>
+  )
+}
+```
+
+## 🎨 Paso 8: Crear ThemeProvider
+
+Crea un provider que aplique las clases CSS del tema:
+
+```tsx
+// src/components/ThemeProvider.tsx
+'use client'
+import { useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { RootState } from '@/store/store'
+
+interface ThemeProviderProps {
+  children: React.ReactNode
+}
+
+export default function ThemeProvider({ children }: ThemeProviderProps) {
+  const theme = useSelector((state: RootState) => state.theme)
+
+  useEffect(() => {
+    // Aplicar o remover la clase 'dark' del elemento html
+    const htmlElement = document.documentElement
+    
+    if (theme.mode === 'dark') {
+      htmlElement.classList.add('dark')
+    } else {
+      htmlElement.classList.remove('dark')
+    }
+
+    // Cleanup function para cuando el componente se desmonte
+    return () => {
+      htmlElement.classList.remove('dark')
+    }
+  }, [theme.mode])
+
+  return <>{children}</>
+}
+```
+
+## 🎨 Paso 9: Crear Componentes de Ejemplo
 
 Crea componentes que usen Redux:
 
@@ -318,51 +536,99 @@ export default function FavoriteCounter() {
 }
 ```
 
-## 📄 Paso 7: Usar en una Página
+## 📄 Paso 10: Usar en una Página
 
-Implementa las islas en una página:
+Implementa las islas en una página con soporte para tema:
 
 ```tsx
 // src/app/(root)/page.tsx
 import ServerReduxWrapper from '@/components/ServerReduxWrapper'
 import FavoriteButton from '@/components/FavoriteButton'
 import FavoriteCounter from '@/components/FavoriteCounter'
+import ThemeToggle from '@/components/ThemeToggle'
+import ThemeProvider from '@/components/ThemeProvider'
 
 export default function HomePage() {
   return (
-    <div className="container mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-8">Redux Islands Demo</h1>
-      
-      {/* Isla 1: Botón de favoritos */}
-      <div className="mb-8">
-        <h2 className="text-xl mb-4">Curso React Avanzado</h2>
-        <ServerReduxWrapper>
-          <FavoriteButton courseId="react-avanzado" />
-        </ServerReduxWrapper>
-      </div>
-      
-      {/* Componente servidor (sin Redux) */}
-      <div className="mb-8 p-4 bg-gray-100 rounded">
-        <h3>Este es un Server Component</h3>
-        <p>Se renderiza en el servidor y no necesita JavaScript.</p>
-      </div>
-      
-      {/* Isla 2: Contador de favoritos */}
-      <div className="mb-8">
-        <h2 className="text-xl mb-4">Resumen</h2>
-        <ServerReduxWrapper>
-          <FavoriteCounter />
-        </ServerReduxWrapper>
-      </div>
-      
-      {/* Isla 3: Otro botón */}
-      <div className="mb-8">
-        <h2 className="text-xl mb-4">Curso Next.js</h2>
-        <ServerReduxWrapper>
-          <FavoriteButton courseId="nextjs-pro" />
-        </ServerReduxWrapper>
-      </div>
-    </div>
+    <ServerReduxWrapper>
+      <ThemeProvider>
+        <div className="container mx-auto p-8 bg-white dark:bg-gray-900 min-h-screen transition-colors">
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+              Redux Islands Demo
+            </h1>
+            {/* Control de tema en el header */}
+            <ServerReduxWrapper>
+              <ThemeToggle variant="compact" />
+            </ServerReduxWrapper>
+          </div>
+          
+          {/* Isla 1: Botón de favoritos */}
+          <div className="mb-8">
+            <h2 className="text-xl mb-4 text-gray-800 dark:text-gray-200">
+              Curso React Avanzado
+            </h2>
+            <ServerReduxWrapper>
+              <FavoriteButton courseId="react-avanzado" />
+            </ServerReduxWrapper>
+          </div>
+          
+          {/* Componente servidor (sin Redux) */}
+          <div className="mb-8 p-4 bg-gray-100 dark:bg-gray-800 rounded transition-colors">
+            <h3 className="text-gray-900 dark:text-white">Este es un Server Component</h3>
+            <p className="text-gray-700 dark:text-gray-300">
+              Se renderiza en el servidor y no necesita JavaScript.
+            </p>
+          </div>
+          
+          {/* Isla 2: Control de tema */}
+          <div className="mb-8">
+            <h2 className="text-xl mb-4 text-gray-800 dark:text-gray-200">
+              Control de Tema
+            </h2>
+            <ServerReduxWrapper>
+              <ThemeToggle variant="button" />
+            </ServerReduxWrapper>
+          </div>
+          
+          {/* Isla 3: Contador de favoritos */}
+          <div className="mb-8">
+            <h2 className="text-xl mb-4 text-gray-800 dark:text-gray-200">Resumen</h2>
+            <ServerReduxWrapper>
+              <FavoriteCounter />
+            </ServerReduxWrapper>
+          </div>
+          
+          {/* Isla 4: Otro botón */}
+          <div className="mb-8">
+            <h2 className="text-xl mb-4 text-gray-800 dark:text-gray-200">
+              Curso Next.js
+            </h2>
+            <ServerReduxWrapper>
+              <FavoriteButton courseId="nextjs-pro" />
+            </ServerReduxWrapper>
+          </div>
+          
+          {/* Demostración de sincronización */}
+          <div className="mb-8 p-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+            <h3 className="text-lg font-semibold mb-4 text-blue-800 dark:text-blue-200">
+              🔄 Sincronización en Tiempo Real
+            </h3>
+            <p className="text-blue-700 dark:text-blue-300 mb-4">
+              Estos controles están completamente separados pero comparten el mismo estado:
+            </p>
+            <div className="flex gap-4">
+              <ServerReduxWrapper>
+                <ThemeToggle variant="switch" />
+              </ServerReduxWrapper>
+              <ServerReduxWrapper>
+                <ThemeToggle variant="compact" />
+              </ServerReduxWrapper>
+            </div>
+          </div>
+        </div>
+      </ThemeProvider>
+    </ServerReduxWrapper>
   )
 }
 ```
@@ -463,6 +729,10 @@ Ya tienes implementado Redux Islands con:
 - **Educación**: Favoritos de cursos sincronizados
 - **Dashboard**: Estado de usuario global
 - **Social**: Notificaciones y preferencias
+- **Temas**: Modo oscuro/claro sincronizado globalmente
+- **Configuraciones**: Preferencias de usuario persistentes
+- **Notificaciones**: Estado de alertas compartido
+- **Filtros**: Estados de búsqueda y filtrado globales
 
 ### ⚠️ **Consideraciones importantes:**
 
