@@ -51,16 +51,17 @@ import { configureStore } from '@reduxjs/toolkit'
 import favoritesReducer from './slices/favoritesSlice'
 import themeReducer from './slices/themeSlice'
 
+const rootReducer = {
+  favorites: favoritesReducer,
+  theme: themeReducer,
+}
+
 // Tipo para el estado inicial/precargado
 type PreloadedState = Parameters<typeof configureStore>[0]['preloadedState']
 
 export function makeStore(preloadedState?: PreloadedState) {
   return configureStore({
-    reducer: {
-      favorites: favoritesReducer,
-      theme: themeReducer,
-      // Agrega más slices aquí
-    },
+    reducer: rootReducer,
     preloadedState,
   })
 }
@@ -95,7 +96,7 @@ function getSessionId(): string {
 }
 
 // Función para obtener estado inicial desde el servidor
-function getInitialState(): Partial<RootState> | undefined {
+function getInitialState(): InitialState | undefined {
   if (typeof window !== 'undefined') {
     // En el cliente, intentar obtener estado desde window
     const initialState = window.__REDUX_INITIAL_STATE__
@@ -108,11 +109,35 @@ function getInitialState(): Partial<RootState> | undefined {
   return undefined
 }
 
+// Crear sesión fake por defecto para demo
+function createFakeSession(): InitialState {
+  return {
+    favorites: {
+      favoriteIds: ['nextjs-course', 'react-fundamentals'], // Cursos favoritos por defecto
+      isLoading: false,
+      loadingCourseId: null,
+      error: null,
+    },
+    theme: {
+      mode: 'light',
+      isSystemPreference: true,
+    }
+  }
+}
+
 export function getGlobalStore(): AppStore {
   const sessionId = getSessionId()
   
   if (!storeMap.has(sessionId)) {
-    const initialState = getInitialState()
+    let initialState = getInitialState()
+    
+    // Si no hay estado inicial, usar sesión fake por defecto
+    if (!initialState) {
+      initialState = createFakeSession()
+    }
+    
+    // El makeStore espera 'any' por limitaciones de Redux Toolkit
+    // pero nuestro InitialState es tipado correctamente
     storeMap.set(sessionId, makeStore(initialState))
   }
   
@@ -132,7 +157,7 @@ export function getSerializedState(): string | null {
     const state = store.getState()
     
     // Filtrar estado que debe serializarse
-    const serializableState = {
+    const serializableState: InitialState = {
       favorites: state.favorites,
       theme: state.theme,
       // Agregar otros slices que necesiten persistir
@@ -146,16 +171,21 @@ export function getSerializedState(): string | null {
 }
 
 // Función para limpiar stores antiguos (prevenir memory leaks)
-export function cleanupOldStores(maxAge = 30 * 60 * 1000) { // 30 minutos
-  const now = Date.now()
-  for (const [sessionId, store] of storeMap.entries()) {
-    // Implementar lógica de limpieza basada en tiempo de inactividad
-    const state = store.getState()
-    const lastActivity = state.lastActivity || 0
-    if (now - lastActivity > maxAge) {
-      storeMap.delete(sessionId)
-    }
-  }
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function cleanupOldStores(_maxAge = 30 * 60 * 1000) { // 30 minutos
+  // TODO: implementar lógica de limpieza basada en tiempo de inactividad
+  // Por ahora, no limpiamos automáticamente los stores
+  // En el futuro, se podría agregar un timestamp de última actividad al estado
+  
+  // Ejemplo de implementación futura:
+  // const now = Date.now()
+  // for (const [sessionId, store] of storeMap.entries()) {
+  //   const state = store.getState()
+  //   const lastActivity = state.app?.lastActivity || 0
+  //   if (now - lastActivity > _maxAge) {
+  //     storeMap.delete(sessionId)
+  //   }
+  // }
 }
 
 // En desarrollo, resetear el store en cada recarga
@@ -171,7 +201,7 @@ if (process.env.NODE_ENV === 'development') {
 declare global {
   interface Window {
     __REDUX_STORE_SESSION_ID__?: string
-    __REDUX_INITIAL_STATE__?: Partial<RootState>
+    __REDUX_INITIAL_STATE__?: InitialState
   }
 }
 ```
@@ -390,6 +420,7 @@ export default function ThemeToggle({
         <button
           onClick={handleToggle}
           className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+          title={`Cambiar a modo ${theme.mode === 'light' ? 'oscuro' : 'claro'}`}
         >
           {theme.mode === 'light' ? '🌙' : '☀️'}
         </button>
@@ -398,6 +429,39 @@ export default function ThemeToggle({
             {theme.mode === 'light' ? 'Claro' : 'Oscuro'}
           </span>
         )}
+      </div>
+    )
+  }
+
+  if (variant === 'switch') {
+    return (
+      <div className={`flex items-center space-x-3 ${className}`}>
+        {showLabel && (
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            Tema
+          </span>
+        )}
+        <div className="flex items-center space-x-2">
+          <span className="text-sm text-gray-500">☀️</span>
+          <button
+            onClick={handleToggle}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+              theme.mode === 'dark' 
+                ? 'bg-blue-600' 
+                : 'bg-gray-200'
+            }`}
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                theme.mode === 'dark' ? 'translate-x-6' : 'translate-x-1'
+              }`}
+            />
+          </button>
+          <span className="text-sm text-gray-500">🌙</span>
+        </div>
+        <div className="text-xs text-gray-400">
+          {theme.isSystemPreference ? '(Sistema)' : '(Manual)'}
+        </div>
       </div>
     )
   }
@@ -416,6 +480,12 @@ export default function ThemeToggle({
         >
           {theme.mode === 'light' ? '☀️ Modo Claro' : '🌙 Modo Oscuro'}
         </button>
+        
+        {showLabel && (
+          <div className="text-sm text-gray-600 dark:text-gray-400">
+            Actual: <span className="font-medium">{theme.mode === 'light' ? 'Claro' : 'Oscuro'}</span>
+          </div>
+        )}
       </div>
       
       <div className="flex items-center space-x-2">
@@ -490,9 +560,10 @@ import { toggleFavoriteOptimistic } from '@/store/slices/favoritesSlice'
 
 interface FavoriteButtonProps {
   courseId: string
+  courseName: string
 }
 
-export default function FavoriteButton({ courseId }: FavoriteButtonProps) {
+export default function FavoriteButton({ courseId, courseName }: FavoriteButtonProps) {
   const favorites = useSelector((state: RootState) => state.favorites.favoriteIds)
   const dispatch = useDispatch()
   
@@ -503,14 +574,22 @@ export default function FavoriteButton({ courseId }: FavoriteButtonProps) {
   }
   
   return (
-    <button 
-      onClick={handleToggle}
-      className={`px-4 py-2 rounded ${
-        isFavorite ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700'
-      }`}
-    >
-      {isFavorite ? '❤️ Favorito' : '🤍 Agregar a favoritos'}
-    </button>
+    <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-white dark:bg-gray-800 shadow-sm transition-colors">
+      <h3 className="font-semibold text-lg mb-2 text-gray-900 dark:text-white">{courseName}</h3>
+      <button 
+        onClick={handleToggle}
+        className={`px-4 py-2 rounded-md font-medium transition-colors ${
+          isFavorite 
+            ? 'bg-red-500 text-white hover:bg-red-600' 
+            : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 border border-gray-300 dark:border-gray-600'
+        }`}
+      >
+        {isFavorite ? '❤️ Eliminar de favoritos' : '🤍 Agregar a favoritos'}
+      </button>
+      <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+        Este es un <strong>Client Component</strong> - Isla Redux #1
+      </p>
+    </div>
   )
 }
 ```
@@ -522,15 +601,33 @@ import { useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
 
 export default function FavoriteCounter() {
-  const favoritesCount = useSelector((state: RootState) => 
-    state.favorites.favoriteIds.length
-  )
+  const favorites = useSelector((state: RootState) => state.favorites)
   
   return (
-    <div className="bg-blue-100 p-4 rounded">
-      <h3 className="text-lg font-semibold">
-        Total de favoritos: {favoritesCount}
-      </h3>
+    <div className="bg-gradient-to-r from-blue-500 to-purple-600 dark:from-blue-600 dark:to-purple-700 text-white rounded-lg p-6 shadow-lg transition-colors">
+      <h2 className="text-2xl font-bold mb-2">Panel de Favoritos</h2>
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-3xl font-extrabold">{favorites.favoriteIds.length}</p>
+          <p className="text-blue-100">Cursos favoritos</p>
+        </div>
+        <div className="text-right">
+          <p className="text-sm text-blue-100 mb-1">Estado actual:</p>
+          <p className="text-xs bg-blue-700 px-2 py-1 rounded">
+            {favorites.isLoading ? '⏳ Cargando...' : '✅ Sincronizado'}
+          </p>
+        </div>
+      </div>
+      <div className="mt-4 text-sm text-blue-100">
+        <strong>Favoritos:</strong> {' '}
+        {favorites.favoriteIds.length > 0 
+          ? favorites.favoriteIds.join(', ') 
+          : 'Ninguno'
+        }
+      </div>
+      <p className="text-xs text-blue-200 mt-3">
+        🏝️ Este es un <strong>Client Component</strong> - Isla Redux #2
+      </p>
     </div>
   )
 }
@@ -541,90 +638,197 @@ export default function FavoriteCounter() {
 Implementa las islas en una página con soporte para tema:
 
 ```tsx
-// src/app/(root)/page.tsx
-import ServerReduxWrapper from '@/components/ServerReduxWrapper'
-import FavoriteButton from '@/components/FavoriteButton'
-import FavoriteCounter from '@/components/FavoriteCounter'
-import ThemeToggle from '@/components/ThemeToggle'
-import ThemeProvider from '@/components/ThemeProvider'
+// src/app/tutorial/island-with-redux/page.tsx
+import ServerReduxWrapper from "@/components/ServerReduxWrapper";
+import FavoriteButton from "./components/FavoriteButton";
+import FavoriteCounter from "./components/FavoriteCounter";
+import CourseCard from "./components/CourseCard";
+import StaticSection from "./components/StaticSection";
+import ThemeToggle from "./components/ThemeToggle";
+import ThemeProvider from "./components/ThemeProvider";
 
-export default function HomePage() {
+export default function IslandWithReduxTutorial() {
   return (
     <ServerReduxWrapper>
       <ThemeProvider>
-        <div className="container mx-auto p-8 bg-white dark:bg-gray-900 min-h-screen transition-colors">
-          <div className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-              Redux Islands Demo
-            </h1>
-            {/* Control de tema en el header */}
-            <ServerReduxWrapper>
-              <ThemeToggle variant="compact" />
-            </ServerReduxWrapper>
-          </div>
-          
-          {/* Isla 1: Botón de favoritos */}
-          <div className="mb-8">
-            <h2 className="text-xl mb-4 text-gray-800 dark:text-gray-200">
-              Curso React Avanzado
-            </h2>
-            <ServerReduxWrapper>
-              <FavoriteButton courseId="react-avanzado" />
-            </ServerReduxWrapper>
-          </div>
-          
-          {/* Componente servidor (sin Redux) */}
-          <div className="mb-8 p-4 bg-gray-100 dark:bg-gray-800 rounded transition-colors">
-            <h3 className="text-gray-900 dark:text-white">Este es un Server Component</h3>
-            <p className="text-gray-700 dark:text-gray-300">
-              Se renderiza en el servidor y no necesita JavaScript.
-            </p>
-          </div>
-          
-          {/* Isla 2: Control de tema */}
-          <div className="mb-8">
-            <h2 className="text-xl mb-4 text-gray-800 dark:text-gray-200">
-              Control de Tema
-            </h2>
-            <ServerReduxWrapper>
-              <ThemeToggle variant="button" />
-            </ServerReduxWrapper>
-          </div>
-          
-          {/* Isla 3: Contador de favoritos */}
-          <div className="mb-8">
-            <h2 className="text-xl mb-4 text-gray-800 dark:text-gray-200">Resumen</h2>
-            <ServerReduxWrapper>
-              <FavoriteCounter />
-            </ServerReduxWrapper>
-          </div>
-          
-          {/* Isla 4: Otro botón */}
-          <div className="mb-8">
-            <h2 className="text-xl mb-4 text-gray-800 dark:text-gray-200">
-              Curso Next.js
-            </h2>
-            <ServerReduxWrapper>
-              <FavoriteButton courseId="nextjs-pro" />
-            </ServerReduxWrapper>
-          </div>
-          
-          {/* Demostración de sincronización */}
-          <div className="mb-8 p-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-            <h3 className="text-lg font-semibold mb-4 text-blue-800 dark:text-blue-200">
-              🔄 Sincronización en Tiempo Real
-            </h3>
-            <p className="text-blue-700 dark:text-blue-300 mb-4">
-              Estos controles están completamente separados pero comparten el mismo estado:
-            </p>
-            <div className="flex gap-4">
-              <ServerReduxWrapper>
-                <ThemeToggle variant="switch" />
-              </ServerReduxWrapper>
-              <ServerReduxWrapper>
-                <ThemeToggle variant="compact" />
-              </ServerReduxWrapper>
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+          {/* Header estático - Server Component */}
+          <header className="bg-white dark:bg-gray-800 shadow-sm border-b dark:border-gray-700 transition-colors">
+            <div className="max-w-7xl mx-auto px-4 py-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+                    🏝️ Tutorial: Redux Islands
+                  </h1>
+                  <p className="text-lg text-gray-600 dark:text-gray-300">
+                    Demostración de state compartido entre islas separadas con SSR preservado
+                  </p>
+                </div>
+                <div className="text-right space-y-2">
+                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                    📍 Ruta: <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">/tutorial/island-with-redux</code>
+                  </div>
+                  {/* Isla Redux para el tema */}
+                  <ServerReduxWrapper>
+                    <ThemeToggle variant="compact" showLabel={false} />
+                  </ServerReduxWrapper>
+                </div>
+              </div>
             </div>
+          </header>
+
+          <div className="max-w-7xl mx-auto px-4 py-8">
+            
+            {/* Introducción del Tutorial */}
+            <section className="mb-8">
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 transition-colors">
+                <h2 className="text-2xl font-semibold mb-3 text-blue-800 dark:text-blue-200">
+                  📚 ¿Qué vas a aprender?
+                </h2>
+                <ul className="space-y-2 text-blue-700 dark:text-blue-300">
+                  <li>✅ <strong>Compartir estado</strong> entre componentes separados</li>
+                  <li>✅ <strong>Preservar SSR</strong> completamente</li>
+                  <li>✅ <strong>Aislar estado</strong> por sesión/usuario</li>
+                  <li>✅ <strong>Hidratación perfecta</strong> servidor-cliente</li>
+                  <li>✅ <strong>Gestión automática</strong> de memoria</li>
+                </ul>
+              </div>
+            </section>
+            
+            {/* Sección 1: Isla Redux #1 - Completamente separada */}
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
+                Paso 1: Gestión de Favoritos (Islas Redux)
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Isla Redux #1 */}
+                <ServerReduxWrapper>
+                  <FavoriteButton 
+                    courseId="nextjs-course" 
+                    courseName="Next.js 15 - Curso Completo" 
+                  />
+                </ServerReduxWrapper>
+                
+                {/* Isla Redux #2 - Otra isla separada */}
+                <ServerReduxWrapper>
+                  <FavoriteButton 
+                    courseId="react-fundamentals" 
+                    courseName="React - Fundamentos" 
+                  />
+                </ServerReduxWrapper>
+              </div>
+              <div className="mt-4 p-4 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded transition-colors">
+                <p className="text-purple-700 dark:text-purple-300 text-sm">
+                  💡 <strong>Nota:</strong> Estos dos botones son islas Redux separadas. 
+                  Cada una tiene su propio Provider pero comparten el mismo store global.
+                </p>
+              </div>
+            </section>
+
+            {/* Server Component - Sin Redux, se renderiza en el servidor */}
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
+                Paso 2: Server Components (Sin Hidratación)
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <CourseCard
+                  title="TypeScript Avanzado"
+                  description="Domina TypeScript con patrones avanzados y mejores prácticas para aplicaciones enterprise."
+                  duration="8 horas"
+                  level="Avanzado"
+                />
+                <CourseCard
+                  title="Node.js & APIs"
+                  description="Construcción de APIs robustas y escalables con Node.js, Express y bases de datos."
+                  duration="12 horas"
+                  level="Intermedio"
+                />
+              </div>
+              <div className="mt-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded transition-colors">
+                <p className="text-green-700 dark:text-green-300 text-sm">
+                  🖥️ <strong>Server Components:</strong> Estos componentes se renderizán completamente en el servidor. 
+                  No necesitan JavaScript ni hidratación en el cliente.
+                </p>
+              </div>
+            </section>
+
+            {/* Análisis de Rendimiento - Server Component */}
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
+                Paso 3: Análisis de Rendimiento (Server Component)
+              </h2>
+              <StaticSection />
+            </section>
+
+            {/* Control de Tema - Nueva Isla Redux */}
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
+                Paso 4: Control de Tema (Nueva Isla Redux)
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <ServerReduxWrapper>
+                  <ThemeToggle variant="button" />
+                </ServerReduxWrapper>
+                <ServerReduxWrapper>
+                  <ThemeToggle variant="switch" />
+                </ServerReduxWrapper>
+              </div>
+              <div className="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded transition-colors">
+                <p className="text-yellow-700 dark:text-yellow-300 text-sm">
+                  🎨 <strong>Sincronización en Tiempo Real:</strong> Ambos controles de tema están sincronizados. 
+                  Cambia uno y verás como el otro se actualiza automáticamente, incluyendo el del header.
+                </p>
+              </div>
+            </section>
+
+            {/* Panel de Estado Global - Isla Redux Separada */}
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
+                Paso 5: Panel de Estado Global (Isla Redux Separada)
+              </h2>
+              <ServerReduxWrapper>
+                <FavoriteCounter />
+              </ServerReduxWrapper>
+              <div className="mt-4 p-4 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded transition-colors">
+                <p className="text-indigo-700 dark:text-indigo-300 text-sm">
+                  🏝️ <strong>Isla Separada:</strong> Este componente está estructuralmente separado de los botones anteriores, 
+                  pero comparte el mismo estado global. Los cambios se sincronizan automáticamente.
+                </p>
+              </div>
+            </section>
+
+            {/* Escalabilidad - Múltiples Islas */}
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
+                Paso 6: Escalabilidad - Múltiples Islas
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <ServerReduxWrapper>
+                  <FavoriteButton 
+                    courseId="vue-masterclass" 
+                    courseName="Vue.js Masterclass" 
+                  />
+                </ServerReduxWrapper>
+                <ServerReduxWrapper>
+                  <FavoriteButton 
+                    courseId="python-django" 
+                    courseName="Python & Django" 
+                  />
+                </ServerReduxWrapper>
+                <ServerReduxWrapper>
+                  <FavoriteButton 
+                    courseId="docker-kubernetes" 
+                    courseName="Docker & Kubernetes" 
+                  />
+                </ServerReduxWrapper>
+              </div>
+              <div className="mt-4 p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded transition-colors">
+                <p className="text-orange-700 dark:text-orange-300 text-sm">
+                  🚀 <strong>Escalabilidad:</strong> Puedes crear tantas islas como necesites. 
+                  Cada una se hidrata independientemente pero todas comparten el estado global.
+                </p>
+              </div>
+            </section>
           </div>
         </div>
       </ThemeProvider>
