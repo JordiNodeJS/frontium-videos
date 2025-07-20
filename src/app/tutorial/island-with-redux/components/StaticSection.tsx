@@ -26,7 +26,7 @@ export default function StaticSection() {
         </h4>
         <ul className="text-sm text-yellow-700 space-y-1">
           <li>✅ Server Components preservan SSR completamente</li>
-          <li>✅ Solo las "islas" se hidratan en el cliente</li>
+          <li>✅ Solo las &ldquo;islas&rdquo; se hidratan en el cliente</li>
           <li>✅ Todas las islas comparten el mismo store global</li>
           <li>✅ Mejor rendimiento inicial y SEO</li>
         </ul>

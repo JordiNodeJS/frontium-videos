@@ -1,8 +1,8 @@
 import ServerReduxWrapper from "@/components/ServerReduxWrapper";
-import FavoriteButton from "@/components/islands/FavoriteButton";
-import FavoriteCounter from "@/components/islands/FavoriteCounter";
-import CourseCard from "@/components/islands/CourseCard";
-import StaticSection from "@/components/islands/StaticSection";
+import FavoriteButton from "./components/FavoriteButton";
+import FavoriteCounter from "./components/FavoriteCounter";
+import CourseCard from "./components/CourseCard";
+import StaticSection from "./components/StaticSection";
 
 export default function IslandWithReduxTutorial() {
   return (
