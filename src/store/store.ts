@@ -1,13 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit'
 import favoritesReducer from './slices/favoritesSlice'
 
-export const makeStore = (preloadedState?: { favorites: ReturnType<typeof favoritesReducer> }) =>
-  configureStore({
-    reducer: {
-      favorites: favoritesReducer,
-    },
+const rootReducer = {
+  favorites: favoritesReducer,
+}
+
+export function makeStore(preloadedState?: any) {
+  return configureStore({
+    reducer: rootReducer,
     preloadedState,
   })
+}
 
 export type AppStore = ReturnType<typeof makeStore>
 export type RootState = ReturnType<AppStore['getState']>
