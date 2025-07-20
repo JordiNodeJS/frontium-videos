@@ -3,6 +3,9 @@ import { makeStore, AppStore, RootState } from './store'
 // Map para almacenar stores por sesión
 const storeMap = new Map<string, AppStore>()
 
+// Tipo para estado inicial parcial
+type InitialState = Partial<RootState>
+
 // Generar ID único por sesión
 function getSessionId(): string {
   if (typeof window !== 'undefined') {
@@ -17,7 +20,7 @@ function getSessionId(): string {
 }
 
 // Función para obtener estado inicial desde el servidor
-function getInitialState(): Partial<RootState> | undefined {
+function getInitialState(): InitialState | undefined {
   if (typeof window !== 'undefined') {
     // En el cliente, intentar obtener estado desde window
     const initialState = window.__REDUX_INITIAL_STATE__
@@ -31,7 +34,7 @@ function getInitialState(): Partial<RootState> | undefined {
 }
 
 // Crear sesión fake por defecto para demo
-function createFakeSession(): Partial<RootState> {
+function createFakeSession(): InitialState {
   return {
     favorites: {
       favoriteIds: ['nextjs-course', 'react-fundamentals'], // Cursos favoritos por defecto
@@ -53,7 +56,9 @@ export function getGlobalStore(): AppStore {
       initialState = createFakeSession()
     }
     
-    storeMap.set(sessionId, makeStore(initialState as any))
+    // El makeStore espera 'any' por limitaciones de Redux Toolkit
+    // pero nuestro InitialState es tipado correctamente
+    storeMap.set(sessionId, makeStore(initialState))
   }
   
   return storeMap.get(sessionId)!
@@ -72,7 +77,7 @@ export function getSerializedState(): string | null {
     const state = store.getState()
     
     // Filtrar estado que debe serializarse
-    const serializableState = {
+    const serializableState: InitialState = {
       favorites: state.favorites,
       // Agregar otros slices que necesiten persistir
     }
@@ -85,16 +90,21 @@ export function getSerializedState(): string | null {
 }
 
 // Función para limpiar stores antiguos (prevenir memory leaks)
-export function cleanupOldStores(maxAge = 30 * 60 * 1000) { // 30 minutos
-  const now = Date.now()
-  for (const [sessionId, store] of storeMap.entries()) {
-    // Implementar lógica de limpieza basada en tiempo de inactividad
-    const state = store.getState()
-    const lastActivity = (state as any).lastActivity || 0
-    if (now - lastActivity > maxAge) {
-      storeMap.delete(sessionId)
-    }
-  }
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function cleanupOldStores(_maxAge = 30 * 60 * 1000) { // 30 minutos
+  // TODO: implementar lógica de limpieza basada en tiempo de inactividad
+  // Por ahora, no limpiamos automáticamente los stores
+  // En el futuro, se podría agregar un timestamp de última actividad al estado
+  
+  // Ejemplo de implementación futura:
+  // const now = Date.now()
+  // for (const [sessionId, store] of storeMap.entries()) {
+  //   const state = store.getState()
+  //   const lastActivity = state.app?.lastActivity || 0
+  //   if (now - lastActivity > _maxAge) {
+  //     storeMap.delete(sessionId)
+  //   }
+  // }
 }
 
 // En desarrollo, resetear el store en cada recarga
@@ -110,6 +120,6 @@ if (process.env.NODE_ENV === 'development') {
 declare global {
   interface Window {
     __REDUX_STORE_SESSION_ID__?: string
-    __REDUX_INITIAL_STATE__?: Partial<RootState>
+    __REDUX_INITIAL_STATE__?: InitialState
   }
 } 

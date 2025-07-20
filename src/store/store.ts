@@ -5,7 +5,10 @@ const rootReducer = {
   favorites: favoritesReducer,
 }
 
-export function makeStore(preloadedState?: any) {
+// Tipo para el estado inicial/precargado
+type PreloadedState = Parameters<typeof configureStore>[0]['preloadedState']
+
+export function makeStore(preloadedState?: PreloadedState) {
   return configureStore({
     reducer: rootReducer,
     preloadedState,
