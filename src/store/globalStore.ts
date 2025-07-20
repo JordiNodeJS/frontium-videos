@@ -41,6 +41,10 @@ function createFakeSession(): InitialState {
       isLoading: false,
       loadingCourseId: null,
       error: null,
+    },
+    theme: {
+      mode: 'light',
+      isSystemPreference: true,
     }
   }
 }
@@ -79,6 +83,7 @@ export function getSerializedState(): string | null {
     // Filtrar estado que debe serializarse
     const serializableState: InitialState = {
       favorites: state.favorites,
+      theme: state.theme,
       // Agregar otros slices que necesiten persistir
     }
     

@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import favoritesReducer from './slices/favoritesSlice'
+import themeReducer from './slices/themeSlice'
 
 const rootReducer = {
   favorites: favoritesReducer,
+  theme: themeReducer,
 }
 
 // Tipo para el estado inicial/precargado

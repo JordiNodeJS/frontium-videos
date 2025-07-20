@@ -3,26 +3,34 @@ import FavoriteButton from "./components/FavoriteButton";
 import FavoriteCounter from "./components/FavoriteCounter";
 import CourseCard from "./components/CourseCard";
 import StaticSection from "./components/StaticSection";
+import ThemeToggle from "./components/ThemeToggle";
+import ThemeProvider from "./components/ThemeProvider";
 
 export default function IslandWithReduxTutorial() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <ServerReduxWrapper>
+      <ThemeProvider>
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       {/* Header estático - Server Component */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-white dark:bg-gray-800 shadow-sm border-b dark:border-gray-700 transition-colors">
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-4xl font-bold text-gray-900 mb-2">
+              <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
                 🏝️ Tutorial: Redux Islands
               </h1>
-              <p className="text-lg text-gray-600">
+              <p className="text-lg text-gray-600 dark:text-gray-300">
                 Demostración de state compartido entre islas separadas con SSR preservado
               </p>
             </div>
-            <div className="text-right">
-              <div className="text-sm text-gray-500">
-                📍 Ruta: <code className="bg-gray-100 px-2 py-1 rounded">/tutorial/island-with-redux</code>
+            <div className="text-right space-y-2">
+              <div className="text-sm text-gray-500 dark:text-gray-400">
+                📍 Ruta: <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">/tutorial/island-with-redux</code>
               </div>
+              {/* Isla Redux para el tema */}
+              <ServerReduxWrapper>
+                <ThemeToggle variant="compact" showLabel={false} />
+              </ServerReduxWrapper>
             </div>
           </div>
         </div>
@@ -111,10 +119,34 @@ export default function IslandWithReduxTutorial() {
           <StaticSection />
         </section>
 
+        {/* Nueva sección: Tema con Redux Islands */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
+            Paso 4: Control de Tema (Nueva Isla Redux)
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Isla Redux para tema - Variante botón */}
+            <ServerReduxWrapper>
+              <ThemeToggle variant="button" />
+            </ServerReduxWrapper>
+            
+            {/* Isla Redux para tema - Variante switch */}
+            <ServerReduxWrapper>
+              <ThemeToggle variant="switch" />
+            </ServerReduxWrapper>
+          </div>
+          <div className="mt-4 p-4 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded">
+            <p className="text-indigo-700 dark:text-indigo-300 text-sm">
+              🎨 <strong>Sincronización en Tiempo Real:</strong> Ambos controles de tema están sincronizados. 
+              Cambia uno y verás como el otro se actualiza automáticamente, incluyendo el del header.
+            </p>
+          </div>
+        </section>
+
         {/* Isla Redux #3 - Separada de las anteriores en el árbol DOM */}
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-gray-800">
-            Paso 4: Panel de Estado Global (Isla Redux Separada)
+          <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
+            Paso 5: Panel de Estado Global (Isla Redux Separada)
           </h2>
           {/* Esta isla NO tiene ancestro común con las anteriores */}
           <ServerReduxWrapper>
@@ -130,15 +162,15 @@ export default function IslandWithReduxTutorial() {
 
         {/* Análisis de arquitectura */}
         <section className="mb-8">
-          <div className="bg-white rounded-lg p-6 shadow-sm border">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-800">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border dark:border-gray-700 transition-colors">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
               🔍 Análisis de la Arquitectura
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
               <div className="space-y-3">
-                <h3 className="font-semibold text-green-700">✅ Server Components:</h3>
-                <ul className="space-y-1 text-gray-600 pl-4">
-                  <li>• Header principal (líneas 9-22)</li>
+                <h3 className="font-semibold text-green-700 dark:text-green-400">✅ Server Components:</h3>
+                <ul className="space-y-1 text-gray-600 dark:text-gray-300 pl-4">
+                  <li>• Header principal</li>
                   <li>• Introducción del tutorial</li>
                   <li>• Sección de cursos (CourseCard)</li>
                   <li>• Análisis de rendimiento (StaticSection)</li>
@@ -146,13 +178,28 @@ export default function IslandWithReduxTutorial() {
                 </ul>
               </div>
               <div className="space-y-3">
-                <h3 className="font-semibold text-blue-700">🏝️ Redux Islands (Client):</h3>
-                <ul className="space-y-1 text-gray-600 pl-4">
+                <h3 className="font-semibold text-blue-700 dark:text-blue-400">🏝️ Redux Islands (Client):</h3>
+                <ul className="space-y-1 text-gray-600 dark:text-gray-300 pl-4">
                   <li>• Isla #1: FavoriteButton (Next.js)</li>
                   <li>• Isla #2: FavoriteButton (React)</li>
-                  <li>• Isla #3: FavoriteCounter (Panel)</li>
-                  <li>• Todas comparten el mismo store global</li>
+                  <li>• Isla #3: ThemeToggle (Header)</li>
+                  <li>• Isla #4: ThemeToggle (Botón)</li>
+                  <li>• Isla #5: ThemeToggle (Switch)</li>
+                  <li>• Isla #6: FavoriteCounter (Panel)</li>
                 </ul>
+              </div>
+              <div className="space-y-3">
+                <h3 className="font-semibold text-purple-700 dark:text-purple-400">🎨 Estado del Tema:</h3>
+                <ServerReduxWrapper>
+                  <div className="space-y-2 text-gray-600 dark:text-gray-300">
+                    <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded">
+                      <ThemeToggle variant="compact" />
+                    </div>
+                    <div className="text-xs">
+                      ↑ Esta isla también se sincroniza con todas las demás
+                    </div>
+                  </div>
+                </ServerReduxWrapper>
               </div>
             </div>
             <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded">
@@ -170,8 +217,8 @@ export default function IslandWithReduxTutorial() {
 
         {/* Más islas para demostrar escalabilidad */}
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-gray-800">
-            Paso 5: Escalabilidad - Múltiples Islas
+          <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
+            Paso 6: Escalabilidad - Múltiples Islas
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <ServerReduxWrapper>
@@ -205,29 +252,43 @@ export default function IslandWithReduxTutorial() {
 
         {/* Conclusiones del Tutorial */}
         <section className="mb-8">
-          <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg p-6">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-800">
+          <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6 transition-colors">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
               🎉 ¡Tutorial Completado!
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
-                <h3 className="font-semibold text-green-700 mb-2">✅ Has aprendido:</h3>
-                <ul className="text-sm text-green-600 space-y-1">
+                <h3 className="font-semibold text-green-700 dark:text-green-400 mb-2">✅ Has aprendido:</h3>
+                <ul className="text-sm text-green-600 dark:text-green-300 space-y-1">
                   <li>• Crear islas Redux independientes</li>
                   <li>• Compartir estado entre componentes separados</li>
                   <li>• Preservar SSR en Server Components</li>
                   <li>• Optimizar hidratación granular</li>
                   <li>• Gestionar sesiones aisladas</li>
+                  <li>• Sincronizar estado del tema globalmente</li>
                 </ul>
               </div>
               <div>
-                <h3 className="font-semibold text-blue-700 mb-2">🔧 Archivos clave:</h3>
-                <ul className="text-sm text-blue-600 space-y-1">
+                <h3 className="font-semibold text-blue-700 dark:text-blue-400 mb-2">🔧 Archivos clave:</h3>
+                <ul className="text-sm text-blue-600 dark:text-blue-300 space-y-1">
                   <li>• <code>globalStore.ts</code> - Store singleton</li>
                   <li>• <code>ServerReduxWrapper.tsx</code> - SSR wrapper</li>
-                  <li>• <code>ReduxIsland.tsx</code> - Isla cliente</li>
-                  <li>• <code>GlobalReduxProvider.tsx</code> - Provider</li>
+                  <li>• <code>favoritesSlice.ts</code> - Estado favoritos</li>
+                  <li>• <code>themeSlice.ts</code> - Estado del tema</li>
+                  <li>• <code>ThemeToggle.tsx</code> - Control de tema</li>
+                  <li>• <code>ThemeProvider.tsx</code> - Aplicar tema</li>
                 </ul>
+              </div>
+              <div>
+                <h3 className="font-semibold text-purple-700 dark:text-purple-400 mb-2">🎨 Demo en vivo:</h3>
+                <div className="space-y-2">
+                  <ServerReduxWrapper>
+                    <ThemeToggle variant="switch" showLabel={false} />
+                  </ServerReduxWrapper>
+                  <p className="text-xs text-purple-600 dark:text-purple-300">
+                    ↑ ¡Prueba este toggle y observa cómo se sincronizan todos los demás en tiempo real!
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -247,7 +308,9 @@ export default function IslandWithReduxTutorial() {
           </div>
         </footer>
 
-      </div>
-    </div>
+          </div>
+        </div>
+      </ThemeProvider>
+    </ServerReduxWrapper>
   );
 } 
