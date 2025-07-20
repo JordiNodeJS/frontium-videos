@@ -6,7 +6,7 @@ export default function FavoriteCounter() {
   const favorites = useSelector((state: RootState) => state.favorites)
   
   return (
-    <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg p-6 shadow-lg">
+    <div className="bg-gradient-to-r from-blue-500 to-purple-600 dark:from-blue-600 dark:to-purple-700 text-white rounded-lg p-6 shadow-lg transition-colors">
       <h2 className="text-2xl font-bold mb-2">Panel de Favoritos</h2>
       <div className="flex items-center justify-between">
         <div>
