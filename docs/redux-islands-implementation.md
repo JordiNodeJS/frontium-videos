@@ -117,7 +117,7 @@ src/
 ## 🚀 Cómo Probar
 
 1. **Ejecutar**: `bun dev`
-2. **Visitar**: `http://localhost:3000`
+2. **Visitar**: `http://localhost:3000/tutorial/island-with-redux`
 3. **Interactuar**: 
    - Hacer clic en botones de favoritos
    - Observar cambios en el contador global
@@ -148,4 +148,8 @@ src/
 
 **Redux Islands implementado exitosamente** ✅
 
-La página principal ahora demuestra perfectamente el concepto de islas Redux con estado compartido, SSR preservado y arquitectura optimizada para Next.js 15. 
+El tutorial interactivo en `/tutorial/island-with-redux` ahora demuestra perfectamente el concepto de islas Redux con estado compartido, SSR preservado y arquitectura optimizada para Next.js 15.
+
+### 📍 Nueva Ubicación
+- **Página Principal**: `/` - Restaurada con SubscribeButton + enlace al tutorial
+- **Tutorial Redux Islands**: `/tutorial/island-with-redux` - Demostración completa e interactiva 
