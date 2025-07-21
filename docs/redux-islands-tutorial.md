@@ -240,6 +240,105 @@ export default function GlobalReduxProvider({
 }
 ```
 
+## 🧹 Paso 4: CRÍTICO - Implementar Limpieza de Memoria
+
+**¿Por qué es crítico?** Con muchos usuarios concurrentes (ej: 1000), tendrás 1000 stores en memoria. Sin limpieza automática, el servidor puede quedarse sin memoria y crashear.
+
+### Implementación en globalStore.ts:
+
+```tsx
+// Tipo para entrada del store con timestamp de actividad
+type StoreEntry = {
+  store: AppStore
+  lastActivity: number
+}
+
+// Map para almacenar stores por sesión con timestamps
+const storeMap = new Map<string, StoreEntry>()
+
+export function getGlobalStore(): AppStore {
+  const sessionId = getSessionId()
+  const now = Date.now()
+  
+  // 🧹 CRÍTICO: Limpiar stores inactivos para evitar memory leaks
+  cleanupOldStores()
+  
+  if (!storeMap.has(sessionId)) {
+    storeMap.set(sessionId, {
+      store: makeStore(getInitialState()),
+      lastActivity: now
+    })
+  } else {
+    // Actualizar timestamp de última actividad
+    const entry = storeMap.get(sessionId)!
+    entry.lastActivity = now
+  }
+  
+  return storeMap.get(sessionId)!.store
+}
+
+// 🧹 LIMPIEZA AUTOMÁTICA DE STORES INACTIVOS
+export function cleanupOldStores(maxAge = 30 * 60 * 1000) { // 30 minutos
+  const now = Date.now()
+  let cleanedCount = 0
+  
+  for (const [sessionId, entry] of storeMap.entries()) {
+    if (now - entry.lastActivity > maxAge) {
+      storeMap.delete(sessionId)
+      cleanedCount++
+    }
+  }
+  
+  // Log para monitorear la limpieza
+  if (process.env.NODE_ENV === 'development' && cleanedCount > 0) {
+    console.log(`🧹 Redux Store Cleanup: Removed ${cleanedCount} inactive stores. Active stores: ${storeMap.size}`)
+  }
+  
+  return cleanedCount
+}
+```
+
+### ⚠️ Configuración por Entorno:
+
+- **Desarrollo**: `maxAge = 5 minutos` (para testing rápido)
+- **Producción**: `maxAge = 30-60 minutos` (balance memoria/UX)
+- **Alta concurrencia**: `maxAge = 15 minutos` + monitoreo activo
+
+### 📊 Monitoreo Opcional:
+
+```tsx
+// Función para obtener estadísticas de stores
+export function getStoreStats() {
+  const now = Date.now()
+  const stats = {
+    totalStores: storeMap.size,
+    activeStores: 0,
+    inactiveStores: 0
+  }
+  
+  for (const [, entry] of storeMap.entries()) {
+    const age = now - entry.lastActivity
+    if (age < 5 * 60 * 1000) { // Activo si se usó en los últimos 5 minutos
+      stats.activeStores++
+    } else {
+      stats.inactiveStores++
+    }
+  }
+  
+  return stats
+}
+
+// En producción, monitorear cada 10 minutos
+if (process.env.NODE_ENV === 'production') {
+  setInterval(() => {
+    const stats = getStoreStats()
+    if (stats.totalStores > 500) { // Umbral de alerta
+      console.warn('⚠️ High store count:', stats)
+    }
+  }, 10 * 60 * 1000)
+}
+```
+
 ## 🏝️ Paso 4: Crear el Componente Isla
 
 Crea el componente que envuelve las islas de Redux:

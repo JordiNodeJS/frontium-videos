@@ -6,12 +6,47 @@ Se ha implementado exitosamente el patrón **Redux Islands** en la página princ
 
 ### ✅ Características Implementadas
 
-- **Store Global Singleton**: Compartido entre todas las islas
+- **Store Global por Sesión**: Cada usuario tiene su propio estado aislado
+- **Limpieza Automática**: Prevención de memory leaks con cleanup automático
 - **Aislamiento por Sesión**: Cada usuario tiene su propio estado
 - **Sesión Fake**: Datos precargados para demostración
 - **SSR Preservado**: Server Components se renderizan en el servidor
 - **Hidratación Granular**: Solo las islas se hidratan en el cliente
 - **Estado Compartido**: Las islas separadas comparten el mismo estado
+- **Monitoreo de Memoria**: Estadísticas y alertas para detectar problemas
+
+## 🚨 CRÍTICO: Gestión de Memoria Implementada
+
+### ¿Por qué es Crucial?
+
+Con **aplicaciones reales** que pueden tener **cientos o miles de usuarios concurrentes**:
+
+- **Sin limpieza**: 1000 usuarios = 1000 stores permanentes en memoria
+- **Memory leaks**: El servidor puede quedarse sin memoria y crashear
+- **Performance**: Degradación progresiva del rendimiento
+- **Costos**: Mayor uso de recursos del servidor
+
+### ✅ Solución Implementada
+
+```typescript
+// 🧹 Limpieza automática cada vez que se accede a un store
+export function getGlobalStore(): AppStore {
+  cleanupOldStores() // ← Limpia stores inactivos automáticamente
+  // ... resto del código
+}
+
+// Stores inactivos por más de 30 minutos se eliminan automáticamente
+export function cleanupOldStores(maxAge = 30 * 60 * 1000) {
+  // Implementación completa en globalStore.ts
+}
+```
+
+### 📊 Monitoreo Integrado
+
+- **Estadísticas en tiempo real**: Cantidad de stores activos/inactivos
+- **Alertas automáticas**: Cuando hay demasiados stores en memoria
+- **Logging en desarrollo**: Para debugging y optimización
+- **Métricas de limpieza**: Cuántos stores se eliminan en cada cleanup
 
 ## 🏗️ Arquitectura Implementada
 
@@ -20,7 +55,7 @@ Se ha implementado exitosamente el patrón **Redux Islands** en la página princ
 ```
 src/
 ├── store/
-│   └── globalStore.ts                    # Store singleton global
+│   └── globalStore.ts                    # Store con aislamiento por sesión + limpieza
 ├── components/
 │   ├── GlobalReduxProvider.tsx           # Provider con hidratación
 │   ├── ReduxIsland.tsx                   # Componente isla cliente
@@ -32,22 +67,40 @@ src/
 │       └── StaticSection.tsx             # Servidor: Análisis estático
 ```
 
+### 🛡️ Características de Seguridad y Performance
+
+- **Aislamiento por Usuario**: Cada usuario tiene su store completamente independiente
+- **Prevención de Memory Leaks**: Limpieza automática de stores inactivos
+- **Monitoreo Proactivo**: Alertas cuando hay demasiados stores en memoria
+- **Optimización Automática**: Cleanup se ejecuta en cada acceso al store
+- **Configuración Flexible**: Tiempo de inactividad configurable por entorno
+- **Logging Inteligente**: Solo en desarrollo para no afectar producción
+
 ### 🌊 Flujo de Funcionamiento
 
 1. **Servidor**: 
-   - Crea store con sesión fake
+   - Genera sessionId único por usuario/request
+   - Crea store con sesión fake y timestamp
    - Serializa estado inicial
    - Renderiza Server Components
 
 2. **Cliente**: 
    - Recibe estado serializado
-   - Crea/obtiene store de sesión
+   - Crea/obtiene store de sesión con sessionId
+   - Actualiza timestamp de actividad
    - Hidrata solo las islas necesarias
 
 3. **Interacción**: 
    - Usuario interactúa con cualquier isla
+   - Actualiza timestamp de última actividad
    - Cambios se propagan a todas las islas
    - Estado consistente en tiempo real
+
+4. **Limpieza Automática**: 
+   - Cada acceso al store ejecuta cleanup
+   - Stores inactivos >30min se eliminan
+   - Memoria se mantiene bajo control
+   - Logging y monitoreo automático
 
 ## 🏝️ Islas Implementadas
 

@@ -1,7 +1,13 @@
 import { makeStore, AppStore, RootState } from './store'
 
-// Map para almacenar stores por sesión
-const storeMap = new Map<string, AppStore>()
+// Tipo para entrada del store con timestamp de actividad
+type StoreEntry = {
+  store: AppStore
+  lastActivity: number
+}
+
+// Map para almacenar stores por sesión con timestamps
+const storeMap = new Map<string, StoreEntry>()
 
 // Tipo para estado inicial parcial
 type InitialState = Partial<RootState>
@@ -51,6 +57,10 @@ function createFakeSession(): InitialState {
 
 export function getGlobalStore(): AppStore {
   const sessionId = getSessionId()
+  const now = Date.now()
+  
+  // Limpiar stores inactivos cada vez que se accede (optimización de memoria)
+  cleanupOldStores()
   
   if (!storeMap.has(sessionId)) {
     let initialState = getInitialState()
@@ -62,10 +72,17 @@ export function getGlobalStore(): AppStore {
     
     // El makeStore espera 'any' por limitaciones de Redux Toolkit
     // pero nuestro InitialState es tipado correctamente
-    storeMap.set(sessionId, makeStore(initialState))
+    storeMap.set(sessionId, {
+      store: makeStore(initialState),
+      lastActivity: now
+    })
+  } else {
+    // Actualizar timestamp de última actividad
+    const entry = storeMap.get(sessionId)!
+    entry.lastActivity = now
   }
   
-  return storeMap.get(sessionId)!
+  return storeMap.get(sessionId)!.store
 }
 
 // Función para resetear el store de la sesión actual
@@ -94,30 +111,87 @@ export function getSerializedState(): string | null {
   }
 }
 
+// 🧹 LIMPIEZA AUTOMÁTICA DE STORES INACTIVOS
 // Función para limpiar stores antiguos (prevenir memory leaks)
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function cleanupOldStores(_maxAge = 30 * 60 * 1000) { // 30 minutos
-  // TODO: implementar lógica de limpieza basada en tiempo de inactividad
-  // Por ahora, no limpiamos automáticamente los stores
-  // En el futuro, se podría agregar un timestamp de última actividad al estado
+export function cleanupOldStores(maxAge = 30 * 60 * 1000) { // 30 minutos por defecto
+  const now = Date.now()
+  let cleanedCount = 0
   
-  // Ejemplo de implementación futura:
-  // const now = Date.now()
-  // for (const [sessionId, store] of storeMap.entries()) {
-  //   const state = store.getState()
-  //   const lastActivity = state.app?.lastActivity || 0
-  //   if (now - lastActivity > _maxAge) {
-  //     storeMap.delete(sessionId)
-  //   }
-  // }
+  for (const [sessionId, entry] of storeMap.entries()) {
+    if (now - entry.lastActivity > maxAge) {
+      storeMap.delete(sessionId)
+      cleanedCount++
+    }
+  }
+  
+  // Log en desarrollo para monitorear la limpieza
+  if (process.env.NODE_ENV === 'development' && cleanedCount > 0) {
+    console.log(`🧹 Redux Store Cleanup: Removed ${cleanedCount} inactive stores. Active stores: ${storeMap.size}`)
+  }
+  
+  return cleanedCount
 }
 
-// En desarrollo, resetear el store en cada recarga
+// 📊 Función para obtener estadísticas de stores (útil para monitoreo)
+export function getStoreStats() {
+  const now = Date.now()
+  const stats = {
+    totalStores: storeMap.size,
+    activeStores: 0,
+    inactiveStores: 0,
+    oldestStore: now,
+    newestStore: 0
+  }
+  
+  for (const [, entry] of storeMap.entries()) {
+    const age = now - entry.lastActivity
+    
+    if (age < 5 * 60 * 1000) { // Activo si se usó en los últimos 5 minutos
+      stats.activeStores++
+    } else {
+      stats.inactiveStores++
+    }
+    
+    if (entry.lastActivity < stats.oldestStore) {
+      stats.oldestStore = entry.lastActivity
+    }
+    
+    if (entry.lastActivity > stats.newestStore) {
+      stats.newestStore = entry.lastActivity
+    }
+  }
+  
+  return stats
+}
+
+// 🔧 Función para forzar limpieza completa (útil para testing)
+export function forceCleanupAllStores() {
+  const count = storeMap.size
+  storeMap.clear()
+  
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`🧹 Force cleanup: Removed all ${count} stores`)
+  }
+  
+  return count
+}
+
+// En desarrollo, resetear el store en cada recarga y mostrar estadísticas
 if (process.env.NODE_ENV === 'development') {
   if (typeof window !== 'undefined') {
     window.addEventListener('beforeunload', () => {
+      const stats = getStoreStats()
+      console.log('🔍 Redux Store Stats before unload:', stats)
       resetGlobalStore()
     })
+    
+    // Mostrar estadísticas cada 2 minutos en desarrollo
+    setInterval(() => {
+      if (storeMap.size > 0) {
+        const stats = getStoreStats()
+        console.log('🔍 Redux Store Stats:', stats)
+      }
+    }, 2 * 60 * 1000)
   }
 }
 
