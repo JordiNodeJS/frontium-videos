@@ -7,6 +7,9 @@ import Slide5 from './components/slides/Slide5';
 import Slide6 from './components/slides/Slide6';
 import Slide7 from './components/slides/Slide7';
 import Slide8 from './components/slides/Slide8';
+import Slide9 from './components/slides/Slide9';
+import Slide10 from './components/slides/Slide10';
+import Slide11 from './components/slides/Slide11';
 
 export default function ReduxIslandsSliceDocumentation() {
   const slides = [
@@ -65,6 +68,27 @@ export default function ReduxIslandsSliceDocumentation() {
       icon: "🎉",
       color: "gradient",
       content: <Slide8 />
+    },
+    {
+      id: 9,
+      title: "Enfoque Oficial Redux Toolkit",
+      icon: "📚",
+      color: "blue",
+      content: <Slide9 />
+    },
+    {
+      id: 10,
+      title: "Nuestro Enfoque: Singleton Global",
+      icon: "🌟",
+      color: "emerald",
+      content: <Slide10 />
+    },
+    {
+      id: 11,
+      title: "Comparación de Enfoques",
+      icon: "⚖️",
+      color: "orange",
+      content: <Slide11 />
     }
   ];
 

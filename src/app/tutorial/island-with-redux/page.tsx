@@ -268,6 +268,98 @@ export default function IslandWithReduxTutorial() {
           </div>
         </section>
 
+        {/* Nueva sección: Comparación de enfoques */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
+            Paso 7: Enfoques Redux - Oficial vs. Singleton
+          </h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Enfoque oficial */}
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
+              <div className="flex items-center mb-4">
+                <div className="bg-blue-100 dark:bg-blue-900 rounded-full p-2 mr-3">
+                  <span className="text-lg">📚</span>
+                </div>
+                <h3 className="text-lg font-semibold text-blue-800 dark:text-blue-200">
+                  Enfoque Oficial Redux Toolkit
+                </h3>
+              </div>
+              <div className="space-y-3 text-sm">
+                <div className="bg-gray-50 dark:bg-gray-800 rounded p-3">
+                  <code className="text-xs text-gray-700 dark:text-gray-300">
+                    {`const store = useRef(makeStore());`}<br/>
+                    {`<Provider store={store.current}>`}
+                  </code>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-blue-700 dark:text-blue-300 mb-1">✅ Ventajas:</h4>
+                  <ul className="text-blue-600 dark:text-blue-400 space-y-1">
+                    <li>• Cada Provider tiene su propio store</li>
+                    <li>• SSR multiusuario seguro</li>
+                    <li>• Ideal para microfrontends</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-red-700 dark:text-red-300 mb-1">❌ Limitaciones:</h4>
+                  <ul className="text-red-600 dark:text-red-400 space-y-1">
+                    <li>• Sin sincronización entre islas</li>
+                    <li>• No ideal para Islands Architecture</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Nuestro enfoque */}
+            <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg p-6">
+              <div className="flex items-center mb-4">
+                <div className="bg-emerald-100 dark:bg-emerald-900 rounded-full p-2 mr-3">
+                  <span className="text-lg">🌟</span>
+                </div>
+                <h3 className="text-lg font-semibold text-emerald-800 dark:text-emerald-200">
+                  Nuestro Enfoque: Singleton Global
+                </h3>
+              </div>
+              <div className="space-y-3 text-sm">
+                <div className="bg-gray-50 dark:bg-gray-800 rounded p-3">
+                  <code className="text-xs text-gray-700 dark:text-gray-300">
+                    {`export function getGlobalStore() {`}<br/>
+                    {`  if (!globalStore) globalStore = createStore();`}<br/>
+                    {`  return globalStore;`}<br/>
+                    {`}`}
+                  </code>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-emerald-700 dark:text-emerald-300 mb-1">✅ Ventajas:</h4>
+                  <ul className="text-emerald-600 dark:text-emerald-400 space-y-1">
+                    <li>• Todas las islas comparten estado</li>
+                    <li>• Sincronización automática</li>
+                    <li>• Perfecto para Islands Architecture</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-yellow-700 dark:text-yellow-300 mb-1">⚠️ Consideraciones:</h4>
+                  <ul className="text-yellow-600 dark:text-yellow-400 space-y-1">
+                    <li>• SSR multiusuario requiere adaptación</li>
+                    <li>• No ideal para microfrontends independientes</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="mt-6 p-4 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded transition-colors">
+            <div className="flex items-center mb-2">
+              <span className="text-lg mr-2">🤔</span>
+              <h4 className="font-semibold text-purple-800 dark:text-purple-200">¿Cuál elegir?</h4>
+            </div>
+            <p className="text-purple-700 dark:text-purple-300 text-sm">
+              <strong>Usa el oficial</strong> para SSR multiusuario, microfrontends o testing aislado. 
+              <strong>Usa el singleton</strong> para Redux Islands, SPAs modernas con estado global compartido.
+              En la documentación técnica encontrarás una comparación detallada.
+            </p>
+          </div>
+        </section>
+
         {/* Conclusiones del Tutorial */}
         <section className="mb-8">
           <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6 transition-colors">
