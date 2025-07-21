@@ -250,6 +250,24 @@ export default function IslandWithReduxTutorial() {
           </div>
         </section>
 
+        {/* Enlace a documentación técnica */}
+        <section className="mb-8">
+          <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-6 transition-colors">
+            <h2 className="text-xl font-semibold mb-3 text-yellow-800 dark:text-yellow-200">
+              📖 ¿Quieres profundizar más?
+            </h2>
+            <p className="text-yellow-700 dark:text-yellow-300 mb-4">
+              Explora la documentación técnica detallada con diagramas y análisis de arquitectura:
+            </p>
+            <a 
+              href="/tutorial/island-with-redux/slice" 
+              className="inline-flex items-center px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors"
+            >
+              📊 Ver Documentación Técnica →
+            </a>
+          </div>
+        </section>
+
         {/* Conclusiones del Tutorial */}
         <section className="mb-8">
           <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6 transition-colors">
