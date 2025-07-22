@@ -1,7 +1,7 @@
 # Academia Online Full Stack
 
 Aplicación web full-stack para gestionar y consumir contenido formativo.  
-Construida con Next.js 14, TypeScript y Prisma; ejecutada con **Bun** (runtime + gestor de paquetes).
+Construida con Next.js 15, TypeScript; ejecutada con **pnpm** como gestor de paquetes.
 
 ## 🗂️ Estructura principal
 
@@ -16,7 +16,7 @@ Construida con Next.js 14, TypeScript y Prisma; ejecutada con **Bun** (runtime +
 
 ## 🛠️ Tecnologías clave
 
-- **Bun v1** – Runtime JS/TS ultrarrápido y gestor de paquetes  
+- **pnpm** – Gestor de paquetes rápido y eficiente con workspace support  
 - **Next.js 14** – SSR/SSG/ISR y API Routes  
 - **React 18 + TypeScript** – Front-end tipado y reactivo  
 - **Prisma ORM** – Acceso a base de datos SQL (PostgreSQL por defecto)  
@@ -29,17 +29,17 @@ Construida con Next.js 14, TypeScript y Prisma; ejecutada con **Bun** (runtime +
 
 ```bash
 # Instalación de dependencias
-bun install
+pnpm install
 
 # Variables de entorno
 cp example.env .env.local
 # ▸ Rellena las claves de Better Auth, Stripe y la URL/credenciales de tu BBDD
 
 # Migraciones iniciales
-bunx prisma migrate dev
+pnpm dlx prisma migrate dev
 
 # Seed opcional
-bunx prisma db seed
+pnpm dlx prisma db seed
 
 # Entorno de desarrollo
-bun run dev   # o simplemente: bun dev
+pnpm dev

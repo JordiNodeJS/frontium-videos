@@ -7,14 +7,14 @@ Este archivo consolida todas las reglas de desarrollo del proyecto Frontium Vide
 ### Prerequisitos
 
 - Node.js 18+
-- **bun** (package manager obligatorio)
+- **pnpm** (package manager obligatorio)
 - Git configurado
 
 ### Stack Tecnológico Obligatorio
 
 - ✅ **Next.js 15** - App Router únicamente
 - ✅ **TypeScript** - Configuración estricta
-- ✅ **bun** - Package manager y runtime
+- ✅ **pnpm** - Package manager
 - ✅ **React 18** - Server Components por defecto
 - ✅ **ESLint** - Flat config con reglas de Next.js
 - ✅ **Prettier** - Formateo automático
@@ -24,22 +24,22 @@ Este archivo consolida todas las reglas de desarrollo del proyecto Frontium Vide
 ### Comandos y Package Manager
 
 ```bash
-# ✅ SIEMPRE usar bun
-bun install                    # Instalar dependencias
-bun dev                       # Servidor desarrollo (puerto 4000)
-bun build                     # Build de producción
-bun start                     # Servidor producción
+# ✅ SIEMPRE usar pnpm
+pnpm install                   # Instalar dependencias
+pnpm dev                      # Servidor desarrollo (puerto 3000)
+pnpm build                    # Build de producción
+pnpm start                    # Servidor producción
 
 # ✅ Para ejecutables
-bunx <package>                # Ejecutar paquetes
+pnpm dlx <package>            # Ejecutar paquetes
 
 # ✅ Para ShadCN/UI
-bunx --bun shadcn@latest add <componente>
+pnpm dlx shadcn@latest add <componente>
 
 # ❌ NUNCA usar
 npm install / npm run
 yarn install / yarn dev
-pnpm install / pnpm dev
+bun install / bunx --bun
 ```
 
 ## 📁 Estructura de Proyecto Obligatoria
@@ -375,12 +375,12 @@ export function Component() {
 
 ```bash
 # ✅ SIEMPRE usar este comando para ShadCN
-bunx --bun shadcn@latest add <componente>
+pnpm dlx shadcn@latest add <componente>
 
 # Ejemplos:
-bunx --bun shadcn@latest add button
-bunx --bun shadcn@latest add card
-bunx --bun shadcn@latest add form
+pnpm dlx shadcn@latest add button
+pnpm dlx shadcn@latest add card
+pnpm dlx shadcn@latest add form
 ```
 
 ### Uso de Componentes ShadCN
@@ -873,12 +873,12 @@ export default nextConfig;
 
 ### OBLIGATORIO SIEMPRE:
 
-1. **Package Manager**: Solo `bun` y `bunx`
+1. **Package Manager**: Solo `pnpm` y `pnpm dlx`
 2. **Next.js**: Solo App Router, nunca Pages Router
 3. **Components**: Server Components por defecto, Client solo cuando necesario
 4. **TypeScript**: Tipado estricto, nunca `any`
 5. **Imports**: Orden específico, destructuring de React
-6. **ShadCN**: `bunx --bun shadcn@latest add <component>`
+6. **ShadCN**: `pnpm dlx shadcn@latest add <component>`
 7. **Commits**: Inglés con Conventional Commits
 8. **Comunicación**: Español para respuestas, inglés para código
 9. **Validación**: Zod en Server Actions
