@@ -360,6 +360,61 @@ export default function IslandWithReduxTutorial() {
           </div>
         </section>
 
+        {/* Nueva sección: Consideraciones de Seguridad */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
+            Paso 8: Consideraciones de Seguridad SSR
+          </h2>
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6">
+            <div className="flex items-center mb-4">
+              <div className="bg-red-100 dark:bg-red-900 rounded-full p-2 mr-3">
+                <span className="text-lg">🚨</span>
+              </div>
+              <h3 className="text-lg font-semibold text-red-800 dark:text-red-200">
+                Cross-Request Data Pollution
+              </h3>
+            </div>
+            <div className="space-y-4 text-sm">
+              <p className="text-red-700 dark:text-red-300">
+                <strong>⚠️ Advertencia Importante:</strong> En SSR con múltiples usuarios simultáneos, 
+                un store global singleton puede causar que los datos de un usuario "contaminen" 
+                la respuesta de otro usuario.
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-green-100 dark:bg-green-900/50 border border-green-300 dark:border-green-700 rounded p-4">
+                  <h4 className="font-semibold text-green-800 dark:text-green-200 mb-2">✅ Nuestro Proyecto (Seguro):</h4>
+                  <ul className="space-y-1 text-green-700 dark:text-green-300">
+                    <li>• Solo datos de UI (favoritos, tema)</li>
+                    <li>• No información sensible</li>
+                    <li>• Sesiones aisladas automáticamente</li>
+                    <li>• Limpieza de memoria</li>
+                  </ul>
+                </div>
+                
+                <div className="bg-red-100 dark:bg-red-900/50 border border-red-300 dark:border-red-700 rounded p-4">
+                  <h4 className="font-semibold text-red-800 dark:text-red-200 mb-2">❌ Casos Peligrosos:</h4>
+                  <ul className="space-y-1 text-red-700 dark:text-red-300">
+                    <li>• Datos de usuario personales</li>
+                    <li>• Información de autenticación</li>
+                    <li>• Contenido privado/empresarial</li>
+                    <li>• Datos de facturación</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div className="bg-yellow-100 dark:bg-yellow-900/50 border border-yellow-300 dark:border-yellow-700 rounded p-4">
+                <h4 className="font-semibold text-yellow-800 dark:text-yellow-200 mb-2">🛡️ Recomendación:</h4>
+                <p className="text-yellow-700 dark:text-yellow-300">
+                  Para aplicaciones con datos sensibles, usa el <strong>enfoque oficial Redux</strong> 
+                  con stores separados por request, o implementa un sistema robusto de aislamiento de sesiones.
+                  En la documentación técnica encontrarás el análisis completo de seguridad.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Conclusiones del Tutorial */}
         <section className="mb-8">
           <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6 transition-colors">
@@ -376,6 +431,8 @@ export default function IslandWithReduxTutorial() {
                   <li>• Optimizar hidratación granular</li>
                   <li>• Gestionar sesiones aisladas</li>
                   <li>• Sincronizar estado del tema globalmente</li>
+                  <li>• Entender consideraciones de seguridad SSR</li>
+                  <li>• Comparar enfoques Redux oficiales vs singleton</li>
                 </ul>
               </div>
               <div>

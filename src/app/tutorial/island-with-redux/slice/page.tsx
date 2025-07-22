@@ -10,6 +10,7 @@ import Slide8 from './components/slides/Slide8';
 import Slide9 from './components/slides/Slide9';
 import Slide10 from './components/slides/Slide10';
 import Slide11 from './components/slides/Slide11';
+import Slide12 from './components/slides/Slide12';
 
 export default function ReduxIslandsSliceDocumentation() {
   const slides = [
@@ -89,6 +90,13 @@ export default function ReduxIslandsSliceDocumentation() {
       icon: "⚖️",
       color: "orange",
       content: <Slide11 />
+    },
+    {
+      id: 12,
+      title: "Seguridad SSR: Cross-Request Data Pollution",
+      icon: "🚨",
+      color: "red",
+      content: <Slide12 />
     }
   ];
 
