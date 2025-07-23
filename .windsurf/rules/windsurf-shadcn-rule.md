@@ -1,29 +1,29 @@
 # Regla ShadCN/UI para Windsurf - Frontium Videos
 
-## Uso de bunx --bun para ShadCN/UI (OBLIGATORIO)
+## Uso de pnpm dlx para ShadCN/UI (OBLIGATORIO)
 
 ### Descripción
-En el proyecto Frontium Videos que utiliza Bun como package manager exclusivo, es **OBLIGATORIO** usar el comando `bunx --bun` para todas las operaciones con ShadCN/UI, manteniendo un entorno 100% Bun.
+En el proyecto Frontium Videos que utiliza pnpm como package manager exclusivo, es **OBLIGATORIO** usar el comando `pnpm dlx` para todas las operaciones con ShadCN/UI, manteniendo un entorno 100% pnpm.
 
 ### Comando Correcto
 
 #### ✅ CORRECTO
 ```bash
 # Instalación de componentes
-bunx --bun shadcn@latest add button
-bunx --bun shadcn@latest add input
-bunx --bun shadcn@latest add dialog
-bunx --bun shadcn@latest add form
-bunx --bun shadcn@latest add card
-bunx --bun shadcn@latest add table
-bunx --bun shadcn@latest add badge
-bunx --bun shadcn@latest add progress
+pnpm dlx shadcn@latest add button
+pnpm dlx shadcn@latest add input
+pnpm dlx shadcn@latest add dialog
+pnpm dlx shadcn@latest add form
+pnpm dlx shadcn@latest add card
+pnpm dlx shadcn@latest add table
+pnpm dlx shadcn@latest add badge
+pnpm dlx shadcn@latest add progress
 
 # Inicialización del proyecto
-bunx --bun shadcn@latest init
+pnpm dlx shadcn@latest init
 
 # Actualización de componentes
-bunx --bun shadcn@latest update
+pnpm dlx shadcn@latest update
 ```
 
 #### ❌ PROHIBIDO
@@ -31,23 +31,22 @@ bunx --bun shadcn@latest update
 # NO USAR npm
 npx shadcn@latest add button
 
-# NO USAR bunx sin --bun
+# NO USAR bun
+bunx --bun shadcn@latest add button
 bunx shadcn@latest add button
 
 # NO USAR yarn
 yarn dlx shadcn@latest add button
-
-# NO USAR pnpm
-pnpm dlx shadcn@latest add button
 ```
 
 ## Motivación
 
-1. **Entorno 100% Bun**: Mantiene consistencia total en el uso de Bun como runtime y package manager
-2. **Optimización de rendimiento**: Aprovecha las optimizaciones específicas de Bun para máxima velocidad
+1. **Entorno 100% pnpm**: Mantiene consistencia total en el uso de pnpm como package manager
+2. **Optimización de rendimiento**: Aprovecha las optimizaciones específicas de pnpm para máxima velocidad y eficiencia de espacio
 3. **Evita conflictos**: Previene problemas de versiones y dependencias entre diferentes package managers
-4. **Coherencia del proyecto**: Mantiene la política estricta de usar únicamente Bun en Frontium Videos
-5. **Compatibilidad**: Asegura que todos los componentes se instalen correctamente con las dependencias de Bun
+4. **Coherencia del proyecto**: Mantiene la política estricta de usar únicamente pnpm en Frontium Videos
+5. **Compatibilidad**: Asegura que todos los componentes se instalen correctamente con las dependencias de pnpm
+6. **Workspace support**: pnpm ofrece mejor soporte para monorepos y workspaces
 
 ## Aplicación Obligatoria
 
@@ -65,19 +64,19 @@ Para configurar ShadCN/UI por primera vez en Frontium Videos:
 
 ```bash
 # 1. Inicializar ShadCN/UI
-bunx --bun shadcn@latest init
+pnpm dlx shadcn@latest init
 
 # 2. Añadir componentes básicos para la plataforma de cursos
-bunx --bun shadcn@latest add button
-bunx --bun shadcn@latest add input
-bunx --bun shadcn@latest add card
-bunx --bun shadcn@latest add dialog
-bunx --bun shadcn@latest add form
-bunx --bun shadcn@latest add table
-bunx --bun shadcn@latest add tabs
-bunx --bun shadcn@latest add avatar
-bunx --bun shadcn@latest add badge
-bunx --bun shadcn@latest add progress
+pnpm dlx shadcn@latest add button
+pnpm dlx shadcn@latest add input
+pnpm dlx shadcn@latest add card
+pnpm dlx shadcn@latest add dialog
+pnpm dlx shadcn@latest add form
+pnpm dlx shadcn@latest add table
+pnpm dlx shadcn@latest add tabs
+pnpm dlx shadcn@latest add avatar
+pnpm dlx shadcn@latest add badge
+pnpm dlx shadcn@latest add progress
 ```
 
 ## Estructura de Componentes

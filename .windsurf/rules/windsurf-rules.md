@@ -21,11 +21,11 @@ Estas reglas se extraen de `.github/prompts/` y son de obligado cumplimiento.
 ### 2.1. Configuración del Proyecto y Tecnologías
 
 #### Package Manager (OBLIGATORIO)
-- **SIEMPRE** usar `bun` como package manager exclusivo
-- Comandos permitidos: `bun install`, `bun dev`, `bun build`, `bun start`
-- Para paquetes ejecutables: `bunx <package>`
+- **SIEMPRE** usar `pnpm` como package manager exclusivo
+- Comandos permitidos: `pnpm install`, `pnpm dev`, `pnpm build`, `pnpm start`
+- Para paquetes ejecutables: `pnpm dlx <package>`
 - **Puerto de desarrollo:** `4000`
-- **❌ PROHIBIDO:** `npm`, `yarn`, `pnpm`
+- **❌ PROHIBIDO:** `npm`, `yarn`, `bun`
 
 #### Stack Tecnológico
 - **Next.js 15** - Solo App Router, nunca Pages Router
@@ -34,6 +34,7 @@ Estas reglas se extraen de `.github/prompts/` y son de obligado cumplimiento.
 - **ESLint** - Flat config (`eslint.config.mjs`)
 - **Prettier** - Formateo automático
 - **Tailwind CSS** - Para estilos (opcional)
+- **pnpm** - Package manager exclusivo
 
 ### 2.2. Estructura de Directorios
 ```
@@ -156,19 +157,20 @@ export default function Component({ title, items, onSelect }: ComponentProps) {
 }
 ```
 
-### 2.8. ShadCN/UI con Bun (OBLIGATORIO)
+### 2.8. ShadCN/UI con pnpm (OBLIGATORIO)
 
 #### ✅ CORRECTO
 ```bash
-bunx --bun shadcn@latest add button
-bunx --bun shadcn@latest add input
-bunx --bun shadcn@latest add dialog
+pnpm dlx shadcn@latest add button
+pnpm dlx shadcn@latest add input
+pnpm dlx shadcn@latest add dialog
 ```
 
 #### ❌ INCORRECTO
 ```bash
 npx shadcn@latest add button
-bunx shadcn@latest add button
+bunx --bun shadcn@latest add button
+yarn dlx shadcn@latest add button
 ```
 
 ### 2.9. Data Fetching
@@ -244,6 +246,7 @@ chore: update dependencies
 - **Server Actions:** Validar entradas con Zod y verificar autorización
 - **Variables de Entorno:** Usar variables de entorno para claves secretas. NUNCA exponerlas en el cliente
 - **Validación:** Siempre validar datos del lado del servidor
+- **Package Manager:** Usar exclusivamente pnpm para evitar vulnerabilidades
 
 ### 2.13. Testing Patterns
 
