@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth, useUser } from "@clerk/nextjs";
+import { useAuth, useUser, useClerk } from "@clerk/nextjs";
 import { useState } from "react";
 import Link from "next/link";
 // Iconos SVG simples para evitar problemas de dependencias
@@ -55,9 +55,14 @@ const XCircleIcon = ({ className }: { className?: string }) => (
 export default function AuthDemoPage() {
   const { isSignedIn, isLoaded } = useAuth();
   const { user } = useUser();
+  const { signOut } = useClerk();
   const [activeTab, setActiveTab] = useState<
     "overview" | "hooks" | "components" | "middleware" | "examples"
   >("overview");
+
+  const handleLogout = () => {
+    signOut({ redirectUrl: "/sign-in" });
+  };
 
   if (!isLoaded) {
     return (
@@ -83,7 +88,7 @@ export default function AuthDemoPage() {
             </div>
             <div className="flex items-center space-x-4">
               <Link
-                href="/docs/guides/clerk-authentication-guide.md"
+                href="/docs/auth"
                 className="text-blue-600 hover:text-blue-700 font-medium"
               >
                 Ver Documentación
@@ -194,13 +199,22 @@ export default function AuthDemoPage() {
                     </Link>
                   </>
                 ) : (
-                  <Link
-                    href="/dashboard"
-                    className="w-full flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 transition-colors"
-                  >
-                    Ir al Dashboard
-                    <ArrowRightIcon className="ml-2 h-4 w-4" />
-                  </Link>
+                  <>
+                    <Link
+                      href="/dashboard"
+                      className="w-full flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 transition-colors"
+                    >
+                      Ir al Dashboard
+                      <ArrowRightIcon className="ml-2 h-4 w-4" />
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors"
+                    >
+                      Cerrar Sesión
+                      <ArrowRightIcon className="ml-2 h-4 w-4" />
+                    </button>
+                  </>
                 )}
               </div>
             </div>
@@ -279,6 +293,34 @@ export default function AuthDemoPage() {
                       )}
                     </div>
                   </div>
+
+                  {/* Logout Demo */}
+                  {isSignedIn && (
+                    <div className="mt-6">
+                      <h3 className="text-lg font-medium text-gray-900 mb-3">
+                        Demostración de Logout
+                      </h3>
+                      <div className="border rounded-lg p-4 bg-red-50">
+                        <p className="text-red-800 mb-4">
+                          Haz clic en el botón para cerrar tu sesión actual. Serás redirigido a la página de inicio de sesión.
+                        </p>
+                        <button
+                          onClick={handleLogout}
+                          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
+                        >
+                          🚪 Cerrar Sesión Ahora
+                        </button>
+                        <div className="mt-4 p-3 bg-white rounded border">
+                          <p className="text-sm text-gray-600 mb-2">
+                            <strong>Código utilizado:</strong>
+                          </p>
+                          <code className="text-xs text-gray-800 bg-gray-100 px-2 py-1 rounded">
+                            signOut({`{ redirectUrl: "/sign-in" }`})
+                          </code>
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Code Example */}
                   <div className="mt-6">

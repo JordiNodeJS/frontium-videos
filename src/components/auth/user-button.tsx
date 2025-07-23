@@ -20,7 +20,7 @@ export function UserButton() {
             userButtonPopoverActionButton: 'hover:bg-gray-50',
           }
         }}
-        afterSignOutUrl="/"
+        afterSignOutUrl="/sign-in"
       />
     )
   }
