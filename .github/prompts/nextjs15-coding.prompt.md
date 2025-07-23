@@ -674,6 +674,162 @@ export async function createUser(formData: FormData) {
 }
 ```
 
+## 🔐 Autenticación con Clerk
+
+### Configuración Básica
+```tsx
+// app/layout.tsx - ClerkProvider en el root
+import { ClerkProvider } from '@clerk/nextjs';
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <ClerkProvider>
+      <html lang="es">
+        <body>{children}</body>
+      </html>
+    </ClerkProvider>
+  );
+}
+```
+
+### Middleware de Protección
+```typescript
+// middleware.ts
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+
+const isProtectedRoute = createRouteMatcher([
+  '/dashboard(.*)',
+  '/profile(.*)',
+  '/courses/create(.*)',
+]);
+
+export default clerkMiddleware(async (auth, req) => {
+  if (isProtectedRoute(req)) {
+    await auth.protect();
+  }
+});
+
+export const config = {
+  matcher: [
+    '/((?!_next|[^?]*\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    '/(api|trpc)(.*)',
+  ],
+};
+```
+
+### Rutas de Autenticación
+```tsx
+// app/(auth)/sign-in/[[...sign-in]]/page.tsx
+import { SignIn } from '@clerk/nextjs';
+
+export default function SignInPage() {
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <SignIn 
+        appearance={{
+          elements: {
+            formButtonPrimary: 'bg-blue-600 hover:bg-blue-700',
+            card: 'shadow-lg border border-gray-200',
+          },
+        }}
+      />
+    </div>
+  );
+}
+```
+
+### Componentes de Autenticación
+```tsx
+// components/auth/auth-guard.tsx
+import { useAuth } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
+
+interface AuthGuardProps {
+  children: React.ReactNode;
+  fallback?: React.ReactNode;
+}
+
+export function AuthGuard({ children, fallback }: AuthGuardProps) {
+  const { isSignedIn, isLoaded } = useAuth();
+  
+  if (!isLoaded) {
+    return <div>Cargando...</div>;
+  }
+  
+  if (!isSignedIn) {
+    if (fallback) return <>{fallback}</>;
+    redirect('/sign-in');
+  }
+  
+  return <>{children}</>;
+}
+```
+
+### Hooks de Usuario
+```tsx
+// Obtener información del usuario
+import { useUser } from '@clerk/nextjs';
+
+export function UserProfile() {
+  const { user, isLoaded } = useUser();
+  
+  if (!isLoaded) return <div>Cargando...</div>;
+  if (!user) return <div>No autenticado</div>;
+  
+  return (
+    <div>
+      <h1>Hola, {user.firstName}!</h1>
+      <p>{user.emailAddresses[0]?.emailAddress}</p>
+    </div>
+  );
+}
+```
+
+### Server-Side Authentication
+```tsx
+// Server Components con autenticación
+import { auth } from '@clerk/nextjs/server';
+
+export default async function ProtectedPage() {
+  const { userId } = await auth();
+  
+  if (!userId) {
+    redirect('/sign-in');
+  }
+  
+  return <div>Contenido protegido para: {userId}</div>;
+}
+```
+
+### Variables de Entorno
+```bash
+# .env.local (REQUERIDO)
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
+CLERK_SECRET_KEY=sk_test_...
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+NEXT_PUBLIC_CLERK_SIGN_IN_FORCE_REDIRECT_URL=/dashboard
+NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL=/dashboard
+```
+
+### Personalización de Apariencia
+```tsx
+// Tema personalizado para Clerk
+const clerkAppearance = {
+  elements: {
+    formButtonPrimary: 'bg-blue-600 hover:bg-blue-700 text-white',
+    card: 'shadow-lg border border-gray-200 rounded-lg',
+    headerTitle: 'text-2xl font-bold text-gray-900',
+    headerSubtitle: 'text-gray-600',
+    socialButtonsBlockButton: 'border border-gray-300 hover:bg-gray-50',
+    formFieldInput: 'border border-gray-300 focus:border-blue-500',
+  },
+  layout: {
+    socialButtonsPlacement: 'bottom' as const,
+  },
+};
+```
+
 ## 🧪 Testing Patterns
 
 ### Component Testing
