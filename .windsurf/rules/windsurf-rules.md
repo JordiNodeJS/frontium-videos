@@ -18,6 +18,28 @@
 - Generar reglas compatibles entre las especificaciones del proyecto y Windsurf
 - Mantener consistencia con las convenciones establecidas
 
+### Context7 - Consulta Obligatoria de Documentación
+- **ANTES de instalar cualquier paquete o dependencia**, SIEMPRE usar `use context7` para:
+  - Verificar la versión más reciente del paquete
+  - Consultar la documentación oficial actualizada
+  - Conocer las mejores prácticas de instalación
+  - Identificar posibles breaking changes o deprecaciones
+  - Obtener ejemplos de código actualizados
+
+**Formato obligatorio:**
+```
+use context7
+
+Quiero instalar [nombre_del_paquete] para [propósito]. ¿Cuál es la versión más reciente, cómo se instala correctamente y cuáles son las mejores prácticas?
+```
+
+**Ejemplos:**
+- `use context7` antes de `pnpm add @clerk/nextjs`
+- `use context7` antes de `pnpm add tailwindcss`
+- `use context7` antes de cualquier instalación de dependencias
+
+**Esta regla es OBLIGATORIA y debe aplicarse en el 100% de las instalaciones de paquetes.**
+
 ---
 
 ## 2. Reglas Específicas del Proyecto (Frontium Videos)

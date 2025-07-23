@@ -7,10 +7,42 @@ mode: agent
 
 ## 🎯 Configuración del Proyecto
 
+### Context7 - Consulta Obligatoria de Documentación
+**REGLA CRÍTICA:** Antes de instalar cualquier paquete o dependencia, SIEMPRE usar Context7 para obtener información actualizada.
+
+#### Proceso Obligatorio:
+1. **Consultar Context7 PRIMERO:**
+   ```
+   use context7
+   
+   Quiero instalar [nombre_del_paquete] para [propósito]. ¿Cuál es la versión más reciente, cómo se instala correctamente con pnpm, y cuáles son las mejores prácticas de configuración para Next.js 15?
+   ```
+
+2. **Verificar información actualizada:**
+   - Versión más reciente disponible
+   - Compatibilidad con Next.js 15
+   - Mejores prácticas de instalación
+   - Configuración recomendada
+   - Breaking changes recientes
+   - Alternativas si es necesario
+
+3. **Solo después proceder con la instalación:**
+   ```bash
+   pnpm add [paquete]@[version-verificada]
+   ```
+
+#### Ejemplos de Uso:
+- ✅ `use context7` → "Instalar @clerk/nextjs para autenticación"
+- ✅ `use context7` → "Instalar tailwindcss para estilos"
+- ✅ `use context7` → "Instalar @heroicons/react para iconos"
+
+**Esta regla es OBLIGATORIA y debe aplicarse en el 100% de las instalaciones.**
+
 ### Package Manager
 - **SIEMPRE** usar `pnpm` como package manager
 - Comandos: `pnpm install`, `pnpm dev`, `pnpm build`, `pnpm start`
 - Para paquetes ejecutables: `pnpm dlx <package>`
+- **NUNCA instalar sin consultar Context7 primero**
 
 ### Estructura de Directorios
 ```
