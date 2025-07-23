@@ -11,16 +11,21 @@ export default function AuthLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="flex min-h-screen flex-col items-center justify-center p-4">
+    <main className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
+      <div className="max-w-md">
+        {/* Header alineado a la izquierda */}
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold text-gray-900">Frontium Videos</h1>
-          <p className="mt-2 text-lg text-gray-600">
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+            Frontium Videos
+          </h1>
+          <p className="mt-2 text-base text-gray-600">
             Tu plataforma de aprendizaje en línea
           </p>
         </div>
+
+        {/* Contenedor del formulario */}
         {children}
       </div>
-    </div>
+    </main>
   )
 }
