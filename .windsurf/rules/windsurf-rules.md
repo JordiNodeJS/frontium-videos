@@ -12,6 +12,12 @@
 - **Respuestas del asistente:** SIEMPRE en español (excepto commits y código).
 - **Comandos Git:** SIEMPRE en inglés y siguiendo el formato Conventional Commits.
 
+### Análisis de Configuración del Proyecto
+- **SIEMPRE** revisar la carpeta `.github/prompts/` antes de hacer cambios
+- Extraer y aplicar las reglas de codificación específicas del proyecto
+- Generar reglas compatibles entre las especificaciones del proyecto y Windsurf
+- Mantener consistencia con las convenciones establecidas
+
 ---
 
 ## 2. Reglas Específicas del Proyecto (Frontium Videos)
@@ -248,7 +254,121 @@ chore: update dependencies
 - **Validación:** Siempre validar datos del lado del servidor
 - **Package Manager:** Usar exclusivamente pnpm para evitar vulnerabilidades
 
-### 2.13. Testing Patterns
+### 2.13. React Context (Patrón Obligatorio)
+
+#### Cuándo Usar Context vs Props
+
+**✅ USA CONTEXT cuando:**
+- 5+ componentes necesitan los mismos datos
+- Prop drilling de 3+ niveles de profundidad
+- Los datos cambian frecuentemente y necesitan estar sincronizados
+- Estado global o semi-global necesario
+- Múltiples componentes hermanos necesitan los mismos datos
+
+**❌ USA PROPS cuando:**
+- 2-3 componentes máximo necesitan los datos
+- 1-2 niveles de profundidad
+- Datos estáticos o que cambian poco
+- Componentes reutilizables que deben ser independientes
+- Relación directa padre-hijo
+
+#### Patrón Obligatorio: Context + Custom Hook
+
+```typescript
+// context/SomeContext.tsx
+"use client";
+
+import { createContext, useContext, ReactNode } from "react";
+
+// 1. Definir el tipo del Context
+interface SomeContextType {
+  data: SomeData;
+}
+
+// 2. Crear el Context con undefined para detectar uso fuera del Provider
+const SomeContext = createContext<SomeContextType | undefined>(undefined);
+
+// 3. Props del Provider
+interface SomeProviderProps {
+  data: SomeData;
+  children: ReactNode;
+}
+
+// 4. Provider Component
+export function SomeProvider({ data, children }: SomeProviderProps) {
+  const value = { data };
+  return <SomeContext.Provider value={value}>{children}</SomeContext.Provider>;
+}
+
+// 5. Custom Hook (OBLIGATORIO)
+export function useSome(): SomeContextType {
+  const context = useContext(SomeContext);
+  
+  if (context === undefined) {
+    throw new Error("useSome must be used within SomeProvider");
+  }
+  
+  return context;
+}
+```
+
+#### Implementaciones Actuales en el Proyecto
+
+**CourseContext** (`/courses/[courseSlug]`):
+- Comparte datos del curso entre múltiples componentes
+- Usado en: `CourseInfo.tsx`, `CourseContent.tsx`
+- Hook: `useCourse()`
+
+**ProfileContext** (`/profile/[userId]`):
+- Gestiona estado del perfil de usuario
+- Funciones: `toggleFavoriteCourse()`, `updateProfile()`
+- Hook: `useProfile()`
+
+**TutorialContext** (`/tutorial/context`):
+- Ejemplo educativo completo con navegación
+- Demuestra estado derivado y funciones de control
+- Hook: `useTutorial()`
+
+#### Mejores Prácticas Context
+
+1. **Siempre usar Custom Hook:**
+```typescript
+// ✅ CORRECTO
+const { course } = useCourse();
+
+// ❌ INCORRECTO
+const context = useContext(CourseContext);
+```
+
+2. **Validar uso dentro del Provider:**
+```typescript
+export function useCourse() {
+  const context = useContext(CourseContext);
+  if (!context) {
+    throw new Error('useCourse must be used within CourseProvider');
+  }
+  return context;
+}
+```
+
+3. **Colocar Provider lo más cerca posible:**
+```typescript
+// ✅ CORRECTO - Solo donde se necesita
+function CoursePage() {
+  return (
+    <div>
+      <Header />  {/* No necesita course data */}
+      <CourseProvider course={course}>
+        <CourseContent />  {/* Sí necesita course data */}
+        <CourseSidebar />  {/* Sí necesita course data */}
+      </CourseProvider>
+      <Footer />  {/* No necesita course data */}
+    </div>
+  );
+}
+```
+
+### 2.14. Testing Patterns
 
 ```tsx
 import { render, screen } from '@testing-library/react';
