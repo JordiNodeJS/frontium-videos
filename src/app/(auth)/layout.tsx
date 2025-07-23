@@ -12,7 +12,7 @@ export default function AuthLayout({
 }) {
   return (
     <main className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
-      <div className="max-w-md">
+      <div className="w-full max-w-md">
         {/* Header alineado a la izquierda */}
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">
