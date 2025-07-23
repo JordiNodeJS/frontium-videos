@@ -405,6 +405,250 @@ export default function CreatePost() {
 </div>
 ```
 
+## 🔒 Autenticación con Clerk
+
+### Configuración Obligatoria
+
+#### Variables de Entorno (REQUERIDAS)
+```bash
+# .env.local
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
+CLERK_SECRET_KEY=sk_test_...
+```
+
+#### Layout Principal con ClerkProvider
+```tsx
+// src/app/layout.tsx
+import { ClerkProvider } from '@clerk/nextjs';
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <ClerkProvider>
+      <html lang="es">
+        <body>{children}</body>
+      </html>
+    </ClerkProvider>
+  );
+}
+```
+
+#### Middleware de Autenticación (OBLIGATORIO)
+```typescript
+// src/middleware.ts
+import { clerkMiddleware } from '@clerk/nextjs/server';
+
+export default clerkMiddleware();
+
+export const config = {
+  matcher: [
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    '/(api|trpc)(.*)',
+  ],
+};
+```
+
+### Estructura de Rutas de Autenticación
+
+#### Páginas de Autenticación (OBLIGATORIO)
+```
+src/app/(auth)/
+├── layout.tsx                    # Layout específico para auth
+├── sign-in/
+│   └── [[...sign-in]]/
+│       └── page.tsx             # Página de inicio de sesión
+└── sign-up/
+    └── [[...sign-up]]/
+        └── page.tsx             # Página de registro
+```
+
+#### Implementación de Páginas de Auth
+```tsx
+// src/app/(auth)/sign-in/[[...sign-in]]/page.tsx
+import { SignIn } from '@clerk/nextjs';
+
+export default function SignInPage() {
+  return (
+    <div className="w-full max-w-md">
+      <SignIn 
+        appearance={{
+          elements: {
+            formButtonPrimary: 'bg-blue-600 hover:bg-blue-700 text-sm normal-case',
+            card: 'shadow-lg border border-gray-200',
+            headerTitle: 'text-2xl font-bold text-gray-900',
+          }
+        }}
+        routing="path"
+        path="/sign-in"
+        signUpUrl="/sign-up"
+      />
+    </div>
+  );
+}
+```
+
+### Componentes de Autenticación
+
+#### AuthGuard - Protección de Rutas (OBLIGATORIO)
+```tsx
+// src/components/auth/auth-guard.tsx
+'use client';
+
+import { useAuth } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+
+interface AuthGuardProps {
+  children: React.ReactNode;
+  fallback?: React.ReactNode;
+  redirectTo?: string;
+}
+
+export function AuthGuard({ 
+  children, 
+  fallback = <div>Cargando...</div>,
+  redirectTo = '/sign-in'
+}: AuthGuardProps) {
+  const { isLoaded, isSignedIn } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isLoaded && !isSignedIn) {
+      router.push(redirectTo);
+    }
+  }, [isLoaded, isSignedIn, router, redirectTo]);
+
+  if (!isLoaded || !isSignedIn) {
+    return <>{fallback}</>;
+  }
+
+  return <>{children}</>;
+}
+```
+
+#### UserButton - Botón de Usuario Adaptativo
+```tsx
+// src/components/auth/user-button.tsx
+'use client';
+
+import { UserButton as ClerkUserButton, useAuth } from '@clerk/nextjs';
+import Link from 'next/link';
+
+export function UserButton() {
+  const { isSignedIn } = useAuth();
+
+  if (isSignedIn) {
+    return (
+      <ClerkUserButton 
+        appearance={{
+          elements: {
+            avatarBox: 'w-8 h-8',
+            userButtonPopoverCard: 'shadow-lg border border-gray-200',
+          }
+        }}
+        afterSignOutUrl="/"
+      />
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-4">
+      <Link href="/sign-in" className="text-sm font-medium text-gray-700 hover:text-gray-900">
+        Iniciar sesión
+      </Link>
+      <Link href="/sign-up" className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md">
+        Registrarse
+      </Link>
+    </div>
+  );
+}
+```
+
+### Patrones de Uso
+
+#### Rutas Protegidas
+```tsx
+// ✅ CORRECTO - Usar AuthGuard
+import { AuthGuard } from '@/components/auth';
+
+export default function DashboardPage() {
+  return (
+    <AuthGuard>
+      <div>Contenido protegido</div>
+    </AuthGuard>
+  );
+}
+
+// ❌ INCORRECTO - Lógica manual repetitiva
+export default function DashboardPage() {
+  const { isSignedIn } = useAuth();
+  
+  if (!isSignedIn) {
+    redirect('/sign-in');
+  }
+  
+  return <div>Contenido protegido</div>;
+}
+```
+
+#### Server Components con Autenticación
+```tsx
+// Server Component
+import { currentUser } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
+
+export default async function ProfilePage() {
+  const user = await currentUser();
+  
+  if (!user) {
+    redirect('/sign-in');
+  }
+  
+  return (
+    <div>
+      <h1>Perfil de {user.firstName}</h1>
+      <p>Email: {user.emailAddresses[0]?.emailAddress}</p>
+    </div>
+  );
+}
+```
+
+#### Client Components con Hooks
+```tsx
+// Client Component
+'use client';
+
+import { useAuth, useUser } from '@clerk/nextjs';
+
+export default function ProfilePage() {
+  const { isLoaded, isSignedIn } = useAuth();
+  const { user } = useUser();
+
+  if (!isLoaded) return <div>Cargando...</div>;
+  if (!isSignedIn) return <div>No autenticado</div>;
+  
+  return (
+    <div>
+      <h1>Perfil de {user?.firstName}</h1>
+      <p>Email: {user?.emailAddresses[0]?.emailAddress}</p>
+    </div>
+  );
+}
+```
+
+### Mejores Prácticas de Autenticación
+
+1. **SIEMPRE usar AuthGuard para rutas protegidas**
+2. **Server Components para datos sensibles del usuario**
+3. **Client Components para interactividad con autenticación**
+4. **Personalizar apariencia con appearance prop**
+5. **Configurar redirects apropiados (afterSignOutUrl, etc.)**
+6. **Usar middleware para protección global**
+7. **Validar autenticación tanto en cliente como servidor**
+
 ## 🔒 Seguridad
 
 ### Validación Server-Side

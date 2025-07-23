@@ -368,7 +368,158 @@ function CoursePage() {
 }
 ```
 
-### 2.14. Testing Patterns
+### 2.14. Autenticación con Clerk
+
+#### Configuración Obligatoria
+
+**Variables de Entorno:**
+```bash
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=tu_public_key
+CLERK_SECRET_KEY=tu_secret_key
+```
+
+**Layout Principal:**
+```tsx
+import { ClerkProvider } from '@clerk/nextjs';
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <ClerkProvider>
+      <html lang="en">
+        <body>{children}</body>
+      </html>
+    </ClerkProvider>
+  );
+}
+```
+
+**Middleware (OBLIGATORIO):**
+```typescript
+import { clerkMiddleware } from '@clerk/nextjs/server';
+
+export default clerkMiddleware();
+
+export const config = {
+  matcher: [
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    '/(api|trpc)(.*)',
+  ],
+};
+```
+
+#### Estructura de Rutas de Autenticación
+
+**Páginas de Autenticación:**
+- `src/app/(auth)/sign-in/[[...sign-in]]/page.tsx` - Página de inicio de sesión
+- `src/app/(auth)/sign-up/[[...sign-up]]/page.tsx` - Página de registro
+- `src/app/(auth)/layout.tsx` - Layout específico para autenticación
+
+**Componentes de Autenticación:**
+```tsx
+// AuthGuard - Protege rutas que requieren autenticación
+import { AuthGuard } from '@/components/auth';
+
+export default function ProtectedPage() {
+  return (
+    <AuthGuard>
+      <div>Contenido protegido</div>
+    </AuthGuard>
+  );
+}
+
+// UserButton - Botón de usuario adaptativo
+import { UserButton } from '@/components/auth';
+
+export default function Header() {
+  return (
+    <header>
+      <UserButton /> {/* Muestra login/signup o avatar del usuario */}
+    </header>
+  );
+}
+```
+
+#### Hooks de Autenticación
+
+```tsx
+import { useAuth, useUser } from '@clerk/nextjs';
+
+function MyComponent() {
+  const { isSignedIn, isLoaded } = useAuth();
+  const { user } = useUser();
+
+  if (!isLoaded) return <div>Cargando...</div>;
+  
+  if (!isSignedIn) return <div>No autenticado</div>;
+  
+  return <div>Hola, {user?.firstName}!</div>;
+}
+```
+
+#### Server Components con Autenticación
+
+```tsx
+import { currentUser } from '@clerk/nextjs/server';
+
+export default async function ServerPage() {
+  const user = await currentUser();
+  
+  if (!user) {
+    redirect('/sign-in');
+  }
+  
+  return <div>Hola, {user.firstName}!</div>;
+}
+```
+
+#### Mejores Prácticas de Autenticación
+
+1. **Usar AuthGuard para rutas protegidas:**
+```tsx
+// ✅ CORRECTO
+<AuthGuard>
+  <DashboardContent />
+</AuthGuard>
+
+// ❌ INCORRECTO - Lógica manual repetitiva
+if (!isSignedIn) {
+  router.push('/sign-in');
+  return null;
+}
+```
+
+2. **Server Components para datos sensibles:**
+```tsx
+// ✅ CORRECTO - Server Component
+export default async function ProfilePage() {
+  const user = await currentUser();
+  // Datos del usuario disponibles en el servidor
+}
+
+// ✅ TAMBIÉN CORRECTO - Client Component
+'use client';
+export default function ProfilePage() {
+  const { user } = useUser();
+  // Datos del usuario disponibles en el cliente
+}
+```
+
+3. **Personalización de apariencia:**
+```tsx
+<SignIn 
+  appearance={{
+    elements: {
+      formButtonPrimary: 'bg-blue-600 hover:bg-blue-700',
+      card: 'shadow-lg border border-gray-200'
+    }
+  }}
+  routing="path"
+  path="/sign-in"
+  signUpUrl="/sign-up"
+/>
+```
+
+### 2.15. Testing Patterns
 
 ```tsx
 import { render, screen } from '@testing-library/react';
