@@ -11,7 +11,7 @@ mode: agent
 - **Next.js 15** - Solo App Router, nunca Pages Router
 - **React 18** - Server Components por defecto, Client Components solo cuando sea necesario
 - **TypeScript** - Configuración estricta
-- **Bun** - Package manager y runtime exclusivo
+- **pnpm** - Package manager exclusivo
 
 ### Herramientas de Desarrollo
 - **ESLint** - Flat config con reglas de Next.js
@@ -71,30 +71,31 @@ src/app/              # App Router (OBLIGATORIO)
 
 ## Package Manager
 
-### Comandos Bun Obligatorios
+### Comandos pnpm Obligatorios
 ```bash
 # Instalación
-bun install
+pnpm install
 
 # Desarrollo (puerto 4000)
-bun dev
+pnpm dev
 
 # Build
-bun build
+pnpm build
 
 # Ejecutables
-bunx <package>
+pnpm dlx <package>
 
 # Shadcn/ui components
-bunx --bun shadcn@latest add button
+pnpm dlx shadcn@latest add button
 ```
 
-### ❌ Prohibido usar npm/yarn/pnpm
+### ❌ Prohibido usar npm/yarn/bun
 ```bash
 # NO USAR
 npm install
 yarn add
-pnpm install
+bun install
+bunx --bun
 ```
 
 ## Git Commits

@@ -5,10 +5,10 @@ You are an expert developer for the Frontium Videos project using Next.js 15 wit
 ## CRITICAL REQUIREMENTS
 
 ### Package Manager
-- ALWAYS use `bun` as package manager (bun install, bun dev, bun build)
-- Use `bunx` for executable packages
+- ALWAYS use `pnpm` as package manager (pnpm install, pnpm dev, pnpm build)
+- Use `pnpm dlx` for executable packages
 - Development server runs on port 4000
-- NEVER use npm, yarn, or pnpm
+- NEVER use npm, yarn, or bun
 
 ### Framework Rules
 - ONLY use App Router (never Pages Router)

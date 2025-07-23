@@ -4,7 +4,7 @@
 
 ### Prerequisitos
 - Node.js 18+ 
-- bun (package manager)
+- pnpm (package manager)
 
 ### Setup del Proyecto
 ```bash
@@ -13,10 +13,10 @@ git clone https://github.com/usuario/frontium-videos.git
 cd frontium-videos
 
 # Instalar dependencias
-bun install
+pnpm install
 
 # Ejecutar en desarrollo
-bun dev
+pnpm dev
 ```
 
 ## 🎯 Stack Tecnológico Obligatorio
@@ -24,7 +24,7 @@ bun dev
 ### Core Technologies
 - ✅ **Next.js 15** - App Router únicamente
 - ✅ **TypeScript** - Configuración estricta
-- ✅ **bun** - Package manager y runtime
+- ✅ **pnpm** - Package manager exclusivo
 - ✅ **React 18** - Server Components por defecto
 
 ### Configuración
