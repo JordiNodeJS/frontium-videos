@@ -26,7 +26,7 @@ Este archivo consolida todas las reglas de desarrollo del proyecto Frontium Vide
 ```bash
 # ✅ SIEMPRE usar bun
 bun install                    # Instalar dependencias
-bun dev                       # Servidor desarrollo (puerto 4000)
+bun dev                       # Servidor desarrollo (puerto por defecto)
 bun build                     # Build de producción
 bun start                     # Servidor producción
 

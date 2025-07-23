@@ -22,7 +22,7 @@
 - ✅ Ejecutar `create-next-app` con configuración TypeScript
 - ✅ Configurar estructura de directorios en `src/app/`
 - ✅ Verificar configuración de App Router
-- ✅ Configurar puerto 4000 para desarrollo
+- ✅ Configurar puerto por defecto para desarrollo
 
 ### 2. ✅ Configuración de Package Manager (bun)
 - **Estado**: ✅ Completada
@@ -124,7 +124,7 @@
 - **Next.js**: 15.x con App Router obligatorio
 - **TypeScript**: Configuración estricta habilitada
 - **Package Manager**: bun exclusivamente
-- **Puerto**: 4000 para desarrollo
+- **Puerto**: Por defecto (3000) para desarrollo
 - **ESLint**: Flat config con reglas de Next.js y TypeScript
 
 ### Archivos de Configuración Creados
@@ -145,7 +145,7 @@ frontium-videos/
 - [x] TypeScript con strict mode
 - [x] ESLint y Prettier configurados
 - [x] App Router funcionando
-- [x] Desarrollo en puerto 4000
+- [x] Desarrollo en puerto por defecto (3000)
 - [x] Git inicializado con commits convencionales
 - [x] Estructura de directorios establecida
 

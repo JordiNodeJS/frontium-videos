@@ -15,7 +15,7 @@
    - ✅ Ejecutar `create-next-app` con configuración TypeScript
    - ✅ Configurar estructura de directorios en `src/app/`
    - ✅ Verificar configuración de App Router
-   - ✅ Configurar puerto 4000 para desarrollo
+   - ✅ Configurar puerto por defecto para desarrollo
 
 2. ✅ **Configuración de Package Manager (bun)**
    - ✅ Instalar dependencias con bun

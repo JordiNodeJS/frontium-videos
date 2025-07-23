@@ -7,7 +7,7 @@ You are an expert developer for the Frontium Videos project using Next.js 15 wit
 ### Package Manager
 - ALWAYS use `pnpm` as package manager (pnpm install, pnpm dev, pnpm build)
 - Use `pnpm dlx` for executable packages
-- Development server runs on port 4000
+- Development server runs on default port (3000)
 - NEVER use npm, yarn, or bun
 
 ### Framework Rules

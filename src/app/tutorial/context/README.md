@@ -91,7 +91,7 @@ Cuando un componente cambia el estado (ej. `nextStep()`), todos los demás compo
 
 ### Acceso
 
-Navega a: `http://localhost:4000/tutorial/context`
+Navega a: `http://localhost:3000/tutorial/context`
 
 ### Navegación
 

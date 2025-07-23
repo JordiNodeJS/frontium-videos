@@ -30,7 +30,7 @@ Estas reglas se extraen de `.github/prompts/` y son de obligado cumplimiento.
 - **SIEMPRE** usar `pnpm` como package manager exclusivo
 - Comandos permitidos: `pnpm install`, `pnpm dev`, `pnpm build`, `pnpm start`
 - Para paquetes ejecutables: `pnpm dlx <package>`
-- **Puerto de desarrollo:** `4000`
+
 - **❌ PROHIBIDO:** `npm`, `yarn`, `bun`
 
 #### Stack Tecnológico

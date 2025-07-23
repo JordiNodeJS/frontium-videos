@@ -7,7 +7,7 @@ Este documento describe la configuración, las herramientas y las reglas de codi
 - **Proyecto:** Frontium Videos, una plataforma de cursos en línea.
 - **Stack Principal:** Next.js 15 (App Router), React 18, TypeScript.
 - **UI:** ShadCN/UI.
-- **Puerto de desarrollo:** `4000`.
+- **Puerto de desarrollo:** Por defecto de Next.js (`3000`).
 
 ## 2. Package Manager Exclusivo: `pnpm`
 

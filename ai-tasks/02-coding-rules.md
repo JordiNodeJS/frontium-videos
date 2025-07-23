@@ -126,7 +126,7 @@
 - ✅ **Server Components** por defecto
 - ✅ **Client Components** solo cuando necesario
 - ✅ **TypeScript** estricto
-- ✅ **Puerto 4000** para desarrollo
+- ✅ **Puerto por defecto** para desarrollo
 - ✅ **Commits en inglés**, respuestas en español
 
 ### Patrones de Código Basados en Context7
