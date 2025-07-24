@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "clean": "rm -rf .next node_modules/.cache",
-    "reinstall": "rm -rf node_modules pnpm-lock.yaml && pnpm install"
+    "reinstall": "rm -rf node_modules pnpm-lock.yaml && pnpm install",
+    "stop-dev": "powershell -Command \"Get-Process -Name node | Where-Object { $_.ProcessName -like '*next*' -or $_.CommandLine -like '*next*' } | Stop-Process -Force\"",
+    "kill-port": "powershell -Command \"Get-NetTCPConnection -LocalPort 3000 | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force }\""
   },
   "dependencies": {
     "@clerk/nextjs": "^6.25.5",
