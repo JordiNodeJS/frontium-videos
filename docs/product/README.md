@@ -42,12 +42,12 @@ La gestión del proyecto se organiza de la siguiente manera:
 ### Archivos Principales
 
 - `README.md` - Este archivo (índice general).
-- `prd-lite.md` - El documento de requisitos del producto.
-- `epics/E01-authentication-and-profiles.md` - ✅ **COMPLETADO** - Épica para la autenticación y perfiles.
-- `epics/E02-course-catalog.md` - 🚧 **EN PROGRESO** - Épica para el catálogo de cursos.
-- `epics/E03-documentation-system.md` - ✅ **COMPLETADO** - Épica para el sistema de documentación.
-- `epics/E04-content-management.md` - ⏳ **PENDIENTE** - Épica para la gestión de contenidos (CMS).
-- `epics/E05-deployment-and-ops.md` - ⏳ **PENDIENTE** - Épica para el despliegue y operaciones.
+- [[prd-lite]] - El documento de requisitos del producto.
+- [[epics/E01-authentication-and-profiles]] - ✅ **COMPLETADO** - Épica para la autenticación y perfiles.
+- [[epics/E02-course-catalog]] - 🚧 **EN PROGRESO** - Épica para el catálogo de cursos.
+- [[epics/E03-documentation-system]] - ✅ **COMPLETADO** - Épica para el sistema de documentación.
+- [[epics/E04-content-management]] - ⏳ **PENDIENTE** - Épica para la gestión de contenidos (CMS).
+- [[epics/E05-deployment-and-ops]] - ⏳ **PENDIENTE** - Épica para el despliegue y operaciones.
 
 ## 🎯 Próximas Prioridades
 

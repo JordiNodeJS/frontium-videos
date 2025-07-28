@@ -11,13 +11,13 @@ Permitir que los usuarios se registren, inicien sesión y gestionen su perfil de
 
 ## 👤 Historias de Usuario
 
-| ID    | Como... (rol)              | Quiero... (acción)                                      | Para... (beneficio)                                    |
-| :---- | :------------------------- | :------------------------------------------------------ | :----------------------------------------------------- |
-| **US01** | un nuevo visitante         | poder registrarme en la plataforma usando mi email o una cuenta social (Google/GitHub) | crear una cuenta rápidamente y acceder a los cursos.   |
-| **US02** | un usuario registrado      | poder iniciar sesión con mis credenciales              | acceder a mi panel de control y continuar mi aprendizaje. |
-| **US03** | un usuario autenticado     | poder cerrar mi sesión de forma segura                  | proteger mi cuenta en dispositivos compartidos.        |
-| **US04** | un usuario autenticado     | tener un perfil donde pueda ver mi progreso y cursos    | llevar un seguimiento de mi aprendizaje.               |
-| **US05** | un usuario autenticado     | poder ver un avatar y mi nombre en la interfaz          | sentir que la experiencia es personalizada.            |
+| ID       | Como... (rol)          | Quiero... (acción)                                                                     | Para... (beneficio)                                       |
+| :------- | :--------------------- | :------------------------------------------------------------------------------------- | :-------------------------------------------------------- |
+| **US01** | un nuevo visitante     | poder registrarme en la plataforma usando mi email o una cuenta social (Google/GitHub) | crear una cuenta rápidamente y acceder a los cursos.      |
+| **US02** | un usuario registrado  | poder iniciar sesión con mis credenciales                                              | acceder a mi panel de control y continuar mi aprendizaje. |
+| **US03** | un usuario autenticado | poder cerrar mi sesión de forma segura                                                 | proteger mi cuenta en dispositivos compartidos.           |
+| **US04** | un usuario autenticado | tener un perfil donde pueda ver mi progreso y cursos                                   | llevar un seguimiento de mi aprendizaje.                  |
+| **US05** | un usuario autenticado | poder ver un avatar y mi nombre en la interfaz                                         | sentir que la experiencia es personalizada.               |
 
 ## ✅ Checklist de Tareas Técnicas
 
