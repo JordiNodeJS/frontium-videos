@@ -18,8 +18,8 @@ La gestión del proyecto se organiza de la siguiente manera:
 
 - `README.md` - Este archivo (índice general).
 - `prd-lite.md` - El documento de requisitos del producto.
-- `E01-authentication-and-profiles.md` - Épica para la autenticación y perfiles.
-- `E02-course-catalog.md` - Épica para el catálogo de cursos.
-- `E03-documentation-system.md` - Épica para el sistema de documentación.
-- `E04-content-management.md` - Épica para la gestión de contenidos (CMS).
-- `E05-deployment-and-ops.md` - Épica para el despliegue y operaciones.
+- `epics/E01-authentication-and-profiles.md` - Épica para la autenticación y perfiles.
+- `epics/E02-course-catalog.md` - Épica para el catálogo de cursos.
+- `epics/E03-documentation-system.md` - Épica para el sistema de documentación.
+- `epics/E04-content-management.md` - Épica para la gestión de contenidos (CMS).
+- `epics/E05-deployment-and-ops.md` - Épica para el despliegue y operaciones.
