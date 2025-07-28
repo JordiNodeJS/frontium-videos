@@ -8,9 +8,15 @@
     "start": "next start",
     "lint": "next lint",
     "clean": "rm -rf .next node_modules/.cache",
-    "reinstall": "rm -rf node_modules pnpm-lock.yaml && pnpm install"
+    "reinstall": "rm -rf node_modules pnpm-lock.yaml && pnpm install",
+    "stop-dev": "powershell -Command \"Get-Process -Name node | Where-Object { $_.ProcessName -like '*next*' -or $_.CommandLine -like '*next*' } | Stop-Process -Force\"",
+    "stop-dev-bash": "cmd.exe /C taskkill /F /IM node.exe 2>/dev/null || echo 'No Node.js processes found'",
+    "kill-port": "powershell -Command \"Get-NetTCPConnection -LocalPort 3000 | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force }\"",
+    "kill-port-bash": "npx kill-port 3000 2>/dev/null || echo 'Port 3000 is free'"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.25.5",
+    "@heroicons/react": "^2.2.0",
     "@radix-ui/react-slot": "^1.2.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
