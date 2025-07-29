@@ -1,4 +1,4 @@
-import { clerkMiddleware } from '@clerk/nextjs/server';
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 /**
  * Esta configuración hará que:
  * - El middleware de Clerk se ejecute en todas las rutas de tu aplicación
@@ -6,7 +6,18 @@ import { clerkMiddleware } from '@clerk/nextjs/server';
  * - Se aplique a todas las rutas de API (/api/**) y rutas de tRPC (/trpc/**)
  */
 
-export default clerkMiddleware();
+
+const isPublicRoute = createRouteMatcher([
+  '/', // Permite el acceso público a la página de inicio
+  '/sign-in(.*)', // Mantiene la ruta de inicio de sesión como pública
+  '/sign-up(.*)', // Permite el acceso público a la página de registro
+]);
+
+export default clerkMiddleware(async (auth, req) => {
+  if (!isPublicRoute(req)) {
+    await auth.protect()
+  }
+})
 
 export const config = {
   matcher: [
