@@ -11,12 +11,12 @@ Permitir a los usuarios explorar, buscar y visualizar los cursos disponibles en 
 
 ## 👤 Historias de Usuario
 
-| ID    | Como... (rol)              | Quiero... (acción)                                      | Para... (beneficio)                                    |
-| :---- | :------------------------- | :------------------------------------------------------ | :----------------------------------------------------- |
-| **US06** | un visitante o usuario     | ver una lista de todos los cursos disponibles.          | tener una visión general de la oferta formativa.       |
-| **US07** | un visitante o usuario     | filtrar los cursos por categoría, nivel o tecnología.   | encontrar rápidamente los cursos más relevantes para mí.|
-| **US08** | un visitante o usuario     | ver una página de detalle para cada curso.              | conocer el temario, el instructor y las opiniones.     |
-| **US09** | un usuario autenticado     | inscribirme en un curso.                                | empezar a consumir el contenido del curso.             |
+| ID       | Como... (rol)          | Quiero... (acción)                                    | Para... (beneficio)                                      |
+| :------- | :--------------------- | :---------------------------------------------------- | :------------------------------------------------------- |
+| **US06** | un visitante o usuario | ver una lista de todos los cursos disponibles.        | tener una visión general de la oferta formativa.         |
+| **US07** | un visitante o usuario | filtrar los cursos por categoría, nivel o tecnología. | encontrar rápidamente los cursos más relevantes para mí. |
+| **US08** | un visitante o usuario | ver una página de detalle para cada curso.            | conocer el temario, el instructor y las opiniones.       |
+| **US09** | un usuario autenticado | inscribirme en un curso.                              | empezar a consumir el contenido del curso.               |
 
 ## ✅ Checklist de Tareas Técnicas
 

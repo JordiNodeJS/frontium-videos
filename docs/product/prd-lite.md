@@ -31,11 +31,11 @@ Frontium Videos se diferencia por tres pilares clave:
 
 El desarrollo del producto se organizará en torno a las siguientes grandes funcionalidades o "Épicas":
 
-- **E01: Sistema de Autenticación y Perfiles de Usuario**
-- **E02: Catálogo y Visualización de Cursos**
-- **E03: Sistema de Documentación y Soporte**
-- **E04: Gestión de Contenido (CMS para Creadores)**
-- **E05: Despliegue y Operaciones (DevOps)**
+- [[epics/E01-authentication-and-profiles|E01: Sistema de Autenticación y Perfiles de Usuario]]
+- [[epics/E02-course-catalog|E02: Catálogo y Visualización de Cursos]]
+- [[epics/E03-documentation-system|E03: Sistema de Documentación y Soporte]]
+- [[epics/E04-content-management|E04: Gestión de Contenido (CMS para Creadores)]]
+- [[epics/E05-deployment-and-ops|E05: Despliegue y Operaciones (DevOps)]]
 
 ## 6. Criterios de Éxito
 
