@@ -259,13 +259,13 @@ export default function WelcomeMessage() {
 
         <h2 id="troubleshooting">🔧 Solución de Problemas</h2>
         
-        <h3>Error: "ClerkProvider not found"</h3>
+        <h3>Error: &quot;ClerkProvider not found&quot;</h3>
         <div className="bg-red-50 p-4 rounded-lg">
           <p className="text-red-800 mb-2"><strong>Problema:</strong> El componente no puede acceder al contexto de Clerk.</p>
           <p className="text-red-800"><strong>Solución:</strong> Asegúrate de que ClerkProvider esté configurado en el layout raíz.</p>
         </div>
 
-        <h3>Error: "Invalid publishable key"</h3>
+        <h3>Error: &quot;Invalid publishable key&quot;</h3>
         <div className="bg-red-50 p-4 rounded-lg">
           <p className="text-red-800 mb-2"><strong>Problema:</strong> La clave pública de Clerk no es válida.</p>
           <p className="text-red-800"><strong>Solución:</strong> Verifica que NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY esté correctamente configurada.</p>

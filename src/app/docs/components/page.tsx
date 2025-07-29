@@ -65,7 +65,7 @@ export default function Header() {
 
         <h4>Características</h4>
         <ul>
-          <li>Muestra botón de "Iniciar Sesión" para usuarios no autenticados</li>
+          <li>Muestra botón de &quot;Iniciar Sesión&quot; para usuarios no autenticados</li>
           <li>Muestra menú de usuario para usuarios autenticados</li>
           <li>Integración completa con Clerk</li>
           <li>Estilos responsivos con Tailwind CSS</li>
@@ -166,7 +166,7 @@ function CourseInfo() {
         <h3>Convenciones de Nomenclatura</h3>
         <ul>
           <li><strong>Componentes:</strong> PascalCase (<code>UserButton.tsx</code>)</li>
-          <li><strong>Hooks:</strong> camelCase con prefijo "use" (<code>useAuth.ts</code>)</li>
+          <li><strong>Hooks:</strong> camelCase con prefijo &quot;use&quot; (<code>useAuth.ts</code>)</li>
           <li><strong>Utilities:</strong> camelCase (<code>formatDate.ts</code>)</li>
           <li><strong>Constants:</strong> UPPER_SNAKE_CASE (<code>API_ENDPOINTS.ts</code>)</li>
         </ul>

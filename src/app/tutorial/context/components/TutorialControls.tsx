@@ -94,7 +94,7 @@ export function TutorialControls() {
           <div className="text-center text-gray-600">
             <span className="text-2xl">🚀</span>
             <p className="mt-2 text-sm">
-              ¡Bienvenido al tutorial! Usa el botón <strong>"Siguiente"</strong> para comenzar tu viaje con React Context.
+              ¡Bienvenido al tutorial! Usa el botón <strong>&quot;Siguiente&quot;</strong> para comenzar tu viaje con React Context.
             </p>
           </div>
         )}
