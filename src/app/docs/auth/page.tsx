@@ -17,6 +17,7 @@ export default function AuthDocumentationPage() {
         <ul>
           <li><a href="#setup">Configuración Inicial</a></li>
           <li><a href="#components">Componentes de Autenticación</a></li>
+          <li><a href="#strategies">Estrategias de Implementación</a></li>
           <li><a href="#logout">Implementación de Logout</a></li>
           <li><a href="#middleware">Middleware de Protección</a></li>
           <li><a href="#hooks">Hooks Disponibles</a></li>
@@ -111,6 +112,96 @@ export default function Header() {
             <li>• <strong>Adaptativo:</strong> Muestra botones de login/registro cuando no hay sesión activa</li>
             <li>• <strong>Personalizable:</strong> Estilos adaptados al diseño de Frontium Videos</li>
           </ul>
+        </div>
+
+        <h2 id="strategies">🚀 Estrategias de Implementación: Componente vs. Hook</h2>
+        <p>
+          Clerk ofrece dos enfoques principales para implementar la autenticación. La elección depende del nivel de personalización que necesites.
+        </p>
+
+        <h3>1. Componentes Pre-construidos (Ej: <code>&lt;SignIn /&gt;</code>)</h3>
+        <p>
+          Este es el método más rápido. Clerk proporciona componentes listos para usar que gestionan toda la interfaz y la lógica de autenticación.
+        </p>
+        <ul>
+          <li><strong>Ideal para:</strong> Prototipos rápidos, MVPs, o cuando el diseño estándar de Clerk es suficiente.</li>
+          <li><strong>Estructura de Ruta:</strong> Requiere una ruta "catch-all" como <code>/sign-in/[[...sign-in]]/page.tsx</code>. Clerk usa esta estructura para manejar internamente los diferentes pasos del flujo de autenticación (ej: autenticación de doble factor).</li>
+        </ul>
+        <div className="bg-gray-100 p-4 rounded-lg">
+          <pre className="text-sm">
+{`// src/app/(auth)/sign-in/[[...sign-in]]/page.tsx
+import { SignIn } from "@clerk/nextjs";
+
+export default function SignInPage() {
+  return <SignIn path="/sign-in" />;
+}`}
+          </pre>
+        </div>
+
+        <h3>2. Hooks Personalizados (Ej: <code>useSignIn()</code>)</h3>
+        <p>
+          Este enfoque te da control total sobre el HTML y los estilos. Construyes tu propio formulario y usas los hooks de Clerk para manejar la lógica de fondo.
+        </p>
+        <ul>
+          <li><strong>Ideal para:</strong> Aplicaciones con una identidad de marca fuerte o que requieren una experiencia de usuario completamente personalizada.</li>
+          <li><strong>Estructura de Ruta:</strong> No necesita una ruta "catch-all". Una página estándar como <code>/sign-in-custom/page.tsx</code> es suficiente.</li>
+        </ul>
+        <div className="bg-gray-100 p-4 rounded-lg">
+          <pre className="text-sm">
+{`// src/app/(auth)/sign-in-custom/page.tsx
+'use client'
+import { useSignIn } from '@clerk/nextjs';
+import { useState } from 'react';
+
+export default function CustomSignInPage() {
+  const { signIn, setActive } = useSignIn();
+  // ... lógica del estado y del formulario ...
+
+  const handleSubmit = async (e) => {
+    // ...
+    const result = await signIn.create({ identifier, password });
+    // ...
+  };
+
+  return <form onSubmit={handleSubmit}>{/* ... tus inputs ... */}</form>;
+}`}
+          </pre>
+        </div>
+
+        <h3>Tabla Comparativa</h3>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Característica</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Componente <code>&lt;SignIn /&gt;</code></th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hook <code>useSignIn()</code></th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              <tr>
+                <td className="px-6 py-4 whitespace-nowrap">Velocidad de desarrollo</td>
+                <td className="px-6 py-4 whitespace-nowrap">🚀 Muy Rápida</td>
+                <td className="px-6 py-4 whitespace-nowrap">🛠️ Moderada</td>
+              </tr>
+              <tr>
+                <td className="px-6 py-4 whitespace-nowrap">Nivel de personalización</td>
+                <td className="px-6 py-4 whitespace-nowrap">🎨 Limitada (vía prop <code>appearance</code>)</td>
+                <td className="px-6 py-4 whitespace-nowrap">✨ Total</td>
+              </tr>
+              <tr>
+                <td className="px-6 py-4 whitespace-nowrap">Estructura de ruta</td>
+                <td className="px-6 py-4 whitespace-nowrap"><code>[[...sign-in]]</code> (Obligatoria)</td>
+                <td className="px-6 py-4 whitespace-nowrap">Normal (Ej: <code>/sign-in-custom</code>)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="bg-blue-50 border-l-4 border-blue-400 p-4 mt-6">
+          <p className="text-sm text-blue-700">
+            <strong>Ejemplo práctico:</strong> Hemos implementado un <Link href="/sign-in-custom" className="font-medium text-blue-600 hover:text-blue-700">formulario de inicio de sesión personalizado</Link> para demostrar el uso del hook <code>useSignIn()</code>.
+          </p>
         </div>
 
         <h2 id="logout">🚪 Implementación de Logout</h2>
