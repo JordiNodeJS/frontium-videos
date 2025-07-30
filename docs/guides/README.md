@@ -34,6 +34,13 @@ Esta carpeta contiene todas las guías técnicas y de desarrollo para el proyect
 - Mejores prácticas y errores comunes
 - Tutorial interactivo disponible
 
+### 🎯 [Gestión de Estado en Next.js](state-management-in-nextjs.md)
+- Patrones de gestión de estado en Next.js 15
+- Server Components vs Client Components
+- Context API y Server State
+- Ejemplos prácticos completos
+- Mejores prácticas para App Router
+
 ## 🚀 Estado de Implementación
 
 ### ✅ Completado
