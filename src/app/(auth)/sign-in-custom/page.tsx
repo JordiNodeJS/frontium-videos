@@ -29,7 +29,7 @@ export default function CustomSignInPage() {
 
       if (result.status === 'complete') {
         await setActive({ session: result.createdSessionId })
-        router.push('/dashboard')
+        router.push('/demo/dashboard')
       } else {
         // Handle other states like MFA if necessary
         console.log(result)

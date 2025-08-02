@@ -201,7 +201,7 @@ export default function AuthDemoPage() {
                 ) : (
                   <>
                     <Link
-                      href="/dashboard"
+                      href="/demo/dashboard"
                       className="w-full flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 transition-colors"
                     >
                       Ir al Dashboard
@@ -950,7 +950,7 @@ export function Navigation() {
         {/* Enlaces solo para usuarios autenticados */}
         {isSignedIn && (
           <>
-            <Link href="/dashboard">Mi Dashboard</Link>
+            <Link href="/demo/dashboard">Mi Dashboard</Link>
             <Link href="/profile">Mi Perfil</Link>
             {user?.publicMetadata?.role === 'admin' && (
               <Link href="/admin">Administración</Link>

@@ -70,7 +70,7 @@ export default function SignInPage() {
           </div>
           <div className="flex flex-col items-center gap-3">
             <Link 
-              href="/dashboard"
+              href="/demo/dashboard"
               className="inline-flex h-11 w-full items-center justify-center rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 px-6 py-2 text-sm font-medium text-white shadow-lg transition-all duration-200 hover:from-purple-700 hover:to-blue-700 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
             >
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
