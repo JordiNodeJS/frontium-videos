@@ -120,7 +120,7 @@ El proyecto implementa un sistema completo de autenticación usando Clerk:
 ### Páginas de Autenticación:
 - `/sign-in` - Página de inicio de sesión
 - `/sign-up` - Página de registro
-- `/dashboard` - Ejemplo de página protegida
+- `/demo/dashboard` - Dashboard demo (página protegida)
 
 ### Demo y Documentación:
 - `/demo/auth` - Demo interactivo completo

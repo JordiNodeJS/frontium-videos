@@ -74,6 +74,7 @@ La gestión del proyecto se organiza de la siguiente manera:
 ### Aplicación en Desarrollo
 - **Aplicación Principal:** http://localhost:3000
 - **Demo de Autenticación:** http://localhost:3000/demo/auth
+- **Dashboard Demo:** http://localhost:3000/demo/dashboard (protegido)
 - **Documentación Web:** http://localhost:3000/docs/auth
 - **Tutorial Context:** http://localhost:3000/tutorial/context
 

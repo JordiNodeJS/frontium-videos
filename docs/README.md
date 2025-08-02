@@ -12,6 +12,7 @@ Bienvenido al sistema de documentación completo de **Frontium Videos**, una pla
 
 ### 🎮 Demos Interactivos
 - **[Demo de Autenticación](/demo/auth)** - Prueba el sistema completo
+- **[Dashboard Demo](/demo/dashboard)** - Ejemplo de página protegida
 - **[Tutorial de React Context](/tutorial/context)** - Aprende con ejemplos prácticos
 
 ### 📋 Guías de Desarrollo
@@ -31,7 +32,10 @@ frontium-videos-auth/
 ├── 📁 src/
 │   ├── 📁 app/                 # Next.js 15 App Router
 │   │   ├── 📁 (auth)/          # Páginas de autenticación
+│   │   ├── 📁 (root)/          # Páginas principales con sidebar
 │   │   ├── 📁 demo/            # Demos interactivos
+│   │   │   ├── 📁 auth/        # Demo de autenticación
+│   │   │   └── 📁 dashboard/   # Dashboard demo (protegido)
 │   │   ├── 📁 docs/            # Sistema de documentación web
 │   │   └── 📁 tutorial/        # Tutoriales interactivos
 │   └── 📁 components/
@@ -122,7 +126,7 @@ Quiero instalar [paquete] para [propósito]. ¿Cuál es la versión más recient
 - **Inicio:** http://localhost:3000
 - **Sign In:** http://localhost:3000/sign-in
 - **Sign Up:** http://localhost:3000/sign-up
-- **Dashboard:** http://localhost:3000/dashboard (protegida)
+- **Dashboard Demo:** http://localhost:3000/demo/dashboard (protegida)
 
 ### Documentación
 - **Docs Principal:** http://localhost:3000/docs/auth
@@ -152,4 +156,4 @@ Quiero instalar [paquete] para [propósito]. ¿Cuál es la versión más recient
 
 **📝 Nota:** Esta documentación se actualiza constantemente. Para la información más reciente, consulta los archivos en la carpeta `docs/` y las páginas web del sistema de documentación.
 
-**🔄 Última actualización:** 2025-07-28
+**🔄 Última actualización:** 2025-01-07

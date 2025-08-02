@@ -31,6 +31,13 @@ src/app/tutorial/context/
 └── README.md                   # Esta documentación
 ```
 
+### Relación con Nueva Arquitectura
+
+Este tutorial funciona dentro de la nueva estructura de layouts:
+- **Layout Global** (`/src/app/layout.tsx`): Proporciona ClerkProvider
+- **Sin Layout Específico**: El tutorial no usa el layout de `(root)` con sidebar
+- **Standalone**: Funciona independientemente para enfocarse en el aprendizaje
+
 ### Flujo de Datos
 
 ```
@@ -170,11 +177,18 @@ Después de completar este tutorial:
 
 ## 🔗 Enlaces Útiles
 
+### Documentación
 - **Documentación completa**: `/docs/guides/react-context-guide.md`
 - **Reglas del proyecto**: `/.windsurf/rules/windsurf-rules.md`
-- **Ejemplos reales**: 
-  - `/src/app/courses/[courseSlug]/context/`
-  - `/src/app/profile/[userId]/context/`
+- **Documentación web**: http://localhost:3000/docs/auth
+
+### Ejemplos Reales
+- **CourseContext**: `/src/app/courses/[courseSlug]/context/`
+- **ProfileContext**: `/src/app/profile/[userId]/context/`
+
+### Demos Relacionados
+- **Demo de Autenticación**: http://localhost:3000/demo/auth
+- **Dashboard Demo**: http://localhost:3000/demo/dashboard (usa autenticación)
 
 ---
 

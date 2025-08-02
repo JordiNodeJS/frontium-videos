@@ -2,6 +2,33 @@
 
 Este archivo registra todos los cambios importantes realizados en la documentación del proyecto.
 
+## [2025-01-07] - Refactorización de Estructura y Dashboard
+
+### 🔄 Cambios Principales
+
+#### ✨ Nueva Arquitectura de Layouts
+- **Layout Global Simplificado**: Solo maneja ClerkProvider y configuración HTML base
+- **Layout Específico (root)**: Nuevo layout para rutas autenticadas con sidebar integrado
+- **Separación de Responsabilidades**: Cada route group maneja su propio layout
+
+#### 🏗️ Reestructuración del Dashboard
+- **Migración**: Dashboard movido de `/dashboard` a `/demo/dashboard`
+- **Propósito**: Clarifica que es un ejemplo/demo, no funcionalidad productiva
+- **Referencias Actualizadas**: Todos los enlaces y redirecciones actualizados
+
+#### 📚 Documentación Actualizada
+- **README Principal**: Estructura del proyecto y URLs actualizadas
+- **Guías de Proyecto**: Referencias a rutas actualizadas
+- **Tutorial Context**: Documentación alineada con nueva estructura
+- **CHANGELOG**: Este registro de cambios actualizado
+
+#### 🔒 Seguridad Mantenida
+- **Middleware**: Automáticamente protege `/demo/dashboard`
+- **AuthGuard**: Protección a nivel de componente mantenida
+- **Redirecciones**: Login redirige a `/demo/dashboard`
+
+---
+
 ## [2025-07-28] - Actualización Completa de Documentación
 
 ### ✅ Archivos Actualizados
@@ -63,7 +90,7 @@ Este archivo registra todos los cambios importantes realizados en la documentaci
 #### Aplicación
 - **Principal**: http://localhost:3000
 - **Autenticación**: http://localhost:3000/sign-in
-- **Dashboard**: http://localhost:3000/dashboard
+- **Dashboard Demo**: http://localhost:3000/demo/dashboard
 - **Demo Auth**: http://localhost:3000/demo/auth
 
 #### Documentación Web
