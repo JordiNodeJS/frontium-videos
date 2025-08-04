@@ -19,6 +19,13 @@ Esta carpeta contiene todas las guías técnicas y de desarrollo para el proyect
 - Variables de entorno y personalización
 - Ejemplos de código y mejores prácticas
 
+### 🚀 [Configuración Rápida de Clerk](clerk-setup.md)
+- Configuración paso a paso de Clerk
+- Variables de entorno y dominios permitidos
+- Proveedores de autenticación opcionales
+- Personalización de emails
+- Troubleshooting común
+
 ### 🔍 [Reglas de Context7](context7-usage-rules.md)
 **⚠️ REGLA CRÍTICA**
 - Proceso obligatorio antes de instalar paquetes
@@ -26,6 +33,13 @@ Esta carpeta contiene todas las guías técnicas y de desarrollo para el proyect
 - Ejemplos prácticos del proyecto
 - Checklist de verificación
 - Casos especiales y troubleshooting
+
+### ⚡ [Referencia Rápida de Context7](context7-quick-reference.md)
+- Plantillas rápidas para consultas comunes
+- Checklist pre-instalación
+- Proceso en 3 pasos
+- Casos especiales y errores comunes
+- Acceso rápido a mejores prácticas
 
 ### ⚛️ [Guía de React Context](react-context-guide.md)
 - Patrones de Context implementados en el proyecto
@@ -40,6 +54,13 @@ Esta carpeta contiene todas las guías técnicas y de desarrollo para el proyect
 - Context API y Server State
 - Ejemplos prácticos completos
 - Mejores prácticas para App Router
+
+### 🔄 [Migración de Bun a pnpm](migration-bun-to-pnpm.md)
+- Proceso completo de migración
+- Beneficios del cambio a pnpm
+- Comandos actualizados
+- Verificaciones de funcionamiento
+- Notas técnicas importantes
 
 ## 🚀 Estado de Implementación
 
