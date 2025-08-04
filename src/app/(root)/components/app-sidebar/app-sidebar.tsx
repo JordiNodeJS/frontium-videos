@@ -16,9 +16,9 @@ export function AppSidebar() {
   // ✅ OPTIMIZACIÓN: useMemo para el array de grupos renderizados
   // Evita recrear el array en cada render, solo cuando isActive cambia
   const renderedGroups = useMemo(() => {
-    return navigationData.map((group, groupIndex) => (
+    return navigationData.map((group) => (
       <OptimizedSidebarGroup 
-        key={`group-${groupIndex}`}
+        key={group.id}
         group={group}
         isActive={isActive}
       />

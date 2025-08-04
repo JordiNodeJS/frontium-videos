@@ -30,9 +30,9 @@ export const OptimizedSidebarGroup = memo<SidebarGroupProps>(({
       </SidebarGroupLabel>
       <SidebarGroupContent>
         <SidebarMenu>
-          {group.items.map((item, itemIndex) => (
+          {group.items.map((item) => (
             <OptimizedSidebarMenuItem 
-              key={`${group.label}-${itemIndex}`}
+              key={item.id}
               item={item}
               isActive={isActive(item.url)}
             />

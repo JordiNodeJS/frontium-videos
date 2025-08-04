@@ -40,6 +40,7 @@ Hook personalizado que maneja la lógica de navegación:
 ### `NavigationItem`
 ```typescript
 interface NavigationItem {
+  id: string;        // ID único descriptivo
   title: string;
   url: string;
   icon: LucideIcon;
@@ -49,6 +50,7 @@ interface NavigationItem {
 ### `NavigationGroup`
 ```typescript
 interface NavigationGroup {
+  id: string;        // ID único descriptivo
   label: string;
   items: NavigationItem[];
 }
@@ -82,9 +84,15 @@ Para añadir nuevos items o grupos, modifica `navigation-data.ts`:
 ```typescript
 export const navigationData: NavigationData = [
   {
+    id: "new-group",           // ✅ ID único descriptivo
     label: "Nuevo Grupo",
     items: [
-      { title: "Nueva Página", url: "/nueva", icon: NewIcon },
+      { 
+        id: "new-page",        // ✅ ID único descriptivo
+        title: "Nueva Página", 
+        url: "/nueva", 
+        icon: NewIcon 
+      },
     ],
   },
   // ... otros grupos
