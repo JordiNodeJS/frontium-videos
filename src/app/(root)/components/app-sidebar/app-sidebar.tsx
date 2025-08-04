@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { Sidebar, SidebarContent } from "@/components/ui/sidebar";
-import { navigationData } from "./navigation-data";
+import { simpleNavigation } from "./simple-navigation";
 import { useNavigation } from "./hooks/use-navigation";
 import { OptimizedSidebarGroup } from "./sidebar-group";
 
@@ -15,8 +15,9 @@ export function AppSidebar() {
 
   // ✅ OPTIMIZACIÓN: useMemo para el array de grupos renderizados
   // Evita recrear el array en cada render, solo cuando isActive cambia
+  // Usando simpleNavigation con IDs generados automáticamente
   const renderedGroups = useMemo(() => {
-    return navigationData.map((group) => (
+    return simpleNavigation.map((group) => (
       <OptimizedSidebarGroup 
         key={group.id}
         group={group}

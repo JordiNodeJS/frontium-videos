@@ -11,3 +11,4 @@ export { useNavigation } from './hooks/use-navigation';
 // Tipos y datos
 export type { NavigationItem, NavigationGroup, NavigationData } from './types';
 export { navigationData } from './navigation-data';
+export { simpleNavigation } from './simple-navigation';
