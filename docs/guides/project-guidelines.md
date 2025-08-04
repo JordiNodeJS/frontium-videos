@@ -108,7 +108,76 @@ Dado que nuestro proyecto incluye un archivo `pnpm-lock.yaml`, **Vercel utilizar
 - **Validación y Seguridad:** Las Server Actions deben validar los datos de entrada (preferiblemente con Zod) y las variables de entorno sensibles nunca deben exponerse en el cliente.
 - **Commits:** Los mensajes de commit deben estar en inglés y seguir la especificación de [Conventional Commits](https://www.conventionalcommits.org/).
 
-## 7. Sistema de Autenticación (Clerk)
+## 7. Convenciones de Nomenclatura
+
+El proyecto sigue convenciones específicas de nomenclatura para mantener la consistencia y facilitar la navegación del código.
+
+### 7.1 PascalCase (PascalCase)
+Se usa para:
+- **Componentes React principales**: `ProfileActivity.tsx`, `ProfileInfo.tsx`, `CourseContent.tsx`
+- **Funciones de componentes**: `export function ProfileActivitySkeleton()`
+- **Tipos e interfaces**: `UserProfile`, `CourseProgress`
+- **Hooks personalizados**: `useAuthState`, `useProfile`
+
+**Ejemplo:**
+```tsx
+// Componente principal
+export default function ProfileActivity() {
+  // ...
+}
+
+// Función de componente skeleton
+export function ProfileActivitySkeleton() {
+  // ...
+}
+```
+
+### 7.2 kebab-case (kebab-case)
+Se usa para:
+- **Archivos skeleton/loading**: `profile-activity-skeleton.tsx`, `profile-info-skeleton.tsx`
+- **Rutas de páginas**: `[userId]/page.tsx`, `[courseSlug]/page.tsx`
+- **Archivos de utilidades**: `course-content-skeleton.tsx`
+- **Componentes UI básicos**: `button.tsx`, `input.tsx`, `skeleton.tsx`
+
+**Ejemplo:**
+```tsx
+// Archivo skeleton
+export function ProfileActivitySkeleton() {
+  // ...
+}
+```
+
+### 7.3 camelCase (camelCase)
+Se usa para:
+- **Variables y funciones**: `toggleFavoriteCourse`, `handleToggleFavorite`
+- **Props de componentes**: `courseId`, `isLoading`
+- **Hooks de React**: `useState`, `useEffect`
+
+### 7.4 UPPER_SNAKE_CASE
+Se usa para:
+- **Constantes**: `NODE_ENV`, `API_ENDPOINTS`
+- **Variables de entorno**: `process.env.NODE_ENV`
+
+### 7.5 ¿Por qué esta diferenciación?
+
+1. **Componentes React (PascalCase)**: Es la convención estándar de React para distinguir componentes de elementos HTML nativos.
+
+2. **Archivos skeleton (kebab-case)**: Se usan para archivos de utilidad, loading states y componentes auxiliares que no son componentes principales.
+
+3. **Consistencia**: El proyecto mantiene esta diferenciación para:
+   - Facilitar la identificación rápida del tipo de archivo
+   - Seguir las mejores prácticas de React y Next.js
+   - Mantener un código más legible y organizado
+
+### 7.6 Reglas Específicas del Proyecto
+
+- **Componentes**: PascalCase (`UserProfile.tsx`)
+- **Páginas**: kebab-case (`user-profile/page.tsx`)
+- **Hooks**: camelCase con prefijo 'use' (`useAuthState`)
+- **Server Actions**: camelCase (`createPost`)
+- **Tipos**: PascalCase (`UserProfile`)
+
+## 8. Sistema de Autenticación (Clerk)
 
 El proyecto implementa un sistema completo de autenticación usando Clerk:
 
@@ -135,7 +204,7 @@ NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
 NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
 ```
 
-## 8. Sistema de Documentación Web
+## 9. Sistema de Documentación Web
 
 El proyecto incluye un sistema completo de documentación accesible vía web:
 
@@ -151,7 +220,7 @@ El proyecto incluye un sistema completo de documentación accesible vía web:
 - Ejemplos de código con syntax highlighting
 - Enlaces cruzados entre secciones
 
-## 9. React Context (Implementaciones Actuales)
+## 10. React Context (Implementaciones Actuales)
 
 El proyecto utiliza React Context para gestión de estado:
 
@@ -169,6 +238,6 @@ El proyecto utiliza React Context para gestión de estado:
 - **URL:** `/tutorial/context`
 - **Contenido:** Ejemplo práctico con 4 componentes demostrativos
 
-## 10. Comunicación
+## 11. Comunicación
 
 - **Idioma:** Todas las comunicaciones y comentarios en el código deben ser en **español**, con la excepción de los mensajes de commit.
