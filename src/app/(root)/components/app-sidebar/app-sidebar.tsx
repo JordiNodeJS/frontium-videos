@@ -12,7 +12,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton
 } from "@/components/ui/sidebar";
-import { navigationConfig } from "./navigation-config";
+import { navigationConfig } from "./nav-data";
 
 /**
  * Componente principal del sidebar de la aplicación
