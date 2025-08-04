@@ -2,13 +2,13 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { getCourseDetails } from "./lib/getCourseDetails";
-import { CourseProvider } from "./context/CourseContext";
+import { CourseProvider } from "./context/course-context";
 import { CourseInfoSkeleton } from "./components/course-info-skeleton";
 import { CourseContentSkeleton } from "./components/course-content-skeleton";
 import { RelatedCoursesSkeleton } from "./components/related-courses-skeleton";
-import CourseInfo from "./components/CourseInfo";
-import CourseContent from "./components/CourseContent";
-import RelatedCourses from "./components/RelatedCourses";
+import CourseInfo from "./components/course-info";
+import CourseContent from "./components/course-content";
+import RelatedCourses from "./components/related-courses";
 
 export const metadata = {
   title: "Detalle del Curso | Frontium Videos",

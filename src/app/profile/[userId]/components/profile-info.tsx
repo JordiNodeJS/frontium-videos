@@ -1,6 +1,6 @@
 'use client'
 
-import { useProfile } from "../context/ProfileContext";
+import { useProfile } from "../context/profile-context";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -155,4 +155,4 @@ export default function ProfileInfo() {
       </div>
     </div>
   );
-} 
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCourse } from "../context/CourseContext";
+import { useCourse } from "../context/course-context";
 
 /**
  * 🎓 COMPONENTE CON CONTEXT - Ejemplo 2

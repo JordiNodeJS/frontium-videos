@@ -1,6 +1,6 @@
 'use client'
 
-import { useProfile } from '../context/ProfileContext';
+import { useProfile } from '../context/profile-context';
 import { courses, Course } from '@/mocks/data/courses';
 import { useState } from 'react';
 
@@ -196,4 +196,4 @@ export default function ProfileActivity() {
       )}
     </div>
   );
-} 
+}

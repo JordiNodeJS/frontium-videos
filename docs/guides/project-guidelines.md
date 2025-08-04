@@ -164,72 +164,39 @@ import { AppSidebar } from "@/app/(root)/components";
 
 ## 7. Convenciones de Nomenclatura
 
-El proyecto sigue convenciones específicas de nomenclatura para mantener la consistencia y facilitar la navegación del código.
+Para mantener la consistencia y la legibilidad del código, el proyecto sigue un conjunto estricto de convenciones de nomenclatura.
 
-### 7.1 PascalCase (PascalCase)
-Se usa para:
-- **Componentes React principales**: `ProfileActivity.tsx`, `ProfileInfo.tsx`, `CourseContent.tsx`
-- **Funciones de componentes**: `export function ProfileActivitySkeleton()`
-- **Tipos e interfaces**: `UserProfile`, `CourseProgress`
-- **Hooks personalizados**: `useAuthState`, `useProfile`
+### 7.1 Regla de Oro para Componentes
 
-**Ejemplo:**
+La convención para nombrar componentes se inspira en el estilo de ShadCN/UI para lograr una consistencia total en el codebase.
+
+-   **Nombre del Fichero (`.tsx`):** SIEMPRE en `kebab-case`.
+    -   *Ejemplos:* `app-sidebar.tsx`, `user-profile.tsx`, `course-card.tsx`.
+-   **Nombre del Componente (Función/Clase):** SIEMPRE en `PascalCase`.
+    -   *Ejemplos:* `export function AppSidebar()`, `export function UserProfile()`.
+
 ```tsx
-// Componente principal
-export default function ProfileActivity() {
-  // ...
-}
+// Fichero: /components/ui/user-profile.tsx
 
-// Función de componente skeleton
-export function ProfileActivitySkeleton() {
+// El nombre de la función exportada está en PascalCase
+export function UserProfile({ user }) {
   // ...
 }
 ```
 
-### 7.2 kebab-case (kebab-case)
-Se usa para:
-- **Archivos skeleton/loading**: `profile-activity-skeleton.tsx`, `profile-info-skeleton.tsx`
-- **Rutas de páginas**: `[userId]/page.tsx`, `[courseSlug]/page.tsx`
-- **Archivos de utilidades**: `course-content-skeleton.tsx`
-- **Componentes UI básicos**: `button.tsx`, `input.tsx`, `skeleton.tsx`
+Esta regla se aplica a **todos** los componentes, ya sean de UI atómicos o componentes de aplicación complejos.
 
-**Ejemplo:**
-```tsx
-// Archivo skeleton
-export function ProfileActivitySkeleton() {
-  // ...
-}
-```
+### 7.2 Otras Convenciones
 
-### 7.3 camelCase (camelCase)
-Se usa para:
-- **Variables y funciones**: `toggleFavoriteCourse`, `handleToggleFavorite`
-- **Props de componentes**: `courseId`, `isLoading`
-- **Hooks de React**: `useState`, `useEffect`
+| Tipo de Elemento | Convención | Ejemplos |
+| :--- | :--- | :--- |
+| **Rutas de Página** | `kebab-case` | `user-profile/page.tsx`, `[course-slug]/page.tsx` |
+| **Hooks** | `camelCase` (con prefijo `use`) | `useAuthState`, `useProfileContext` |
+| **Server Actions** | `camelCase` | `createPost`, `updateUserSettings` |
+| **Tipos e Interfaces** | `PascalCase` | `type UserProfile`, `interface CourseDetails` |
+| **Variables y Funciones** | `camelCase` | `toggleFavoriteCourse`, `isLoading` |
+| **Constantes** | `UPPER_SNAKE_CASE`| `NODE_ENV`, `API_ENDPOINTS` |
 
-### 7.4 UPPER_SNAKE_CASE
-Se usa para:
-- **Constantes**: `NODE_ENV`, `API_ENDPOINTS`
-- **Variables de entorno**: `process.env.NODE_ENV`
-
-### 7.5 ¿Por qué esta diferenciación?
-
-1. **Componentes React (PascalCase)**: Es la convención estándar de React para distinguir componentes de elementos HTML nativos.
-
-2. **Archivos skeleton (kebab-case)**: Se usan para archivos de utilidad, loading states y componentes auxiliares que no son componentes principales.
-
-3. **Consistencia**: El proyecto mantiene esta diferenciación para:
-   - Facilitar la identificación rápida del tipo de archivo
-   - Seguir las mejores prácticas de React y Next.js
-   - Mantener un código más legible y organizado
-
-### 7.6 Reglas Específicas del Proyecto
-
-- **Componentes**: PascalCase (`UserProfile.tsx`)
-- **Páginas**: kebab-case (`user-profile/page.tsx`)
-- **Hooks**: camelCase con prefijo 'use' (`useAuthState`)
-- **Server Actions**: camelCase (`createPost`)
-- **Tipos**: PascalCase (`UserProfile`)
 
 ## 8. Sistema de Autenticación (Clerk)
 

@@ -2,11 +2,11 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { getUserDetails } from "./lib/getUserDetails";
-import { ProfileProvider } from "./context/ProfileContext";
+import { ProfileProvider } from "./context/profile-context";
 import { ProfileInfoSkeleton } from "./components/profile-info-skeleton";
 import { ProfileActivitySkeleton } from "./components/profile-activity-skeleton";
-import ProfileInfo from "./components/ProfileInfo";
-import ProfileActivity from "./components/ProfileActivity";
+import ProfileInfo from "./components/profile-info";
+import ProfileActivity from "./components/profile-activity";
 
 export const metadata = {
   title: "Perfil de Usuario | Frontium Videos",

@@ -1,9 +1,9 @@
 import { Metadata } from "next";
-import { TutorialProvider } from "./context/TutorialContext";
-import { TutorialHeader } from "./components/TutorialHeader";
-import { TutorialContent } from "./components/TutorialContent";
-import { TutorialSidebar } from "./components/TutorialSidebar";
-import { TutorialControls } from "./components/TutorialControls";
+import { TutorialProvider } from "./context/tutorial-context";
+import { TutorialHeader } from "./components/tutorial-header";
+import { TutorialContent } from "./components/tutorial-content";
+import { TutorialSidebar } from "./components/tutorial-sidebar";
+import { TutorialControls } from "./components/tutorial-controls";
 
 export const metadata: Metadata = {
   title: "Tutorial: React Context | Frontium Videos",
