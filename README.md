@@ -55,3 +55,20 @@ pnpm lint         # Análisis de código con ESLint
 pnpm clean        # Limpiar caché y archivos temporales
 pnpm reinstall    # Reinstalar todas las dependencias
 ```
+
+## 🎨 Herramientas y recursos útiles
+
+### Diseño y branding
+- **[LogoFast](https://shipfa.st/tools/logo-fast)** – Herramienta para crear logos rápidos y profesionales
+- **Figma** – Diseño de interfaces y prototipado
+- **Canva** – Creación de gráficos y contenido visual
+
+### Desarrollo
+- **VS Code** – Editor de código recomendado
+- **Cursor** – Editor con IA integrada
+- **GitHub** – Control de versiones y colaboración
+
+### Herramientas de productividad
+- **Notion** – Documentación y gestión de proyectos
+- **Linear** – Gestión de tareas y sprints
+- **Discord** – Comunicación del equipo
