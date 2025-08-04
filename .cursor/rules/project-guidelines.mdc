@@ -1,8 +1,3 @@
----
-description: Reglas del proyecto Frontium Videos para Next.js 15 con App Router, pnpm, Clerk Auth y convenciones de nomenclatura específicas
-globs: ["**/*.{ts,tsx,js,jsx,md,json}"]
-alwaysApply: true
----
 
 # Frontium Videos - Reglas del Proyecto
 
@@ -10,11 +5,43 @@ Eres un desarrollador experto para el proyecto Frontium Videos usando Next.js 15
 
 ## REQUISITOS CRÍTICOS
 
+### Context7 - Consulta Obligatoria de Documentación
+**REGLA CRÍTICA:** Antes de instalar cualquier paquete o dependencia, SIEMPRE usar Context7 para obtener información actualizada.
+
+#### Proceso Obligatorio:
+1. **Consultar Context7 PRIMERO:**
+   ```
+   use context7
+   
+   Quiero instalar [nombre_del_paquete] para [propósito]. ¿Cuál es la versión más reciente, cómo se instala correctamente con pnpm, y cuáles son las mejores prácticas de configuración para Next.js 15?
+   ```
+
+2. **Verificar información actualizada:**
+   - Versión más reciente disponible
+   - Compatibilidad con Next.js 15
+   - Mejores prácticas de instalación
+   - Configuración recomendada
+   - Breaking changes recientes
+   - Alternativas si es necesario
+
+3. **Solo después proceder con la instalación:**
+   ```bash
+   pnpm add [paquete]@[version-verificada]
+   ```
+
+#### Ejemplos de Uso:
+- ✅ `use context7` → "Instalar @clerk/nextjs para autenticación"
+- ✅ `use context7` → "Instalar tailwindcss para estilos"
+- ✅ `use context7` → "Instalar @heroicons/react para iconos"
+
+**Esta regla es OBLIGATORIA y debe aplicarse en el 100% de las instalaciones.**
+
 ### Gestor de Paquetes
 - SIEMPRE usar `pnpm` como gestor de paquetes (pnpm install, pnpm dev, pnpm build)
 - Usar `pnpm dlx` para paquetes ejecutables
 - NUNCA usar npm, yarn, o bun
 - Servidor de desarrollo en puerto por defecto (3000)
+- **NUNCA instalar sin consultar Context7 primero**
 
 ### Reglas del Framework
 - SOLO usar App Router (nunca Pages Router)
@@ -49,6 +76,47 @@ import { useState } from 'react';
 export default function InteractiveComponent() {
   const [state, setState] = useState('');
   return <div>{/* UI interactiva */}</div>;
+}
+```
+
+### Importaciones React Explícitas
+
+- **SIEMPRE** usar importación explícita de tipos, hooks y elementos de React
+- **NUNCA** usar el namespace `React.` para acceder a elementos
+
+#### ✅ CORRECTO:
+```tsx
+import { useState, FormEvent, ChangeEvent, FC, ReactNode } from 'react';
+
+export default function Component() {
+  const [state, setState] = useState(null);
+  
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    // código...
+  };
+  
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    // código...
+  };
+}
+```
+
+#### ❌ INCORRECTO:
+```tsx
+import React from 'react';
+
+export default function Component() {
+  const [state, setState] = React.useState(null);
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // código...
+  };
+  
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // código...
+  };
 }
 ```
 
@@ -90,11 +158,23 @@ import { AppSidebar } from "@/components/AppSidebar"
 4. Importaciones internas (rutas absolutas con @/)
 5. Importaciones relativas
 
-### Context7 Integration
-- SIEMPRE consultar Context7 antes de instalar paquetes
-- Verificar versiones más recientes y compatibilidad con Next.js 15
-- Revisar breaking changes y mejores prácticas
-- Usar pnpm para todas las instalaciones después de verificación con Context7
+### ShadCN/UI con pnpm
+- **SIEMPRE** usar `pnpm dlx` para comandos de shadcn/ui
+- **NUNCA** usar npx, bunx, o yarn dlx
+
+#### ✅ CORRECTO:
+```bash
+pnpm dlx shadcn@latest add button
+pnpm dlx shadcn@latest add input
+pnpm dlx shadcn@latest add dialog
+```
+
+#### ❌ INCORRECTO:
+```bash
+npx shadcn@latest add button
+bunx --bun shadcn@latest add button
+yarn dlx shadcn@latest add button
+```
 
 ### Autenticación (Clerk)
 - Usar Clerk para autenticación
