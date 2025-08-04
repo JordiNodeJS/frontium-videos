@@ -108,6 +108,60 @@ Dado que nuestro proyecto incluye un archivo `pnpm-lock.yaml`, **Vercel utilizar
 - **Validación y Seguridad:** Las Server Actions deben validar los datos de entrada (preferiblemente con Zod) y las variables de entorno sensibles nunca deben exponerse en el cliente.
 - **Commits:** Los mensajes de commit deben estar en inglés y seguir la especificación de [Conventional Commits](https://www.conventionalcommits.org/).
 
+### 6.1 Patrón de Barrel Exports
+
+Para mantener las importaciones limpias y la estructura del proyecto organizada, utilizamos un patrón de "barrel exports" anidados.
+
+#### ¿Cómo funciona?
+
+Este patrón utiliza archivos `index.ts` en diferentes niveles para agrupar y re-exportar módulos, simplificando las rutas de importación.
+
+**Ejemplo de Estructura:**
+
+```
+src/app/(root)/components/
+├── index.ts                    # 1. Agregador de Módulos
+└── app-sidebar/
+    ├── index.ts               # 2. Exportador de Componentes
+    └── app-sidebar.tsx        # Componente real (AppSidebar)
+```
+
+#### Nivel 1: Agregador de Módulos (`components/index.ts`)
+
+Este archivo agrupa todos los directorios de componentes.
+
+```typescript
+// src/app/(root)/components/index.ts
+export * from "./app-sidebar";
+// export * from "./header"; // Si se añade un nuevo componente
+```
+
+- **Rol:** Apunta a **directorios**. Su función es ser un punto central para acceder a cualquier componente.
+
+#### Nivel 2: Exportador de Componentes (`app-sidebar/index.ts`)
+
+Este archivo exporta los componentes reales desde su archivo `.tsx`.
+
+```typescript
+// src/app/(root)/components/app-sidebar/index.ts
+export * from "./app-sidebar";
+```
+
+- **Rol:** Apunta a un **fichero** (`.tsx`). Su función es exponer la lógica del componente.
+
+#### Ventaja Final
+
+Este patrón permite realizar importaciones muy limpias y centralizadas:
+
+```tsx
+// En lugar de una ruta larga y frágil:
+// import { AppSidebar } from "../(root)/components/app-sidebar/app-sidebar";
+
+// Usamos una ruta corta y mantenible:
+import { AppSidebar } from "@/app/(root)/components";
+```
+
+
 ## 7. Convenciones de Nomenclatura
 
 El proyecto sigue convenciones específicas de nomenclatura para mantener la consistencia y facilitar la navegación del código.
