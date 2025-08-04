@@ -1,0 +1,122 @@
+---
+description: Reglas del proyecto Frontium Videos para Next.js 15 con App Router, pnpm, Clerk Auth y convenciones de nomenclatura específicas
+globs: ["**/*.{ts,tsx,js,jsx,md,json}"]
+alwaysApply: true
+---
+
+# Frontium Videos - Reglas del Proyecto
+
+Eres un desarrollador experto para el proyecto Frontium Videos usando Next.js 15 con App Router.
+
+## REQUISITOS CRÍTICOS
+
+### Gestor de Paquetes
+- SIEMPRE usar `pnpm` como gestor de paquetes (pnpm install, pnpm dev, pnpm build)
+- Usar `pnpm dlx` para paquetes ejecutables
+- NUNCA usar npm, yarn, o bun
+- Servidor de desarrollo en puerto por defecto (3000)
+
+### Reglas del Framework
+- SOLO usar App Router (nunca Pages Router)
+- SIEMPRE usar Server Components por defecto
+- Usar directiva 'use client' SOLO cuando sea necesario (interactividad, hooks)
+- Colocar 'use client' al inicio de archivos que lo necesiten
+
+### Estructura del Proyecto
+```
+src/app/              # App Router (REQUERIDO)
+├── layout.tsx       # Layout raíz (REQUERIDO)
+├── page.tsx         # Página principal
+├── globals.css      # Estilos globales
+└── components/      # Componentes reutilizables
+```
+
+### Patrones de Código
+
+#### Server Components (Por defecto)
+```tsx
+export default async function Page() {
+  const data = await fetch('api/data', { cache: 'force-cache' });
+  return <div>{/* UI */}</div>;
+}
+```
+
+#### Client Components (Solo cuando sea necesario)
+```tsx
+'use client'
+import { useState } from 'react';
+
+export default function InteractiveComponent() {
+  const [state, setState] = useState('');
+  return <div>{/* UI interactiva */}</div>;
+}
+```
+
+### Convenciones de Nomenclatura
+- **Componentes**: PascalCase (UserProfile.tsx)
+- **Páginas**: kebab-case (user-profile/page.tsx)
+- **Hooks**: camelCase con prefijo 'use' (useAuthState)
+- **Server Actions**: camelCase (createPost)
+- **Tipos**: PascalCase (UserProfile)
+- **Archivos skeleton**: kebab-case (profile-activity-skeleton.tsx)
+- **Variables**: camelCase (toggleFavoriteCourse)
+- **Constantes**: UPPER_SNAKE_CASE (NODE_ENV)
+
+### Orden de Importaciones
+1. Importaciones de React
+2. Importaciones de Next.js
+3. Librerías externas
+4. Importaciones internas (rutas absolutas con @/)
+5. Importaciones relativas
+
+### Context7 Integration
+- SIEMPRE consultar Context7 antes de instalar paquetes
+- Verificar versiones más recientes y compatibilidad con Next.js 15
+- Revisar breaking changes y mejores prácticas
+- Usar pnpm para todas las instalaciones después de verificación con Context7
+
+### Autenticación (Clerk)
+- Usar Clerk para autenticación
+- Implementar AuthGuard para protección de rutas
+- Crear componentes de auth reutilizables
+- Seguir mejores prácticas de Clerk para Next.js 15
+
+### TypeScript
+- Siempre usar tipos explícitos para props
+- Usar interfaces para objetos complejos
+- Nunca usar tipo 'any'
+- Configurar modo estricto
+
+### Commits Git (SOLO EN INGLÉS)
+- feat: add user authentication
+- fix: resolve hydration issue
+- docs: update setup guide
+- style: format with prettier
+- refactor: extract auth logic
+- test: add user tests
+- chore: update dependencies
+
+### Comunicación
+- Responder en español (excepto mensajes de commit)
+- Commits de git deben estar en inglés
+- Seguir formato de conventional commits
+- Comentarios en código en inglés
+
+### Rendimiento
+- Usar componente Image de Next.js para imágenes
+- Implementar estados de carga con loading.tsx
+- Usar Error boundaries con error.tsx
+- Implementar Suspense para streaming
+
+### Seguridad
+- Validar Server Actions con zod
+- Verificar autorización en Server Actions
+- Nunca exponer secretos del lado del cliente
+
+### Documentación
+- Mantener documentación web en /docs/
+- Incluir demos interactivos
+- Usar español para contenido de documentación
+- Mantener documentación actualizada con cambios de código
+
+SEGUIR ESTAS REGLAS ESTRICTAMENTE PARA TODA GENERACIÓN Y MODIFICACIÓN DE CÓDIGO.
