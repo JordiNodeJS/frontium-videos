@@ -95,5 +95,5 @@ function createNavigation() {
   }));
 }
 
-// 🎯 Navegación con IDs generados automáticamente
-export const simpleNavigation: NavigationData = createNavigation();
+// 🎯 Configuración de navegación con IDs generados automáticamente
+export const navigationConfig: NavigationData = createNavigation();

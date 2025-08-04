@@ -10,7 +10,7 @@ app-sidebar/
 ├── index.ts                     # Exportaciones principales
 ├── types.ts                     # Tipos TypeScript
 ├── navigation-data.ts           # Datos de navegación (IDs manuales)
-├── simple-navigation.ts         # Datos de navegación (IDs automáticos simples)
+├── navigation-config.ts         # Configuración de navegación (IDs automáticos)
 ├── app-sidebar.tsx             # Componente principal
 ├── sidebar-group.tsx           # Componente de grupo
 ├── sidebar-menu-item.tsx       # Componente de item
@@ -102,7 +102,7 @@ export const navigationData: NavigationData = [
 ```
 
 ### Opción 2: IDs Automáticos Simples ⭐ **Recomendado**
-Para generación automática súper simple, modifica `simple-navigation.ts`:
+Para generación automática súper simple, modifica `navigation-config.ts`:
 
 ```typescript
 // ✨ Solo defines esto (como siempre)
