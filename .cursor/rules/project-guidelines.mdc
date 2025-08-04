@@ -53,14 +53,35 @@ export default function InteractiveComponent() {
 ```
 
 ### Convenciones de Nomenclatura
-- **Componentes**: PascalCase (UserProfile.tsx)
+
+#### Archivos y Carpetas
+- **Archivos de componentes**: kebab-case (app-sidebar.tsx, user-profile.tsx)
+- **Carpetas de componentes**: kebab-case (app-sidebar/, user-profile/)
 - **Páginas**: kebab-case (user-profile/page.tsx)
+- **Archivos skeleton**: kebab-case (profile-activity-skeleton.tsx)
+
+#### Código y Elementos
+- **Nombres de componentes**: PascalCase (AppSidebar, UserProfile)
 - **Hooks**: camelCase con prefijo 'use' (useAuthState)
 - **Server Actions**: camelCase (createPost)
-- **Tipos**: PascalCase (UserProfile)
-- **Archivos skeleton**: kebab-case (profile-activity-skeleton.tsx)
+- **Tipos e Interfaces**: PascalCase (UserProfile, CourseData)
 - **Variables**: camelCase (toggleFavoriteCourse)
 - **Constantes**: UPPER_SNAKE_CASE (NODE_ENV)
+
+#### ¿Por qué kebab-case en archivos de componentes?
+- **Legibilidad**: Más legible en rutas y URLs
+- **Compatibilidad**: Compatible con sistemas sensibles a mayúsculas (Linux)
+- **Coherencia**: Coherente con la estructura de carpetas en Next.js
+- **Convención oficial**: Siguiendo las convenciones de shadcn/ui y Next.js
+
+#### Ejemplo de importación correcta
+```tsx
+// ✅ Correcto: archivo en kebab-case, componente en PascalCase
+import { AppSidebar } from "@/components/app-sidebar"
+
+// ❌ Incorrecto: archivo en PascalCase
+import { AppSidebar } from "@/components/AppSidebar"
+```
 
 ### Orden de Importaciones
 1. Importaciones de React
