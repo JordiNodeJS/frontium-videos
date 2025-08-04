@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import { ClerkProvider } from '@clerk/nextjs';
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "./(root)/components";
 import "./globals.css";
 
 
@@ -25,7 +27,16 @@ export default function RootLayout({
         <body
           className={`${spaceGrotesk.variable} antialiased`}
         >
-          {children}
+          <SidebarProvider>
+            <div className="flex h-screen" role="application" aria-label="Aplicación Frontium Videos">
+              <aside className="flex-shrink-0" aria-label="Navegación principal">
+                <AppSidebar />
+              </aside>
+              <main className="flex-1 overflow-auto" role="main" aria-label="Contenido principal">
+                {children}
+              </main>
+            </div>
+          </SidebarProvider>
         </body>
       </html>
     </ClerkProvider>
