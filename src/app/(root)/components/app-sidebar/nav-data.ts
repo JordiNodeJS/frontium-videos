@@ -17,7 +17,8 @@ import {
 import { NavigationData } from "./types";
 
 /**
- * Genera ID único: "Mi Perfil" → "mi-perfil-8f2a"
+ * Genera ID único: "Mi Perfil" → "mi-perfil-a1b2c3d4"
+ * Usa crypto.randomUUID() para mayor compatibilidad y estándar
  */
 function createId(text: string): string {
   const base = text
@@ -29,10 +30,10 @@ function createId(text: string): string {
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '');
   
-  const hex = crypto.getRandomValues(new Uint8Array(2))
-    .reduce((s, b) => s + b.toString(16).padStart(2, '0'), '');
+  // ✅ Más moderno y estándar que getRandomValues()
+  const uuid = crypto.randomUUID().slice(0, 8);
   
-  return `${base}-${hex}`;
+  return `${base}-${uuid}`;
 }
 
 
