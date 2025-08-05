@@ -25,14 +25,11 @@ function createId(text: string): string {
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
+    .replace(/[^a-z0-9-]/g, '-')  // ✅ Elimina espacios y caracteres inválidos
+    .replace(/-+/g, '-')           // ✅ Múltiples guiones → uno
+    .replace(/^-|-$/g, '');        // ✅ Elimina guiones extremos
   
-  // ✅ Más moderno y estándar que getRandomValues()
   const uuid = crypto.randomUUID().slice(0, 8);
-  
   return `${base}-${uuid}`;
 }
 
