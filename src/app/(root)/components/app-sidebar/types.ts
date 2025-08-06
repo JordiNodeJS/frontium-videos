@@ -1,10 +1,17 @@
 import { LucideIcon } from "lucide-react";
 
-export interface NavigationItem {
+export interface NavigationSubItem {
   id: string;
   title: string;
   url: string;
+}
+
+export interface NavigationItem {
+  id: string;
+  title: string;
+  url?: string; // Opcional cuando tiene subItems
   icon: LucideIcon;
+  subItems?: NavigationSubItem[]; // Opcional para submenús
 }
 
 export interface NavigationGroup {

@@ -61,7 +61,16 @@ function createNavigation() {
     {
       label: "Profesorado",
       items: [
-        { title: "Panel de Control", url: "/teacher/dashboard", icon: BarChart3 },
+        { 
+          title: "Panel de Control", 
+          icon: BarChart3,
+          subItems: [
+            { title: "Vista General", url: "/teacher/dashboard" },
+            { title: "Estadísticas", url: "/teacher/dashboard/stats" },
+            { title: "Reportes", url: "/teacher/dashboard/reports" },
+            { title: "Configuración", url: "/teacher/dashboard/settings" },
+          ]
+        },
         { title: "Mis Cursos", url: "/teacher/courses", icon: BookOpen },
         { title: "Crear Curso", url: "/teacher/courses/create", icon: FileText },
         { title: "Estudiantes", url: "/teacher/students", icon: Users },
@@ -89,6 +98,11 @@ function createNavigation() {
       title: item.title,
       url: item.url,
       icon: item.icon,
+      subItems: item.subItems?.map(subItem => ({
+        id: createId(subItem.title),
+        title: subItem.title,
+        url: subItem.url,
+      }))
     }))
   }));
 }
